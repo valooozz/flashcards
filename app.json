@@ -1,10 +1,15 @@
 {
   "expo": {
     "scheme": "acme",
+    "newArchEnabled": true,
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "expo-sqlite"
     ],
     "name": "flashcards",
-    "slug": "flashcards"
+    "slug": "flashcards",
+    "android": {
+      "package": "com.valooozz.flashcards"
+    }
   }
 }
