@@ -2,7 +2,7 @@ import { SQLiteDatabase } from 'expo-sqlite';
 
 export const dropTableDeck = async (database: SQLiteDatabase) => {
   try {
-    await database.execAsync('DROP TABLE Deck');
+    await database.execAsync('DROP TABLE Deck;');
     console.log('table Deck dropped');
   } catch (error) {
     console.error(error);
@@ -11,7 +11,7 @@ export const dropTableDeck = async (database: SQLiteDatabase) => {
 
 export const emptyTableDeck = async (database: SQLiteDatabase) => {
   try {
-    await database.execAsync('DELETE FROM Deck');
+    await database.execAsync('DELETE FROM Deck;');
     console.log('table Deck emptied');
   } catch (error) {
     console.error(error);
@@ -27,4 +27,18 @@ export const createTableDeck = async (database: SQLiteDatabase) => {
   } catch (error) {
     console.error(error);
   }
+};
+
+export const getNameById = async (database: SQLiteDatabase, idDeck: string) => {
+  let deckNameResult: object = undefined;
+  try {
+    deckNameResult = await database.getFirstAsync<object>(
+      'SELECT name FROM Deck WHERE id=?;',
+      idDeck,
+    );
+  } catch (error) {
+    console.error(error);
+  }
+
+  return deckNameResult['name'];
 };

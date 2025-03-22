@@ -23,6 +23,14 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="deck"
+        options={{
+          title: 'Deck',
+          headerShown: false,
+          href: null,
+        }}
+      />
+      <Tabs.Screen
         name="daily"
         options={{
           title: 'Révisions du jour',

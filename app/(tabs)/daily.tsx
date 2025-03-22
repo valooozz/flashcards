@@ -4,6 +4,7 @@ import Header1 from '../../components/text/Header1';
 import { globalStyles } from '../../style/Styles';
 import { emptyTableDeck } from '../../utils/database/deck.utils';
 import { useSQLiteContext } from 'expo-sqlite';
+import { emptyTableCard } from '../../utils/database/card.utils';
 
 export default function Tab() {
   const database = useSQLiteContext();
@@ -17,6 +18,14 @@ export default function Tab() {
       >
         <Text style={{ fontSize: 30, textAlign: 'center' }}>
           Vider la table Deck
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ backgroundColor: 'blue' }}
+        onPress={() => emptyTableCard(database)}
+      >
+        <Text style={{ fontSize: 30, textAlign: 'center' }}>
+          Vider la table Card
         </Text>
       </TouchableOpacity>
     </View>

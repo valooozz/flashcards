@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { DeckType } from '../../types/DeckType';
+import { DeckType } from '../../types/types';
 import { Colors } from '../../style/Colors';
+import { router } from 'expo-router';
 
 interface DeckCardProps {
   deck: DeckType;
@@ -8,7 +9,10 @@ interface DeckCardProps {
 
 export default function DeckCard({ deck }: DeckCardProps) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => router.push(`(tabs)/deck?id=${deck.id}`)}
+    >
       <Text style={styles.text}>{deck.name}</Text>
     </TouchableOpacity>
   );

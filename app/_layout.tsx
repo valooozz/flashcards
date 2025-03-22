@@ -14,6 +14,10 @@ export default function Layout() {
               name="modalCreateDeck"
               options={{ presentation: 'modal' }}
             />
+            <Stack.Screen
+              name="modalCreateCard"
+              options={{ presentation: 'modal' }}
+            />
           </Stack>
         </SafeAreaView>
       </SafeAreaProvider>
