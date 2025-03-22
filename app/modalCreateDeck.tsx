@@ -4,13 +4,28 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import ButtonModal from '../components/button/ButtonModal';
 import { useState } from 'react';
 import { Colors } from '../style/Colors';
+import { useSQLiteContext } from 'expo-sqlite';
+import Header1 from '../components/text/Header1';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
 
+  const database = useSQLiteContext();
+
+  const handleValidate = async () => {
+    try {
+      database.runAsync('INSERT INTO Deck (name) VALUES (?);', [deckName]);
+      console.log('Nouveau deck', deckName, 'ajouté');
+      router.back();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: 'Nouveau deck', headerShown: false }} />
+      <Header1 text="Nouveau Deck" color={Colors.library.main} />
       <View style={styles.container}>
         <Text style={styles.text}>Nom du deck :</Text>
         <TextInput
@@ -20,7 +35,7 @@ export default function Modal() {
         />
         <View style={styles.buttonContainer}>
           <ButtonModal text="Annuler" onPress={() => router.back()} />
-          <ButtonModal text="Valider" onPress={() => router.back()} />
+          <ButtonModal text="Valider" onPress={handleValidate} />
         </View>
       </View>
     </SafeAreaView>
@@ -30,14 +45,15 @@ export default function Modal() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
+    backgroundColor: Colors.library.light,
   },
   container: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    justifyContent: 'center',
     gap: 10,
-    backgroundColor: Colors.library.light,
+    marginTop: 100,
   },
   text: {
     fontSize: 30,

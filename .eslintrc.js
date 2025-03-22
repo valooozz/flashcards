@@ -5,6 +5,7 @@ module.exports = {
   ignorePatterns: ['/dist/*', '/android/*', '/node_modules/*', '.eslintrc.js'],
   rules: {
     'prettier/prettier': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
   },
 };
 

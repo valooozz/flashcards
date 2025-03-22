@@ -1,16 +1,11 @@
 import { Stack } from 'expo-router/stack';
-import { SQLiteDatabase, SQLiteProvider } from 'expo-sqlite';
+import { SQLiteProvider } from 'expo-sqlite';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { initDatabase } from '../utils/database/database.utils';
 
 export default function Layout() {
-  const createDbIfNeeded = async (db: SQLiteDatabase) => {
-    await db.execAsync(
-      'CREATE TABLE IF NOT EXISTS Deck (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT);',
-    );
-  };
-
   return (
-    <SQLiteProvider databaseName="flashcards.db" onInit={createDbIfNeeded}>
+    <SQLiteProvider databaseName="flashcards.db" onInit={initDatabase}>
       <SafeAreaProvider style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
           <Stack>
