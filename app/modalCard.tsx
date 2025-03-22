@@ -11,25 +11,36 @@ import { useCallback, useState } from 'react';
 import { Colors } from '../style/Colors';
 import { useSQLiteContext } from 'expo-sqlite';
 import Header1 from '../components/text/Header1';
-import { createCard } from '../utils/database/card.utils';
+import {
+  createCard,
+  deleteCard,
+  getCardById,
+  updateCard,
+} from '../utils/database/card.utils';
+import { getNameById } from '../utils/database/deck.utils';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
   const [recto, setRecto] = useState('');
   const [verso, setVerso] = useState('');
-
-  const { id } = useLocalSearchParams();
-  const idDeck = id[0];
+  const [editMode, setEditMode] = useState(false);
 
   const database = useSQLiteContext();
 
+  const { iddeck, idcard } = useLocalSearchParams();
+  const idDeck = iddeck.toString();
+  const idCard = idcard ? idcard.toString() : undefined;
+
   const loadData = async () => {
-    console.log('id:', idDeck, typeof idDeck);
-    const deckNameResult = await database.getFirstAsync<object>(
-      'SELECT name FROM Deck WHERE id=?;',
-      idDeck,
-    );
-    setDeckName(deckNameResult['name']);
+    setDeckName(await getNameById(database, idDeck));
+
+    if (idcard) {
+      setEditMode(true);
+
+      const card = await getCardById(database, idCard);
+      setRecto(card.recto);
+      setVerso(card.verso);
+    }
   };
 
   useFocusEffect(
@@ -39,17 +50,23 @@ export default function Modal() {
   );
 
   const handleValidate = async () => {
-    createCard(database, recto, verso, idDeck);
+    if (editMode) {
+      await updateCard(database, idCard, recto, verso);
+    } else {
+      await createCard(database, recto, verso, idDeck[0]);
+    }
+    router.back();
+  };
+
+  const handleDelete = async () => {
+    await deleteCard(database, idCard);
     router.back();
   };
 
   return (
     <SafeAreaView style={styles.screen}>
-      <Stack.Screen options={{ title: 'Nouveau deck', headerShown: false }} />
-      <Header1
-        text={`Nouvelle carte dans ${deckName}`}
-        color={Colors.library.main}
-      />
+      <Stack.Screen options={{ title: 'Carte', headerShown: false }} />
+      <Header1 text={`Carte de ${deckName}`} color={Colors.library.main} />
       <View style={styles.container}>
         <Text style={styles.text}>Recto</Text>
         <TextInput style={styles.input} value={recto} onChangeText={setRecto} />
@@ -57,8 +74,16 @@ export default function Modal() {
         <TextInput style={styles.input} value={verso} onChangeText={setVerso} />
         <View style={styles.buttonContainer}>
           <ButtonModal text="Annuler" onPress={() => router.back()} />
-          <ButtonModal text="Ajouter" onPress={handleValidate} />
+          <ButtonModal
+            text={editMode ? 'Modifier' : 'Ajouter'}
+            onPress={handleValidate}
+          />
         </View>
+        {editMode && (
+          <View style={styles.buttonDelete}>
+            <ButtonModal text="Supprimer" onPress={handleDelete} />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -73,17 +98,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'stretch',
     gap: 10,
-    marginTop: 65,
+    paddingVertical: 20,
   },
   text: {
     fontSize: 30,
+    marginLeft: '10%',
     color: Colors.library.main,
   },
   input: {
     height: 40,
-    width: '80%',
+    marginHorizontal: '10%',
     borderWidth: 1,
     borderColor: Colors.library.main,
     borderRadius: 10,
@@ -96,5 +122,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: '10%',
     gap: 10,
+  },
+  buttonDelete: {
+    marginTop: 'auto',
+    marginHorizontal: '10%',
+    height: 40,
   },
 });

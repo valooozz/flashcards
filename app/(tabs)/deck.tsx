@@ -9,7 +9,7 @@ import { CardType } from '../../types/types';
 import { useSQLiteContext } from 'expo-sqlite';
 import ListCard from '../../components/card/ListCard';
 import { getNameById } from '../../utils/database/deck.utils';
-import { getCardsFromDeck } from '../../utils/database/card.utils';
+import { getCardsFromDeck, logAllCards } from '../../utils/database/card.utils';
 
 export default function Tab() {
   const [deckName, setDeckName] = useState<string>(null);
@@ -26,6 +26,7 @@ export default function Tab() {
 
   useFocusEffect(
     useCallback(() => {
+      logAllCards(database);
       loadData();
     }, []),
   );
@@ -42,7 +43,7 @@ export default function Tab() {
         icon="pluscircle"
         size={70}
         color={Colors.library.light}
-        onPress={() => router.push(`/modalCreateCard?id=${idDeck}`)}
+        onPress={() => router.push(`/modalCard?iddeck=${idDeck}`)}
       />
     </View>
   );

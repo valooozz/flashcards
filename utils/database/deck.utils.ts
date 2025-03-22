@@ -40,5 +40,7 @@ export const getNameById = async (database: SQLiteDatabase, idDeck: string) => {
     console.error(error);
   }
 
+  console.log('deckName:', deckNameResult['name']);
+
   return deckNameResult['name'];
 };

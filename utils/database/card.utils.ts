@@ -44,9 +44,9 @@ export const getCardsFromDeck = async (
   database: SQLiteDatabase,
   idDeck: string,
 ) => {
-  let cardsResult: CardType[] = [];
+  let cards: CardType[] = [];
   try {
-    cardsResult = await database.getAllAsync<CardType>(
+    cards = await database.getAllAsync<CardType>(
       'SELECT * FROM Card WHERE deck=?;',
       idDeck,
     );
@@ -54,7 +54,7 @@ export const getCardsFromDeck = async (
     console.error(error);
   }
 
-  return cardsResult;
+  return cards;
 };
 
 export const createCard = async (
@@ -72,4 +72,45 @@ export const createCard = async (
   } catch (error) {
     console.error(error);
   }
+};
+
+export const updateCard = async (
+  database: SQLiteDatabase,
+  id: string,
+  recto: string,
+  verso: string,
+) => {
+  try {
+    database.runAsync('UPDATE Card SET recto=?, verso=? WHERE id=?', [
+      recto,
+      verso,
+      id,
+    ]);
+    console.log('MAJ carte:', id, recto, verso);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteCard = async (database: SQLiteDatabase, id: string) => {
+  try {
+    database.runAsync('DELETE FROM Card WHERE id=?', [id]);
+    console.log('Carte', id, 'supprimée');
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const getCardById = async (database: SQLiteDatabase, id: string) => {
+  let card: CardType;
+  try {
+    card = await database.getFirstAsync<CardType>(
+      'SELECT * FROM Card WHERE id=?',
+      id,
+    );
+  } catch (error) {
+    console.error(error);
+  }
+
+  return card;
 };

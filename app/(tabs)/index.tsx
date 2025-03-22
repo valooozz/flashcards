@@ -39,7 +39,7 @@ export default function Tab() {
         icon="pluscircle"
         size={70}
         color={Colors.library.main}
-        onPress={() => router.push('/modalCreateDeck')}
+        onPress={() => router.push('/modalDeck')}
       />
     </View>
   );

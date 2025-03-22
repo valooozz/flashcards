@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { CardType } from '../../types/types';
 import { Colors } from '../../style/Colors';
+import { router } from 'expo-router';
 
 interface ListCardProps {
   card: CardType;
@@ -8,7 +9,12 @@ interface ListCardProps {
 
 export default function ListCard({ card }: ListCardProps) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() =>
+        router.push(`/modalCard?iddeck=${card.deck}&idcard=${card.id}`)
+      }
+    >
       <Text style={styles.text}>{card.recto}</Text>
       <Text style={{ ...styles.text, ...styles.textRight }}>{card.verso}</Text>
     </TouchableOpacity>
