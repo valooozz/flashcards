@@ -1,17 +1,19 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Colors } from '../../style/Colors';
+import Header1 from '../../components/text/Header1';
+import { globalStyles } from '../../style/Styles';
 
 export default function Tab() {
   return (
     <View style={styles.container}>
-      <Text>Révisions du jour</Text>
+      <Header1 text="Révisions du jour" color={Colors.daily.main} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    ...globalStyles.page,
+    backgroundColor: Colors.daily.light,
   },
 });

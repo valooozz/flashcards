@@ -7,16 +7,16 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors.primary.main,
-        tabBarInactiveTintColor: Colors.secondary.main,
+        tabBarActiveTintColor: Colors.navigation.main,
+        tabBarInactiveTintColor: Colors.navigation.light,
         tabBarShowLabel: false,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
-          tabBarShowLabel: false,
           title: 'Bibliothèque',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <Ionicons name="library" size={25} color={color} />
           ),
@@ -26,6 +26,7 @@ export default function TabLayout() {
         name="daily"
         options={{
           title: 'Révisions du jour',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="clock" size={25} color={color} />
           ),
@@ -35,6 +36,7 @@ export default function TabLayout() {
         name="learning"
         options={{
           title: 'Apprentissage',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="cards-heart"

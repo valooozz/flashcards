@@ -46,17 +46,40 @@
 //   },
 // };
 
+// export const Colors = {
+//   primary: {
+//     main: '#05c46b',
+//     light: '#fafafa',
+//   },
+//   secondary: {
+//     main: '#2b2e4a',
+//     light: '#f0f5ed',
+//   },
+//   tertiary: {
+//     main: '#ee5253',
+//     light: '#f1f5f8',
+//   },
+// };
+
 export const Colors = {
-  primary: {
-    main: '#05c46b',
-    light: '#fafafa',
+  library: {
+    main: '#1e704c',
+    light: '#d5f1e5',
+    dark: '#2b835d',
   },
-  secondary: {
-    main: '#2b2e4a',
-    light: '#f0f5ed',
+  daily: {
+    main: '#ac385d',
+    light: '#ffe4e9',
+    dark: '#c24f4a',
   },
-  tertiary: {
-    main: '#ee5253',
-    light: '#f1f5f8',
+  learning: {
+    main: '#3163ac',
+    light: '#dfedf8',
+    dark: '#5d70bd',
+  },
+  navigation: {
+    main: '#586470',
+    light: '#e7ecf0',
+    dark: '#687681',
   },
 };

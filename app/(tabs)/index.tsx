@@ -1,15 +1,18 @@
 import { View, StyleSheet } from 'react-native';
-import FloatingButton from '../../components/FloatingButton';
+import FloatingButton from '../../components/button/FloatingButton';
 import { router } from 'expo-router';
 import { Colors } from '../../style/Colors';
+import Header1 from '../../components/text/Header1';
+import { globalStyles } from '../../style/Styles';
 
 export default function Tab() {
   return (
     <View style={styles.container}>
+      <Header1 text="Bibliothèque" color={Colors.library.main} />
       <FloatingButton
-        icon="pluscircleo"
+        icon="pluscircle"
         size={70}
-        color={Colors.primary.main}
+        color={Colors.library.main}
         onPress={() => router.push('/modalCreateDeck')}
       />
     </View>
@@ -18,9 +21,7 @@ export default function Tab() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.primary.light,
+    ...globalStyles.page,
+    backgroundColor: Colors.library.light,
   },
 });
