@@ -1,19 +1,19 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-interface FloatingButtonProps {
+interface AddButtonProps {
   icon: any;
   size: number;
   color: string;
   onPress: () => void;
 }
 
-export default function FloatingButton({
+export default function AddButton({
   icon,
   size,
   color,
   onPress,
-}: FloatingButtonProps) {
+}: AddButtonProps) {
   return (
     <TouchableOpacity onPress={onPress} style={style.button}>
       <AntDesign name={icon} size={size} color={color} />
@@ -24,8 +24,8 @@ export default function FloatingButton({
 const style = StyleSheet.create({
   button: {
     position: 'absolute',
-    bottom: '5%',
-    right: '5%',
+    bottom: 24,
+    right: 24,
     borderRadius: '50%',
     boxShadow:
       'rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px',

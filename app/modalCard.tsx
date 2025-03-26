@@ -4,13 +4,13 @@ import {
   useFocusEffect,
   useLocalSearchParams,
 } from 'expo-router';
-import { StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ButtonModal from '../components/button/ButtonModal';
 import { useCallback, useState } from 'react';
 import { Colors } from '../style/Colors';
 import { useSQLiteContext } from 'expo-sqlite';
-import Header1 from '../components/text/Header1';
+import Header from '../components/text/Header';
 import {
   createCard,
   deleteCard,
@@ -18,6 +18,8 @@ import {
   updateCard,
 } from '../utils/database/card.utils';
 import { getNameById } from '../utils/database/deck.utils';
+import { globalStyles } from '../style/Styles';
+import Input from '../components/text/Input';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -66,12 +68,12 @@ export default function Modal() {
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: 'Carte', headerShown: false }} />
-      <Header1 text={`Carte de ${deckName}`} color={Colors.library.main} />
+      <Header level={1} text={deckName} color={Colors.library.light.text} />
       <View style={styles.container}>
-        <Text style={styles.text}>Recto</Text>
-        <TextInput style={styles.input} value={recto} onChangeText={setRecto} />
-        <Text style={styles.text}>Verso</Text>
-        <TextInput style={styles.input} value={verso} onChangeText={setVerso} />
+        <Header level={3} text="Recto" color={Colors.library.light.text} />
+        <Input text={recto} setText={setRecto} />
+        <Header level={3} text="Verso" color={Colors.library.light.text} />
+        <Input text={verso} setText={setVerso} />
         <View style={styles.buttonContainer}>
           <ButtonModal text="Annuler" onPress={() => router.back()} />
           <ButtonModal
@@ -91,41 +93,23 @@ export default function Modal() {
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    backgroundColor: Colors.library.light,
+    ...globalStyles.page,
+    backgroundColor: Colors.library.light.background,
   },
   container: {
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    gap: 10,
-    paddingVertical: 20,
-  },
-  text: {
-    fontSize: 30,
-    marginLeft: '10%',
-    color: Colors.library.main,
-  },
-  input: {
-    height: 40,
-    marginHorizontal: '10%',
-    borderWidth: 1,
-    borderColor: Colors.library.main,
-    borderRadius: 10,
-    backgroundColor: Colors.library.dark,
-    color: Colors.library.light,
-    padding: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginHorizontal: '10%',
-    gap: 10,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    marginTop: 16,
   },
   buttonDelete: {
     marginTop: 'auto',
-    marginHorizontal: '10%',
-    height: 40,
+    height: 52,
   },
 });

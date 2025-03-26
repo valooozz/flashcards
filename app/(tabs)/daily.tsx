@@ -1,6 +1,6 @@
 import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { Colors } from '../../style/Colors';
-import Header1 from '../../components/text/Header1';
+import Header from '../../components/text/Header';
 import { globalStyles } from '../../style/Styles';
 import { emptyTableDeck } from '../../utils/database/deck.utils';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -11,7 +11,7 @@ export default function Tab() {
 
   return (
     <View style={styles.container}>
-      <Header1 text="Révisions du jour" color={Colors.daily.main} />
+      <Header level={1} text="Révisions" color={Colors.daily.dark.text} />
       <TouchableOpacity
         style={{ backgroundColor: 'red' }}
         onPress={() => emptyTableDeck(database)}
@@ -35,6 +35,6 @@ export default function Tab() {
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
-    backgroundColor: Colors.daily.light,
+    backgroundColor: Colors.daily.dark.background,
   },
 });

@@ -20,19 +20,19 @@ export default function DeckCard({ deck }: DeckCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.library.main,
-    width: '40%',
-    height: '20%',
-    borderWidth: 8,
-    borderColor: Colors.library.dark,
-    borderRadius: 12,
-    borderEndEndRadius: 30,
-    borderTopStartRadius: 20,
-    padding: 20,
+    backgroundColor: Colors.library.dark.background,
+    width: 152,
+    height: 120,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    boxShadow:
+      'rgba(136, 165, 191, 0.78) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px',
   },
   text: {
     fontSize: 20,
-    color: Colors.library.light,
+    fontFamily: 'JosefinRegular',
+    textDecorationLine: 'underline',
+    color: Colors.library.dark.text,
     textAlign: 'left',
   },
 });

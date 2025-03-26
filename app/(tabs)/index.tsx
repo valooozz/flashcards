@@ -1,8 +1,8 @@
 import { View, StyleSheet } from 'react-native';
-import FloatingButton from '../../components/button/FloatingButton';
+import AddButton from '../../components/button/AddButton';
 import { router, useFocusEffect } from 'expo-router';
 import { Colors } from '../../style/Colors';
-import Header1 from '../../components/text/Header1';
+import Header from '../../components/text/Header';
 import { globalStyles } from '../../style/Styles';
 import { useCallback, useState } from 'react';
 import { DeckType } from '../../types/types';
@@ -29,16 +29,17 @@ export default function Tab() {
 
   return (
     <View style={styles.container}>
-      <Header1 text="Bibliothèque" color={Colors.library.main} />
+      <Header level={1} text="Bibliothèque" color={Colors.library.light.text} />
+      <Header level={2} text="Decks" color={Colors.library.light.text} />
       <View style={styles.decksDisplay}>
         {decks.map((deck, index) => {
           return <DeckCard deck={deck} key={index} />;
         })}
       </View>
-      <FloatingButton
+      <AddButton
         icon="pluscircle"
         size={70}
-        color={Colors.library.main}
+        color={Colors.library.dark.background}
         onPress={() => router.push('/modalDeck')}
       />
     </View>
@@ -48,15 +49,16 @@ export default function Tab() {
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
-    backgroundColor: Colors.library.light,
+    backgroundColor: Colors.library.light.background,
   },
   decksDisplay: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'flex-start',
     alignContent: 'flex-start',
-    rowGap: 20,
+    rowGap: 16,
+    columnGap: 16,
     flex: 1,
   },
 });

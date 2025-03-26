@@ -6,5 +6,7 @@ export const globalStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
+    paddingHorizontal: 24,
+    paddingVertical: 48,
   },
 });

@@ -15,32 +15,41 @@ export default function ListCard({ card }: ListCardProps) {
         router.push(`/modalCard?iddeck=${card.deck}&idcard=${card.id}`)
       }
     >
-      <Text style={styles.text}>{card.recto}</Text>
-      <Text style={{ ...styles.text, ...styles.textRight }}>{card.verso}</Text>
+      <Text style={styles.text}>
+        {card.recto.length < 11 ? card.recto : card.recto.slice(0, 9) + '...'}
+      </Text>
+      <Text style={styles.text}>
+        {card.verso.length < 11 ? card.verso : card.verso.slice(0, 8) + '...'}
+      </Text>
+      <Text style={styles.textDate}>{card.nextRevision}</Text>
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    width: '90%',
-    height: '15%',
-    borderWidth: 5,
-    borderColor: Colors.library.main,
-    borderRadius: 12,
-    borderEndEndRadius: 20,
-    borderTopStartRadius: 20,
-    padding: 20,
+    width: '100%',
+    height: 64,
+    paddingHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: Colors.library.simple.background,
+    boxShadow: 'rgba(149, 157, 165, 0.4) 0px 8px 24px',
   },
   text: {
+    width: 120,
     fontSize: 20,
-    color: Colors.library.main,
+    color: Colors.library.simple.text,
     textAlign: 'left',
+    fontFamily: 'JosefinRegular',
+    overflow: 'hidden',
   },
-  textRight: {
+  textDate: {
     marginLeft: 'auto',
+    fontSize: 20,
+    color: Colors.library.simple.text,
+    textAlign: 'right',
+    fontFamily: 'JosefinRegular',
   },
 });

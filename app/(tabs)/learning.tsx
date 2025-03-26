@@ -1,12 +1,16 @@
 import { View, StyleSheet } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { globalStyles } from '../../style/Styles';
-import Header1 from '../../components/text/Header1';
+import Header from '../../components/text/Header';
 
 export default function Tab() {
   return (
     <View style={styles.container}>
-      <Header1 text="Apprentissage" color={Colors.learning.main} />
+      <Header
+        level={1}
+        text="Apprentissage"
+        color={Colors.learning.dark.text}
+      />
     </View>
   );
 }
@@ -14,6 +18,6 @@ export default function Tab() {
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
-    backgroundColor: Colors.learning.light,
+    backgroundColor: Colors.learning.dark.background,
   },
 });

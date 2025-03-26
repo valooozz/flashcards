@@ -1,67 +1,4 @@
-// export const Colors = {
-//   main: '#A8D8EA',
-//   second: '#AA96DA',
-//   third: '#FCBAD3',
-//   light: '#FFFFD2',
-// };
-
-// export const Colors = {
-//   primary: {
-//     main: '#0D92F4',
-//     light: '#77CDFF',
-//   },
-//   secondary: {
-//     main: '#C62E2E',
-//     light: '#F95454',
-//   },
-// };
-
-// export const Colors = {
-//   primary: {
-//     main: '#16C47F',
-//     light: '##96f3ce',
-//   },
-//   secondary: {
-//     main: '#FF9D23',
-//     light: '#FFD65A',
-//   },
-//   tertiary: {
-//     main: '#F93827',
-//     light: '#fdafa9',
-//   },
-// };
-
-// export const Colors = {
-//   primary: {
-//     main: '#0f4189',
-//     light: '#f2f8ff',
-//   },
-//   secondary: {
-//     main: '#ff793f',
-//     light: '#ffc9b2',
-//   },
-//   tertiary: {
-//     main: '#666a7b',
-//     light: '#eff0f2',
-//   },
-// };
-
-// export const Colors = {
-//   primary: {
-//     main: '#05c46b',
-//     light: '#fafafa',
-//   },
-//   secondary: {
-//     main: '#2b2e4a',
-//     light: '#f0f5ed',
-//   },
-//   tertiary: {
-//     main: '#ee5253',
-//     light: '#f1f5f8',
-//   },
-// };
-
-export const Colors = {
+export const Coloors = {
   library: {
     main: '#1e704c',
     light: '#d5f1e5',
@@ -76,6 +13,48 @@ export const Colors = {
     main: '#3163ac',
     light: '#dfedf8',
     dark: '#5d70bd',
+  },
+  navigation: {
+    main: '#586470',
+    light: '#e7ecf0',
+    dark: '#687681',
+  },
+};
+
+export const Colors = {
+  library: {
+    dark: {
+      background: '#1E704C',
+      text: '#FFFFFF',
+    },
+    light: {
+      background: '#D5F1E5',
+      text: '#000000',
+    },
+    simple: {
+      background: '#FFFFFF',
+      text: '#000000',
+    },
+  },
+  daily: {
+    dark: {
+      background: '#C24F4A',
+      text: '#ffffff',
+    },
+    light: {
+      background: '#FFE4E9',
+      text: '#000000',
+    },
+  },
+  learning: {
+    dark: {
+      background: '#3163AC',
+      text: '#ffffff',
+    },
+    light: {
+      background: '#FFE4E9',
+      text: '#DFEDF8',
+    },
   },
   navigation: {
     main: '#586470',

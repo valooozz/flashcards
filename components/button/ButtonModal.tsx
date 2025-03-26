@@ -16,15 +16,18 @@ export default function ButtonModal({ text, onPress }: ButtonModalProps) {
 
 const styles = StyleSheet.create({
   button: {
-    borderWidth: 1,
-    borderColor: Colors.library.main,
-    borderRadius: 10,
     paddingHorizontal: 10,
     flex: 1,
+    backgroundColor: Colors.library.simple.background,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 52,
   },
   text: {
-    color: Colors.library.main,
-    fontSize: 25,
+    color: Colors.library.simple.text,
+    fontSize: 20,
     textAlign: 'center',
+    fontFamily: 'JosefinRegular',
   },
 });
