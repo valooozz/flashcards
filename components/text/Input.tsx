@@ -1,6 +1,7 @@
 import { StyleSheet, TextInput } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { Dispatch, SetStateAction } from 'react';
+import { Sizes } from '../../style/Sizes';
 
 interface InputProps {
   text: string;
@@ -19,10 +20,11 @@ export default function Input({ text, setText }: InputProps) {
 
 const styles = StyleSheet.create({
   input: {
-    height: 52,
+    height: Sizes.component.small,
     backgroundColor: Colors.library.dark.background,
     color: Colors.library.dark.text,
     padding: 10,
     fontFamily: 'JosefinRegular',
+    fontSize: Sizes.font.small,
   },
 });

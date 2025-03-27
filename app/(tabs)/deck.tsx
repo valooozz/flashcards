@@ -31,7 +31,7 @@ export default function Tab() {
     useCallback(() => {
       logAllCards(database);
       loadData();
-    }, []),
+    }, [id]),
   );
 
   return (

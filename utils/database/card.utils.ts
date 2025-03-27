@@ -22,7 +22,7 @@ export const emptyTableCard = async (database: SQLiteDatabase) => {
 export const createTableCard = async (database: SQLiteDatabase) => {
   try {
     await database.execAsync(
-      'CREATE TABLE IF NOT EXISTS Card (id INTEGER PRIMARY KEY AUTOINCREMENT, recto TEXT, verso TEXT, deck INTEGER, nextRevision TEXT, FOREIGN KEY(deck) REFERENCES Deck(id));',
+      'CREATE TABLE IF NOT EXISTS Card (id INTEGER PRIMARY KEY AUTOINCREMENT, deck INTEGER, recto TEXT, verso TEXT, rectoFirst INTEGER, step INTEGER, nextRevision TEXT, toLearn INTEGER, FOREIGN KEY(deck) REFERENCES Deck(id));',
     );
     console.log('table Card created');
   } catch (error) {
@@ -65,8 +65,8 @@ export const createCard = async (
 ) => {
   try {
     database.runAsync(
-      'INSERT INTO Card (recto, verso, deck, nextRevision) VALUES (?, ?, ?, ?);',
-      [recto, verso, idDeck, null],
+      'INSERT INTO Card (deck, recto, verso, rectoFirst, step, nextRevision, toLearn) VALUES (?, ?, ?, ?, ?, ?, ?);',
+      [idDeck, recto, verso, 1, 0, null, 1],
     );
     console.log('Nouvelle carte:', recto, verso, idDeck);
   } catch (error) {

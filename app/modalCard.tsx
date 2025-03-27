@@ -20,6 +20,7 @@ import {
 import { getNameById } from '../utils/database/deck.utils';
 import { globalStyles } from '../style/Styles';
 import Input from '../components/text/Input';
+import { Sizes } from '../style/Sizes';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -110,6 +111,6 @@ const styles = StyleSheet.create({
   },
   buttonDelete: {
     marginTop: 'auto',
-    height: 52,
+    height: Sizes.component.small,
   },
 });

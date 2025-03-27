@@ -1,4 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
+import { Sizes } from '../../style/Sizes';
 
 interface HeaderProps {
   level: number;
@@ -32,19 +33,19 @@ const styles = StyleSheet.create({
   container: {},
   1: {
     textAlign: 'left',
-    fontSize: 48,
+    fontSize: Sizes.font.large,
     fontFamily: 'JosefinSemiBold',
     marginBottom: 24,
   },
   2: {
     textAlign: 'left',
-    fontSize: 32,
+    fontSize: Sizes.font.medium,
     fontFamily: 'JosefinRegular',
     marginBottom: 16,
   },
   3: {
     textAlign: 'left',
-    fontSize: 32,
+    fontSize: Sizes.font.medium,
     fontFamily: 'JosefinSemiBold',
     marginBottom: 8,
   },

@@ -1,5 +1,6 @@
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { Colors } from '../../style/Colors';
+import { Sizes } from '../../style/Sizes';
 
 interface ButtonModalProps {
   text: string;
@@ -22,11 +23,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 52,
+    height: Sizes.component.small,
   },
   text: {
     color: Colors.library.simple.text,
-    fontSize: 20,
+    fontSize: Sizes.font.small,
     textAlign: 'center',
     fontFamily: 'JosefinRegular',
   },

@@ -4,7 +4,7 @@ import Header from '../../components/text/Header';
 import { globalStyles } from '../../style/Styles';
 import { emptyTableDeck } from '../../utils/database/deck.utils';
 import { useSQLiteContext } from 'expo-sqlite';
-import { emptyTableCard } from '../../utils/database/card.utils';
+import { dropTableCard, emptyTableCard } from '../../utils/database/card.utils';
 
 export default function Tab() {
   const database = useSQLiteContext();
@@ -13,7 +13,7 @@ export default function Tab() {
     <View style={styles.container}>
       <Header level={1} text="Révisions" color={Colors.daily.dark.text} />
       <TouchableOpacity
-        style={{ backgroundColor: 'red' }}
+        style={{ backgroundColor: 'green' }}
         onPress={() => emptyTableDeck(database)}
       >
         <Text style={{ fontSize: 30, textAlign: 'center' }}>
@@ -26,6 +26,14 @@ export default function Tab() {
       >
         <Text style={{ fontSize: 30, textAlign: 'center' }}>
           Vider la table Card
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ backgroundColor: 'green' }}
+        onPress={() => dropTableCard(database)}
+      >
+        <Text style={{ fontSize: 30, textAlign: 'center' }}>
+          Supprimer la table Card
         </Text>
       </TouchableOpacity>
     </View>

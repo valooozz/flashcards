@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   decksDisplay: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'flex-start',
     alignContent: 'flex-start',
     rowGap: 16,

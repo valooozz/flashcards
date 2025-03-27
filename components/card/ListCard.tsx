@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { CardType } from '../../types/types';
 import { Colors } from '../../style/Colors';
 import { router } from 'expo-router';
+import { Sizes } from '../../style/Sizes';
 
 interface ListCardProps {
   card: CardType;
@@ -29,7 +30,7 @@ export default function ListCard({ card }: ListCardProps) {
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 64,
+    height: Sizes.component.medium,
     paddingHorizontal: 16,
     flexDirection: 'row',
     justifyContent: 'flex-start',
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   },
   text: {
     width: 120,
-    fontSize: 20,
+    fontSize: Sizes.font.small,
     color: Colors.library.simple.text,
     textAlign: 'left',
     fontFamily: 'JosefinRegular',
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
   },
   textDate: {
     marginLeft: 'auto',
-    fontSize: 20,
+    fontSize: Sizes.font.small,
     color: Colors.library.simple.text,
     textAlign: 'right',
     fontFamily: 'JosefinRegular',
