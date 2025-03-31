@@ -23,7 +23,7 @@ export const Colors = {
       text: '#ffffff',
     },
     intermediate: {
-      background: '#EFBEC1',
+      background: '#CBC3D9',
       text: '#000000',
     },
     light: {

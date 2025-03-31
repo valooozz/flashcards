@@ -6,6 +6,7 @@ export const Sizes = {
     huge: 120, // 8 * 15
   },
   font: {
+    tiny: 16, // 8 * 2
     small: 20, // 8 * 2.5
     medium: 32, // 8 * 4
     large: 48, // 8 * 6

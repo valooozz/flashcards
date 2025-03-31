@@ -52,12 +52,19 @@ export default function Modal() {
     }, []),
   );
 
-  const handleValidate = async () => {
+  const handleValidate = async (continueCreating: boolean) => {
     if (editMode) {
       await updateCard(database, idCard, recto, verso);
     } else {
       await createCard(database, recto, verso, idDeck[0]);
     }
+
+    if (continueCreating) {
+      setRecto('');
+      setVerso('');
+      return;
+    }
+
     router.back();
   };
 
@@ -75,13 +82,23 @@ export default function Modal() {
         <Input text={recto} setText={setRecto} />
         <Header level={3} text="Verso" color={Colors.library.light.text} />
         <Input text={verso} setText={setVerso} />
-        <View style={styles.buttonContainer}>
+        <View style={{ ...styles.buttonContainer, marginTop: 16 }}>
           <ButtonModal text="Annuler" onPress={() => router.back()} />
           <ButtonModal
             text={editMode ? 'Modifier' : 'Ajouter'}
-            onPress={handleValidate}
+            onPress={() => handleValidate(false)}
           />
         </View>
+        {!editMode && (
+          <View style={{ ...styles.buttonContainer, marginTop: 8 }}>
+            <ButtonModal
+              text="Ajouter et continuer à créer"
+              onPress={() => {
+                handleValidate(true);
+              }}
+            />
+          </View>
+        )}
         {editMode && (
           <View style={styles.buttonDelete}>
             <ButtonModal text="Supprimer" onPress={handleDelete} />
@@ -107,7 +124,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-    marginTop: 16,
   },
   buttonDelete: {
     marginTop: 'auto',
