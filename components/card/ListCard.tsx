@@ -13,7 +13,7 @@ export default function ListCard({ card }: ListCardProps) {
     <TouchableOpacity
       style={styles.container}
       onPress={() =>
-        router.push(`/modalCard?iddeck=${card.deck}&idcard=${card.id}`)
+        router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
       }
     >
       <Text style={styles.text}>

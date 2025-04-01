@@ -12,26 +12,27 @@ import { getNameById, getNbCardsInDeck } from '../../utils/database/deck.utils';
 import { getCardsFromDeck, logAllCards } from '../../utils/database/card.utils';
 import BackButton from '../../components/button/BackButton';
 
-export default function Tab() {
+export default function Screen() {
   const [deckName, setDeckName] = useState<string>(null);
   const [cards, setCards] = useState<CardType[]>([]);
   const [nbCards, setNbCards] = useState<number>(0);
   const database = useSQLiteContext();
 
-  const { id } = useLocalSearchParams();
-  const idDeck = id[0];
-
-  const loadData = async () => {
-    setDeckName(await getNameById(database, idDeck));
-    setCards(await getCardsFromDeck(database, idDeck));
-    setNbCards(await getNbCardsInDeck(database, idDeck));
-  };
+  const { idDeck } = useLocalSearchParams<{ idDeck: string }>();
 
   useFocusEffect(
     useCallback(() => {
       logAllCards(database);
-      loadData();
-    }, [id]),
+      getNameById(database, idDeck).then((nameResult) => {
+        setDeckName(nameResult);
+      });
+      getCardsFromDeck(database, idDeck).then((cardsResult) => {
+        setCards(cardsResult);
+      });
+      getNbCardsInDeck(database, idDeck).then((nbResult) => {
+        setNbCards(nbResult);
+      });
+    }, [idDeck]),
   );
 
   return (
@@ -57,7 +58,7 @@ export default function Tab() {
         icon="pluscircle"
         size={70}
         color={Colors.library.light.background}
-        onPress={() => router.push(`/modalCard?iddeck=${idDeck}`)}
+        onPress={() => router.push(`/modalCard?idDeck=${idDeck}`)}
       />
     </View>
   );

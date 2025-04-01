@@ -30,33 +30,33 @@ export default function Modal() {
 
   const database = useSQLiteContext();
 
-  const { iddeck, idcard } = useLocalSearchParams();
-  const idDeck = iddeck.toString();
-  const idCard = idcard ? idcard.toString() : undefined;
-
-  const loadData = async () => {
-    setDeckName(await getNameById(database, idDeck));
-
-    if (idcard) {
-      setEditMode(true);
-
-      const card = await getCardById(database, idCard);
-      setRecto(card.recto);
-      setVerso(card.verso);
-    }
-  };
+  const { idDeck, idCard } = useLocalSearchParams<{
+    idDeck: string;
+    idCard: string;
+  }>();
 
   useFocusEffect(
     useCallback(() => {
-      loadData();
-    }, []),
+      getNameById(database, idDeck).then((name) => {
+        setDeckName(name);
+      });
+
+      if (idCard) {
+        setEditMode(true);
+
+        getCardById(database, idCard).then((card) => {
+          setRecto(card.recto);
+          setVerso(card.verso);
+        });
+      }
+    }, [idDeck, idCard]),
   );
 
   const handleValidate = async (continueCreating: boolean) => {
     if (editMode) {
       await updateCard(database, idCard, recto, verso);
     } else {
-      await createCard(database, recto, verso, idDeck[0]);
+      await createCard(database, recto, verso, idDeck);
     }
 
     if (continueCreating) {

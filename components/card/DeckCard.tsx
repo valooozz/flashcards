@@ -23,7 +23,7 @@ export default function DeckCard({ deck }: DeckCardProps) {
         if (nbCards > 1) {
           setWord(' cartes');
         } else {
-          setWord(' cartes');
+          setWord(' carte');
         }
       });
     }, []),
@@ -32,7 +32,7 @@ export default function DeckCard({ deck }: DeckCardProps) {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => router.push(`(tabs)/deck?id=${deck.id}`)}
+      onPress={() => router.push(`(tabs)/deck?idDeck=${deck.id}`)}
     >
       <Text style={styles.title}>{deck.name}</Text>
       <Text style={styles.nbCards}>{nbCards + word}</Text>
