@@ -8,7 +8,7 @@ interface HeaderProps {
   underButton?: boolean;
 }
 
-export default function Header({
+export function Header({
   level,
   text,
   color,

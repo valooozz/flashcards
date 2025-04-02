@@ -1,5 +1,5 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 interface AddButtonProps {
   icon: any;
@@ -8,12 +8,7 @@ interface AddButtonProps {
   onPress: () => void;
 }
 
-export default function AddButton({
-  icon,
-  size,
-  color,
-  onPress,
-}: AddButtonProps) {
+export function AddButton({ icon, size, color, onPress }: AddButtonProps) {
   return (
     <TouchableOpacity onPress={onPress} style={style.button}>
       <AntDesign name={icon} size={size} color={color} />

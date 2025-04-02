@@ -1,6 +1,6 @@
 import { useSQLiteContext } from 'expo-sqlite';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Header from '../../components/text/Header';
+import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
 import { globalStyles } from '../../style/Styles';
 import { dropTableCard } from '../../utils/database/card/dropTableCard.utils';

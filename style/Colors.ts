@@ -30,6 +30,10 @@ export const Colors = {
       background: '#FFE4E9',
       text: '#000000',
     },
+    simple: {
+      background: '#FFFFFF',
+      text: '#000000',
+    },
   },
   learning: {
     dark: {
@@ -42,6 +46,10 @@ export const Colors = {
     },
     light: {
       background: '#DFEDF8',
+      text: '#000000',
+    },
+    simple: {
+      background: '#FFFFFF',
       text: '#000000',
     },
   },

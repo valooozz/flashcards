@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 
@@ -7,7 +7,7 @@ interface ButtonModalProps {
   onPress: () => void;
 }
 
-export default function ButtonModal({ text, onPress }: ButtonModalProps) {
+export function ButtonModal({ text, onPress }: ButtonModalProps) {
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
       <Text style={styles.text}>{text}</Text>

@@ -11,7 +11,7 @@ interface DeckCardProps {
   deck: DeckType;
 }
 
-export default function DeckCard({ deck }: DeckCardProps) {
+export function DeckCard({ deck }: DeckCardProps) {
   const database = useSQLiteContext();
   const [nbCards, setNbCards] = useState(0);
   const [word, setWord] = useState('');

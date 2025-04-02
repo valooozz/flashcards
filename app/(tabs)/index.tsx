@@ -1,13 +1,13 @@
-import { View, StyleSheet } from 'react-native';
-import AddButton from '../../components/button/AddButton';
 import { router, useFocusEffect } from 'expo-router';
-import { Colors } from '../../style/Colors';
-import Header from '../../components/text/Header';
-import { globalStyles } from '../../style/Styles';
-import { useCallback, useState } from 'react';
-import { DeckType } from '../../types/types';
 import { useSQLiteContext } from 'expo-sqlite';
-import DeckCard from '../../components/card/DeckCard';
+import { useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { AddButton } from '../../components/button/AddButton';
+import { DeckCard } from '../../components/card/DeckCard';
+import { Header } from '../../components/text/Header';
+import { Colors } from '../../style/Colors';
+import { globalStyles } from '../../style/Styles';
+import { DeckType } from '../../types/types';
 
 export default function Tab() {
   const [decks, setDecks] = useState<DeckType[]>([]);

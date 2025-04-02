@@ -1,14 +1,14 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { CardType } from '../../types/types';
-import { Colors } from '../../style/Colors';
 import { router } from 'expo-router';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
+import { CardType } from '../../types/types';
 
 interface ListCardProps {
   card: CardType;
 }
 
-export default function ListCard({ card }: ListCardProps) {
+export function ListCard({ card }: ListCardProps) {
   return (
     <TouchableOpacity
       style={styles.container}

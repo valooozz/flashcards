@@ -1,6 +1,6 @@
+import { Dispatch, SetStateAction } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { Colors } from '../../style/Colors';
-import { Dispatch, SetStateAction } from 'react';
 import { Sizes } from '../../style/Sizes';
 
 interface InputProps {
@@ -8,7 +8,7 @@ interface InputProps {
   setText: Dispatch<SetStateAction<string>>;
 }
 
-export default function Input({ text, setText }: InputProps) {
+export function Input({ text, setText }: InputProps) {
   return (
     <TextInput
       style={{ ...styles.input }}
