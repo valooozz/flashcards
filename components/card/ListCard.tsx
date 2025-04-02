@@ -22,7 +22,9 @@ export function ListCard({ card }: ListCardProps) {
       <Text style={styles.text}>
         {card.verso.length < 11 ? card.verso : card.verso.slice(0, 8) + '...'}
       </Text>
-      <Text style={styles.textDate}>{card.nextRevision}</Text>
+      <Text style={styles.textDate}>
+        {card.nextRevision.slice(5).replace('-', '/')}
+      </Text>
     </TouchableOpacity>
   );
 }
