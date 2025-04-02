@@ -5,6 +5,7 @@ import { Colors } from '../../style/Colors';
 import { globalStyles } from '../../style/Styles';
 import { dropTableCard } from '../../utils/database/card/dropTableCard.utils';
 import { emptyTableCard } from '../../utils/database/card/emptyTableCard.utils';
+import { resetAllCards } from '../../utils/database/card/resetAllCards.utils';
 import { emptyTableDeck } from '../../utils/database/deck/emptyTableDeck.utils';
 
 export default function Tab() {
@@ -35,6 +36,14 @@ export default function Tab() {
       >
         <Text style={{ fontSize: 30, textAlign: 'center' }}>
           Supprimer la table Card
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ backgroundColor: 'blue' }}
+        onPress={() => resetAllCards(database)}
+      >
+        <Text style={{ fontSize: 30, textAlign: 'center' }}>
+          Réinitialiser les cartes
         </Text>
       </TouchableOpacity>
     </View>

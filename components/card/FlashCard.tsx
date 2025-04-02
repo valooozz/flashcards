@@ -20,26 +20,29 @@ export function FlashCard({
   textDeckColor,
 }: FlashCardProps) {
   const [showRecto, setShowRecto] = useState(true);
-  const [textToShow, setTextToShow] = useState(recto);
+  const [textToShow, setTextToShow] = useState('');
+  const [reloadText, setReloadText] = useState(false);
 
   useEffect(() => {
-    console.log('useEffect');
+    setShowRecto(true);
+    setReloadText(!reloadText);
+  }, [recto, verso]);
+
+  useEffect(() => {
     if (showRecto) {
       setTextToShow(recto);
     } else {
       setTextToShow(verso);
     }
-    console.log('textToShow:', textToShow);
-  }, [showRecto]);
+  }, [reloadText]);
 
   const flipCard = () => {
-    console.log('flip');
     if (showRecto) {
       setShowRecto(false);
     } else {
       setShowRecto(true);
     }
-    console.log('showRecto:', showRecto);
+    setReloadText(!reloadText);
   };
 
   return (

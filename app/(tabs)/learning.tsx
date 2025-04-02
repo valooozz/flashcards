@@ -11,6 +11,7 @@ import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/types';
 import { getCardsToLearn } from '../../utils/database/card/getCardsToLearn.utils';
 import { logAllCards } from '../../utils/database/card/logAllCards.utils';
+import { markCardAsLearnt } from '../../utils/database/card/markCardAsLearn.utils';
 import { getNameDeckById } from '../../utils/database/deck/getNameDeckById.utils';
 
 export default function Tab() {
@@ -20,14 +21,26 @@ export default function Tab() {
   const database = useSQLiteContext();
 
   useEffect(() => {
+    console.log('useEffect cardToShow');
     if (cardToShow === undefined) {
       return;
     }
+
+    console.log('cardToShow:', cardToShow);
 
     getNameDeckById(database, cardToShow.deck.toString()).then((nameResult) => {
       setDeckName(nameResult);
     });
   }, [cardToShow]);
+
+  useEffect(() => {
+    console.log('useEffect cardsToLearn');
+    if (cardsToLearn) {
+      console.log('cardsToLearn:', cardsToLearn);
+      setCardToShow(cardsToLearn[0]);
+      console.log('cardToShow:', cardToShow);
+    }
+  }, [cardsToLearn]);
 
   useFocusEffect(
     useCallback(() => {
@@ -35,16 +48,19 @@ export default function Tab() {
       getCardsToLearn(database).then((cardsResult) => {
         setCardsToLearn(cardsResult);
         console.log('cardsToLearn:', cardsToLearn);
-        if (cardsToLearn) {
-          setCardToShow(cardsToLearn[0]);
-          console.log('cardToShow:', cardToShow);
-        }
       });
     }, []),
   );
 
   const handleClick = (learnt: boolean) => {
     console.log('learnt:', learnt);
+
+    if (learnt) {
+      markCardAsLearnt(database, cardToShow.id.toString());
+      setCardsToLearn(cardsToLearn.slice(1));
+    } else {
+      setCardsToLearn([...cardsToLearn.slice(1), cardToShow]);
+    }
   };
 
   return (
