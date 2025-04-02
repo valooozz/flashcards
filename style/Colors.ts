@@ -23,8 +23,8 @@ export const Colors = {
       text: '#ffffff',
     },
     intermediate: {
-      background: '#CBC3D9',
-      text: '#000000',
+      background: '#D17471',
+      text: '#FFFFFF',
     },
     light: {
       background: '#FFE4E9',
@@ -41,8 +41,8 @@ export const Colors = {
       text: '#ffffff',
     },
     intermediate: {
-      background: '#B3CAE5',
-      text: '#000000',
+      background: '#5C85BF',
+      text: '#FFFFFF',
     },
     light: {
       background: '#DFEDF8',

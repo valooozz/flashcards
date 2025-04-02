@@ -2,9 +2,11 @@ import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
+import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/types';
 import { getCardsToLearn } from '../../utils/database/card/getCardsToLearn.utils';
@@ -41,6 +43,10 @@ export default function Tab() {
     }, []),
   );
 
+  const handleClick = (learnt: boolean) => {
+    console.log('learnt:', learnt);
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -49,14 +55,30 @@ export default function Tab() {
         color={Colors.learning.dark.text}
       />
       {cardToShow && (
-        <FlashCard
-          recto={cardToShow.recto}
-          verso={cardToShow.verso}
-          deckName={deckName}
-          backgroundColor={Colors.learning.simple.background}
-          textColor={Colors.learning.simple.text}
-          textDeckColor={Colors.learning.dark.background}
-        />
+        <>
+          <FlashCard
+            recto={cardToShow.recto}
+            verso={cardToShow.verso}
+            deckName={deckName}
+            backgroundColor={Colors.learning.simple.background}
+            textColor={Colors.learning.simple.text}
+            textDeckColor={Colors.learning.dark.background}
+          />
+          <View style={styles.buttons}>
+            <FlashButton
+              text="A revoir"
+              backgroundColor={Colors.learning.light.background}
+              textColor={Colors.learning.light.text}
+              handleClick={() => handleClick(false)}
+            />
+            <FlashButton
+              text="Apprise"
+              backgroundColor={Colors.learning.intermediate.background}
+              textColor={Colors.learning.intermediate.text}
+              handleClick={() => handleClick(true)}
+            />
+          </View>
+        </>
       )}
     </View>
   );
@@ -66,5 +88,10 @@ const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
     backgroundColor: Colors.learning.dark.background,
+  },
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    height: Sizes.component.large,
   },
 });

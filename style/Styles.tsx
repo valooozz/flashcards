@@ -7,6 +7,6 @@ export const globalStyles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'stretch',
     paddingHorizontal: 24,
-    paddingVertical: 48,
+    paddingVertical: 32,
   },
 });
