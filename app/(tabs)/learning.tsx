@@ -1,7 +1,7 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { Header } from '../../components/text/Header';
@@ -21,12 +21,9 @@ export default function Tab() {
   const database = useSQLiteContext();
 
   useEffect(() => {
-    console.log('useEffect cardToShow');
     if (cardToShow === undefined) {
       return;
     }
-
-    console.log('cardToShow:', cardToShow);
 
     getNameDeckById(database, cardToShow.deck.toString()).then((nameResult) => {
       setDeckName(nameResult);
@@ -34,11 +31,8 @@ export default function Tab() {
   }, [cardToShow]);
 
   useEffect(() => {
-    console.log('useEffect cardsToLearn');
     if (cardsToLearn) {
-      console.log('cardsToLearn:', cardsToLearn);
       setCardToShow(cardsToLearn[0]);
-      console.log('cardToShow:', cardToShow);
     }
   }, [cardsToLearn]);
 
@@ -47,14 +41,11 @@ export default function Tab() {
       logAllCards(database);
       getCardsToLearn(database).then((cardsResult) => {
         setCardsToLearn(cardsResult);
-        console.log('cardsToLearn:', cardsToLearn);
       });
     }, []),
   );
 
   const handleClick = (learnt: boolean) => {
-    console.log('learnt:', learnt);
-
     if (learnt) {
       markCardAsLearnt(database, cardToShow.id.toString());
       setCardsToLearn(cardsToLearn.slice(1));
@@ -70,7 +61,7 @@ export default function Tab() {
         text="Apprentissage"
         color={Colors.learning.dark.text}
       />
-      {cardToShow && (
+      {cardToShow ? (
         <>
           <FlashCard
             recto={cardToShow.recto}
@@ -95,6 +86,8 @@ export default function Tab() {
             />
           </View>
         </>
+      ) : (
+        <Text style={styles.text}>Toutes les cartes ont été apprises !</Text>
       )}
     </View>
   );
@@ -109,5 +102,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     height: Sizes.component.large,
+  },
+  text: {
+    color: Colors.learning.dark.text,
+    textAlign: 'center',
+    fontSize: Sizes.font.small,
+    fontFamily: 'JosefinRegular',
+    marginVertical: 'auto',
+    marginHorizontal: '20%',
   },
 });
