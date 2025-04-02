@@ -4,23 +4,21 @@ import {
   useFocusEffect,
   useLocalSearchParams,
 } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
+import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ButtonModal from '../components/button/ButtonModal';
-import { useCallback, useState } from 'react';
-import { Colors } from '../style/Colors';
-import { useSQLiteContext } from 'expo-sqlite';
 import Header from '../components/text/Header';
-import {
-  createCard,
-  deleteCard,
-  getCardById,
-  updateCard,
-} from '../utils/database/card.utils';
-import { getNameById } from '../utils/database/deck.utils';
-import { globalStyles } from '../style/Styles';
 import Input from '../components/text/Input';
+import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
+import { globalStyles } from '../style/Styles';
+import { createCard } from '../utils/database/card/createCard.utils';
+import { deleteCard } from '../utils/database/card/deleteCard.utils';
+import { getCardById } from '../utils/database/card/getCardById.utils';
+import { updateCard } from '../utils/database/card/updateCard.utils';
+import { getNameDeckById } from '../utils/database/deck/getNameDeckById.utils';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -37,7 +35,7 @@ export default function Modal() {
 
   useFocusEffect(
     useCallback(() => {
-      getNameById(database, idDeck).then((name) => {
+      getNameDeckById(database, idDeck).then((name) => {
         setDeckName(name);
       });
 

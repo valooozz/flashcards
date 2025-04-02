@@ -1,16 +1,18 @@
-import { View, StyleSheet } from 'react-native';
-import AddButton from '../../components/button/AddButton';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
-import { Colors } from '../../style/Colors';
-import Header from '../../components/text/Header';
-import { globalStyles } from '../../style/Styles';
-import { useCallback, useState } from 'react';
-import { CardType } from '../../types/types';
 import { useSQLiteContext } from 'expo-sqlite';
-import ListCard from '../../components/card/ListCard';
-import { getNameById, getNbCardsInDeck } from '../../utils/database/deck.utils';
-import { getCardsFromDeck, logAllCards } from '../../utils/database/card.utils';
+import { useCallback, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import AddButton from '../../components/button/AddButton';
 import BackButton from '../../components/button/BackButton';
+import ListCard from '../../components/card/ListCard';
+import Header from '../../components/text/Header';
+import { Colors } from '../../style/Colors';
+import { globalStyles } from '../../style/Styles';
+import { CardType } from '../../types/types';
+import { getCardsFromDeck } from '../../utils/database/card/getCardsFromDeck.utils';
+import { logAllCards } from '../../utils/database/card/logAllCards.utils';
+import { getNbCardsInDeck } from '../../utils/database/deck/getNbCardsInDeck.utils';
+import { getNameDeckById } from '../../utils/database/deck/getNameDeckById.utils';
 
 export default function Screen() {
   const [deckName, setDeckName] = useState<string>(null);
@@ -23,7 +25,7 @@ export default function Screen() {
   useFocusEffect(
     useCallback(() => {
       logAllCards(database);
-      getNameById(database, idDeck).then((nameResult) => {
+      getNameDeckById(database, idDeck).then((nameResult) => {
         setDeckName(nameResult);
       });
       getCardsFromDeck(database, idDeck).then((cardsResult) => {

@@ -1,10 +1,10 @@
+import { useFonts } from 'expo-font';
+import { SplashScreen } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SQLiteProvider } from 'expo-sqlite';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { initDatabase } from '../utils/database/database.utils';
-import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
-import { SplashScreen } from 'expo-router';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { initDatabase } from '../utils/database/initDatabase.utils';
 
 export default function Layout() {
   const [loaded] = useFonts({

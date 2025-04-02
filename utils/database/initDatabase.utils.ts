@@ -1,6 +1,6 @@
 import { SQLiteDatabase } from 'expo-sqlite';
-import { createTableDeck } from './deck.utils';
-import { createTableCard } from './card.utils';
+import { createTableCard } from './card/createTableCard.utils';
+import { createTableDeck } from './deck/createTableDeck.utils';
 
 export const initDatabase = async (database: SQLiteDatabase) => {
   await createTableDeck(database);

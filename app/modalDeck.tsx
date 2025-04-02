@@ -1,13 +1,14 @@
 import { router, Stack } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import ButtonModal from '../components/button/ButtonModal';
-import { useState } from 'react';
-import { Colors } from '../style/Colors';
-import { useSQLiteContext } from 'expo-sqlite';
 import Header from '../components/text/Header';
-import { globalStyles } from '../style/Styles';
 import Input from '../components/text/Input';
+import { Colors } from '../style/Colors';
+import { globalStyles } from '../style/Styles';
+import { createDeck } from '../utils/database/deck/createDeck.utils';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -16,8 +17,7 @@ export default function Modal() {
 
   const handleValidate = async () => {
     try {
-      database.runAsync('INSERT INTO Deck (name) VALUES (?);', [deckName]);
-      console.log('Nouveau deck', deckName, 'ajouté');
+      createDeck(database, deckName);
       router.back();
     } catch (error) {
       console.error(error);

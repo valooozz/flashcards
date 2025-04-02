@@ -1,11 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { DeckType } from '../../types/types';
-import { Colors } from '../../style/Colors';
 import { router, useFocusEffect } from 'expo-router';
-import { Sizes } from '../../style/Sizes';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { getNbCardsInDeck } from '../../utils/database/deck.utils';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Colors } from '../../style/Colors';
+import { Sizes } from '../../style/Sizes';
+import { DeckType } from '../../types/types';
+import { getNbCardsInDeck } from '../../utils/database/deck/getNbCardsInDeck.utils';
 
 interface DeckCardProps {
   deck: DeckType;

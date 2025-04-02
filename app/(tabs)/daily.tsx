@@ -1,10 +1,11 @@
-import { View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { Colors } from '../../style/Colors';
-import Header from '../../components/text/Header';
-import { globalStyles } from '../../style/Styles';
-import { emptyTableDeck } from '../../utils/database/deck.utils';
 import { useSQLiteContext } from 'expo-sqlite';
-import { dropTableCard, emptyTableCard } from '../../utils/database/card.utils';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Header from '../../components/text/Header';
+import { Colors } from '../../style/Colors';
+import { globalStyles } from '../../style/Styles';
+import { dropTableCard } from '../../utils/database/card/dropTableCard.utils';
+import { emptyTableCard } from '../../utils/database/card/emptyTableCard.utils';
+import { emptyTableDeck } from '../../utils/database/deck/emptyTableDeck.utils';
 
 export default function Tab() {
   const database = useSQLiteContext();
