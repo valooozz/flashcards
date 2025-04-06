@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
-import { DeckType } from '../../types/types';
+import { DeckType } from '../../types/DeckType';
 import { getNbCardsInDeck } from '../../utils/database/deck/getNbCardsInDeck.utils';
 
 interface DeckCardProps {

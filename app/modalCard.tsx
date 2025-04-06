@@ -17,8 +17,8 @@ import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
 import { createCard } from '../utils/database/card/createCard.utils';
 import { deleteCard } from '../utils/database/card/deleteCard.utils';
-import { getCardById } from '../utils/database/card/getCardById.utils';
-import { updateCardInfo } from '../utils/database/card/updateCardInfo.utils';
+import { getCardById } from '../utils/database/card/get/getCardById.utils';
+import { updateCardInfo } from '../utils/database/card/update/updateCardInfo.utils';
 import { getNameDeckById } from '../utils/database/deck/getNameDeckById.utils';
 
 export default function Modal() {

@@ -14,7 +14,5 @@ export const getNbCardsInDeck = async (
     console.error(error);
   }
 
-  console.log('nbCards:', nbCardsResult['COUNT(*)']);
-
   return nbCardsResult['COUNT(*)'];
 };

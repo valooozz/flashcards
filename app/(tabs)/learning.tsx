@@ -1,17 +1,22 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
-import { CardType } from '../../types/types';
-import { getCardsToLearn } from '../../utils/database/card/getCardsToLearn.utils';
-import { logAllCards } from '../../utils/database/card/logAllCards.utils';
-import { markCardAsLearnt } from '../../utils/database/card/markCardAsLearn.utils';
+import { CardType } from '../../types/CardType';
+import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
+import { dropTableCard } from '../../utils/database/card/table/dropTableCard.utils';
+import { emptyTableCard } from '../../utils/database/card/table/emptyTableCard.utils';
+import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
+import { resetAllCards } from '../../utils/database/card/table/resetAllCards.utils';
+import { setAllRevisionsToToday } from '../../utils/database/card/table/setAllRevisionsToToday.utils';
+import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
+import { emptyTableDeck } from '../../utils/database/deck/emptyTableDeck.utils';
 import { getNameDeckById } from '../../utils/database/deck/getNameDeckById.utils';
 
 export default function Tab() {
@@ -47,7 +52,7 @@ export default function Tab() {
 
   const handleClick = (learnt: boolean) => {
     if (learnt) {
-      markCardAsLearnt(database, cardToShow.id.toString());
+      putCardToReviseTommorow(database, cardToShow.id.toString());
       setCardsToLearn(cardsToLearn.slice(1));
     } else {
       setCardsToLearn([...cardsToLearn.slice(1), cardToShow]);
@@ -87,7 +92,49 @@ export default function Tab() {
           </View>
         </>
       ) : (
-        <Text style={styles.text}>Toutes les cartes ont été apprises !</Text>
+        <>
+          <Text style={styles.text}>Toutes les cartes ont été apprises !</Text>
+          <TouchableOpacity
+            style={{ backgroundColor: 'green' }}
+            onPress={() => emptyTableDeck(database)}
+          >
+            <Text style={{ fontSize: 30, textAlign: 'center' }}>
+              Vider la table Deck
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ backgroundColor: 'red' }}
+            onPress={() => emptyTableCard(database)}
+          >
+            <Text style={{ fontSize: 30, textAlign: 'center' }}>
+              Vider la table Card
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ backgroundColor: 'green' }}
+            onPress={() => dropTableCard(database)}
+          >
+            <Text style={{ fontSize: 30, textAlign: 'center' }}>
+              Supprimer la table Card
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ backgroundColor: 'red' }}
+            onPress={() => resetAllCards(database)}
+          >
+            <Text style={{ fontSize: 30, textAlign: 'center' }}>
+              Réinitialiser les cartes
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ backgroundColor: 'green' }}
+            onPress={() => setAllRevisionsToToday(database)}
+          >
+            <Text style={{ fontSize: 30, textAlign: 'center' }}>
+              Toutes les révisions à ajd
+            </Text>
+          </TouchableOpacity>
+        </>
       )}
     </View>
   );

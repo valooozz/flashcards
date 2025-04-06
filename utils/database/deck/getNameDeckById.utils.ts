@@ -14,7 +14,5 @@ export const getNameDeckById = async (
     console.error(error);
   }
 
-  console.log('deckName:', deckNameResult['name']);
-
   return deckNameResult['name'];
 };

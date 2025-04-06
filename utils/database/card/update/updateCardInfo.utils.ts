@@ -12,7 +12,6 @@ export const updateCardInfo = async (
       'UPDATE Card SET recto=?, verso=?, changeSide=? WHERE id=?',
       [recto, verso, changeSide ? 1 : 0, id],
     );
-    console.log('MAJ carte:', id, recto, verso);
   } catch (error) {
     console.error(error);
   }

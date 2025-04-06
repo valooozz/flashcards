@@ -7,7 +7,7 @@ import { DeckCard } from '../../components/card/DeckCard';
 import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
 import { globalStyles } from '../../style/Styles';
-import { DeckType } from '../../types/types';
+import { DeckType } from '../../types/DeckType';
 
 export default function Tab() {
   const [decks, setDecks] = useState<DeckType[]>([]);
@@ -17,7 +17,6 @@ export default function Tab() {
     const decksResult = await database.getAllAsync<DeckType>(
       'SELECT * FROM Deck;',
     );
-    console.log('Decks:', decksResult);
     setDecks(decksResult);
   };
 

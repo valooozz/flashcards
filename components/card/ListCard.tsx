@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
-import { CardType } from '../../types/types';
+import { CardType } from '../../types/CardType';
 
 interface ListCardProps {
   card: CardType;
