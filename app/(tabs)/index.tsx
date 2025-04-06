@@ -28,8 +28,8 @@ export default function Tab() {
 
   return (
     <View style={styles.container}>
-      <Header level={1} text="Bibliothèque" color={Colors.library.light.text} />
-      <Header level={2} text="Decks" color={Colors.library.light.text} />
+      <Header level={1} text="Bibliothèque" color={Colors.library.dark.text} />
+      <Header level={2} text="Decks" color={Colors.library.dark.text} />
       <View style={styles.decksDisplay}>
         {decks.map((deck, index) => {
           return <DeckCard deck={deck} key={index} />;
@@ -38,7 +38,7 @@ export default function Tab() {
       <AddButton
         icon="pluscircle"
         size={70}
-        color={Colors.library.dark.background}
+        color={Colors.library.light.background}
         onPress={() => router.push('/modalDeck')}
       />
     </View>
@@ -48,7 +48,7 @@ export default function Tab() {
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
-    backgroundColor: Colors.library.light.background,
+    backgroundColor: Colors.library.dark.background,
   },
   decksDisplay: {
     flexDirection: 'row',

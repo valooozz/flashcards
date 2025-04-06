@@ -91,15 +91,8 @@ export default function Modal() {
           />
           <Text style={styles.checkboxText}>Alterner recto et verso</Text>
         </View>
-        <View style={{ ...styles.buttonContainer, marginTop: 16 }}>
-          <ButtonModal text="Annuler" onPress={() => router.back()} />
-          <ButtonModal
-            text={editMode ? 'Modifier' : 'Ajouter'}
-            onPress={() => handleValidate(false)}
-          />
-        </View>
         {!editMode && (
-          <View style={{ ...styles.buttonContainer, marginTop: 8 }}>
+          <View style={{ ...styles.buttonContainer, marginTop: 16 }}>
             <ButtonModal
               text="Ajouter et continuer à créer"
               onPress={() => {
@@ -108,6 +101,13 @@ export default function Modal() {
             />
           </View>
         )}
+        <View style={{ ...styles.buttonContainer, marginTop: 8 }}>
+          <ButtonModal text="Annuler" onPress={() => router.back()} />
+          <ButtonModal
+            text={editMode ? 'Modifier' : 'Ajouter'}
+            onPress={() => handleValidate(false)}
+          />
+        </View>
         {editMode && (
           <View style={styles.buttonDelete}>
             <ButtonModal text="Supprimer" onPress={handleDelete} />

@@ -1,6 +1,8 @@
 import { router } from 'expo-router';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Colors } from '../../style/Colors';
+import { Radius } from '../../style/Radius';
+import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 import { CardType } from '../../types/CardType';
 
@@ -38,7 +40,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: Colors.library.simple.background,
-    boxShadow: 'rgba(149, 157, 165, 0.4) 0px 8px 24px',
+    boxShadow: Shadows.listCard,
+    borderRadius: Radius.small,
   },
   text: {
     width: 120,

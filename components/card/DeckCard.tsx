@@ -3,6 +3,8 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Colors } from '../../style/Colors';
+import { Radius } from '../../style/Radius';
+import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 import { DeckType } from '../../types/DeckType';
 import { getNbCardsInDeck } from '../../utils/database/deck/getNbCardsInDeck.utils';
@@ -47,25 +49,25 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch',
-    backgroundColor: Colors.library.dark.background,
+    backgroundColor: Colors.library.simple.background,
     minWidth: 152,
     height: Sizes.component.huge,
     paddingHorizontal: 16,
     paddingVertical: 16,
-    boxShadow:
-      'rgba(136, 165, 191, 0.78) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px',
+    boxShadow: Shadows.deckCard,
+    borderRadius: Radius.big,
   },
   title: {
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
     textDecorationLine: 'underline',
-    color: Colors.library.dark.text,
+    color: Colors.library.simple.text,
     textAlign: 'left',
   },
   nbCards: {
     fontSize: Sizes.font.tiny,
     fontFamily: 'JosefinRegular',
-    color: Colors.library.dark.text,
+    color: Colors.library.dark.background,
     textAlign: 'left',
   },
 });

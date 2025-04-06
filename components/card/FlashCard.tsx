@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 
 interface FlashCardProps {
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 16,
     paddingBottom: 36,
+    boxShadow: Shadows.flashCard,
   },
   text: {
     textAlign: 'center',
