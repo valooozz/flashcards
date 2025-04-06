@@ -1,3 +1,4 @@
+import Checkbox from 'expo-checkbox';
 import {
   router,
   Stack,
@@ -6,7 +7,7 @@ import {
 } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { Header } from '../components/text/Header';
@@ -17,7 +18,7 @@ import { globalStyles } from '../style/Styles';
 import { createCard } from '../utils/database/card/createCard.utils';
 import { deleteCard } from '../utils/database/card/deleteCard.utils';
 import { getCardById } from '../utils/database/card/getCardById.utils';
-import { updateCard } from '../utils/database/card/updateCard.utils';
+import { updateCardInfo } from '../utils/database/card/updateCardInfo.utils';
 import { getNameDeckById } from '../utils/database/deck/getNameDeckById.utils';
 
 export default function Modal() {
@@ -25,6 +26,7 @@ export default function Modal() {
   const [recto, setRecto] = useState('');
   const [verso, setVerso] = useState('');
   const [editMode, setEditMode] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
 
   const database = useSQLiteContext();
 
@@ -52,9 +54,9 @@ export default function Modal() {
 
   const handleValidate = async (continueCreating: boolean) => {
     if (editMode) {
-      await updateCard(database, idCard, recto, verso);
+      await updateCardInfo(database, idCard, recto, verso, isChecked);
     } else {
-      await createCard(database, recto, verso, idDeck);
+      await createCard(database, recto, verso, idDeck, isChecked);
     }
 
     if (continueCreating) {
@@ -80,6 +82,15 @@ export default function Modal() {
         <Input text={recto} setText={setRecto} />
         <Header level={3} text="Verso" color={Colors.library.light.text} />
         <Input text={verso} setText={setVerso} />
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            style={styles.checkbox}
+            value={isChecked}
+            onValueChange={setIsChecked}
+            color={Colors.library.dark.background}
+          />
+          <Text style={styles.checkboxText}>Alterner recto et verso</Text>
+        </View>
         <View style={{ ...styles.buttonContainer, marginTop: 16 }}>
           <ButtonModal text="Annuler" onPress={() => router.back()} />
           <ButtonModal
@@ -117,6 +128,23 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
+  },
+  checkboxContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: 16,
+  },
+  checkbox: {
+    width: Sizes.component.tiny,
+    height: Sizes.component.tiny,
+  },
+  checkboxText: {
+    textAlign: 'left',
+    fontSize: Sizes.font.small,
+    fontFamily: 'JosefinRegular',
   },
   buttonContainer: {
     flexDirection: 'row',

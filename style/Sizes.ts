@@ -1,5 +1,6 @@
 export const Sizes = {
   component: {
+    tiny: 24, // 8 * 3
     small: 52, // 8 * 6.5
     medium: 64, // 8 * 7
     large: 88, // 8 * 11
