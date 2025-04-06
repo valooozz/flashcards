@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Colors } from '../../style/Colors';
 import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 
@@ -7,6 +8,7 @@ interface FlashCardProps {
   recto: string;
   verso: string;
   deckName: string;
+  delay?: number;
   backgroundColor: string;
   textColor: string;
   textDeckColor: string;
@@ -16,6 +18,7 @@ export function FlashCard({
   recto,
   verso,
   deckName,
+  delay = 0,
   backgroundColor,
   textColor,
   textDeckColor,
@@ -54,6 +57,16 @@ export function FlashCard({
       <Text style={{ ...styles.textDeck, color: textDeckColor }}>
         {deckName}
       </Text>
+      {delay && (
+        <Text
+          style={{
+            ...styles.textDeck,
+            color: Colors.daily.intermediate.background,
+          }}
+        >
+          {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
+        </Text>
+      )}
       <Text style={{ ...styles.text, color: textColor }}>{textToShow}</Text>
     </TouchableOpacity>
   );

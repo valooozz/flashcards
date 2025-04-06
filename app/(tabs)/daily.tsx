@@ -14,12 +14,14 @@ import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
 import { putCardToNextStep } from '../../utils/database/card/update/putCardToNextStep.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { getNameDeckById } from '../../utils/database/deck/getNameDeckById.utils';
+import { getDelay } from '../../utils/getDelay.utils';
 
 export default function Tab() {
   const [cardsToRevise, setCardsToRevise] = useState<CardType[]>([]);
   const [forgottenCards, setForgottenCards] = useState<CardType[]>([]);
   const [cardToShow, setCardToShow] = useState<CardType>(undefined);
   const [deckName, setDeckName] = useState<string>('');
+  const [delay, setDelay] = useState<number>(0);
   const [inSecondPhase, setInSecondPhase] = useState<boolean>(false);
   const database = useSQLiteContext();
 
@@ -28,6 +30,7 @@ export default function Tab() {
       return;
     }
 
+    setDelay(getDelay(cardToShow.nextRevision));
     getNameDeckById(database, cardToShow.deck.toString()).then((nameResult) => {
       setDeckName(nameResult);
     });
@@ -45,7 +48,7 @@ export default function Tab() {
   useEffect(() => {
     if (cardsToRevise.length > 0) {
       setCardToShow(cardsToRevise[0]);
-    } else if (forgottenCards.length > 0) {
+    } else if (forgottenCards) {
       setCardToShow(forgottenCards[0]);
       if (!inSecondPhase) {
         setInSecondPhase(true);
@@ -98,6 +101,7 @@ export default function Tab() {
             recto={cardToShow.rectoFirst ? cardToShow.recto : cardToShow.verso}
             verso={cardToShow.rectoFirst ? cardToShow.verso : cardToShow.recto}
             deckName={deckName}
+            delay={delay}
             backgroundColor={Colors.daily.simple.background}
             textColor={Colors.daily.simple.text}
             textDeckColor={Colors.daily.dark.background}

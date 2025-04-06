@@ -5,5 +5,5 @@ export const getNextSide = (
   if (changeSide) {
     return (currentSide + 1) % 2;
   }
-  return currentSide;
+  return 1;
 };
