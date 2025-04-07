@@ -47,6 +47,7 @@ export default function Modal() {
         getCardById(database, idCard).then((card) => {
           setRecto(card.recto);
           setVerso(card.verso);
+          setIsChecked(Boolean(card.changeSide));
         });
       }
     }, [idDeck, idCard]),
