@@ -25,7 +25,8 @@ export function ListCard({ card }: ListCardProps) {
         {card.verso.length < 11 ? card.verso : card.verso.slice(0, 8) + '...'}
       </Text>
       <Text style={styles.textDate}>
-        {card.nextRevision && card.nextRevision.slice(5).replace('-', '/')}
+        {card.nextRevision &&
+          card.nextRevision.slice(8) + '/' + card.nextRevision.slice(5, 7)}
       </Text>
     </TouchableOpacity>
   );
