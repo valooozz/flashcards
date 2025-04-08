@@ -1,7 +1,7 @@
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { AddButton } from '../../components/button/AddButton';
 import { BackButton } from '../../components/button/BackButton';
 import { ListCard } from '../../components/card/ListCard';
@@ -51,11 +51,13 @@ export default function Screen() {
         text={`Cartes (${nbCards})`}
         color={Colors.library.dark.text}
       />
-      <View style={styles.cardsDisplay}>
-        {cards.map((card, index) => {
-          return <ListCard card={card} key={index} />;
-        })}
-      </View>
+      <FlatList
+        data={cards}
+        renderItem={({ item }) => <ListCard card={item} />}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.cardsDisplay}
+        showsVerticalScrollIndicator={false}
+      />
       <AddButton
         icon="pluscircle"
         size={70}
@@ -70,11 +72,15 @@ const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
     backgroundColor: Colors.library.dark.background,
+    paddingRight: 0,
+    paddingBottom: 0,
   },
   cardsDisplay: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
     rowGap: 8,
-    flex: 1,
+    flexGrow: 1,
+    marginRight: 24,
+    paddingBottom: 104,
   },
 });

@@ -57,7 +57,7 @@ export function FlashCard({
       <Text style={{ ...styles.textDeck, color: textDeckColor }}>
         {deckName}
       </Text>
-      {delay && (
+      {delay ? (
         <Text
           style={{
             ...styles.textDeck,
@@ -66,7 +66,7 @@ export function FlashCard({
         >
           {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
         </Text>
-      )}
+      ) : null}
       <Text style={{ ...styles.text, color: textColor }}>{textToShow}</Text>
     </TouchableOpacity>
   );
