@@ -39,17 +39,17 @@ export default function Screen() {
 
   return (
     <View style={styles.container}>
-      <BackButton color={Colors.library.dark.text} />
+      <BackButton color={Colors.library.dark.contrast} />
       <Header
         level={1}
         text={deckName}
-        color={Colors.library.dark.text}
+        color={Colors.library.dark.contrast}
         underButton={true}
       />
       <Header
         level={2}
         text={`Cartes (${nbCards})`}
-        color={Colors.library.dark.text}
+        color={Colors.library.dark.contrast}
       />
       <FlatList
         data={cards}
@@ -61,7 +61,7 @@ export default function Screen() {
       <AddButton
         icon="pluscircle"
         size={70}
-        color={Colors.library.light.background}
+        color={Colors.library.light.main}
         onPress={() => router.push(`/modalCard?idDeck=${idDeck}`)}
       />
     </View>
@@ -71,7 +71,7 @@ export default function Screen() {
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
-    backgroundColor: Colors.library.dark.background,
+    backgroundColor: Colors.library.dark.main,
     paddingRight: 0,
     paddingBottom: 0,
   },

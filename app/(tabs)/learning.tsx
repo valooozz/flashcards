@@ -64,7 +64,7 @@ export default function Tab() {
       <Header
         level={1}
         text="Apprentissage"
-        color={Colors.learning.dark.text}
+        color={Colors.learning.dark.contrast}
       />
       {cardToShow ? (
         <>
@@ -72,21 +72,21 @@ export default function Tab() {
             recto={cardToShow.recto}
             verso={cardToShow.verso}
             deckName={deckName}
-            backgroundColor={Colors.learning.simple.background}
-            textColor={Colors.learning.simple.text}
-            textDeckColor={Colors.learning.dark.background}
+            backgroundColor={Colors.learning.simple.main}
+            textColor={Colors.learning.simple.contrast}
+            textDeckColor={Colors.learning.dark.main}
           />
           <View style={styles.buttons}>
             <FlashButton
               text="A revoir"
-              backgroundColor={Colors.learning.light.background}
-              textColor={Colors.learning.light.text}
+              backgroundColor={Colors.learning.light.main}
+              textColor={Colors.learning.light.contrast}
               handleClick={() => handleClick(false)}
             />
             <FlashButton
               text="Apprise"
-              backgroundColor={Colors.learning.intermediate.background}
-              textColor={Colors.learning.intermediate.text}
+              backgroundColor={Colors.learning.intermediate.main}
+              textColor={Colors.learning.intermediate.contrast}
               handleClick={() => handleClick(true)}
             />
           </View>
@@ -143,7 +143,7 @@ export default function Tab() {
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
-    backgroundColor: Colors.learning.dark.background,
+    backgroundColor: Colors.learning.dark.main,
   },
   buttons: {
     display: 'flex',
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     height: Sizes.component.large,
   },
   text: {
-    color: Colors.learning.dark.text,
+    color: Colors.learning.dark.contrast,
     textAlign: 'center',
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',

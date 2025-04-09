@@ -1,56 +1,56 @@
 export const Colors = {
   library: {
     dark: {
-      background: '#1E704C',
-      text: '#FFFFFF',
+      main: '#1E704C',
+      contrast: '#FFFFFF',
     },
     intermediate: {
-      background: '#A7D0BE',
-      text: '#000000',
+      main: '#A7D0BE',
+      contrast: '#000000',
     },
     light: {
-      background: '#D5F1E5',
-      text: '#000000',
+      main: '#D5F1E5',
+      contrast: '#000000',
     },
     simple: {
-      background: '#FFFFFF',
-      text: '#000000',
+      main: '#FFFFFF',
+      contrast: '#000000',
     },
   },
   daily: {
     dark: {
-      background: '#C24F4A',
-      text: '#ffffff',
+      main: '#C24F4A',
+      contrast: '#ffffff',
     },
     intermediate: {
-      background: '#D17471',
-      text: '#FFFFFF',
+      main: '#D17471',
+      contrast: '#FFFFFF',
     },
     light: {
-      background: '#FFE4E9',
-      text: '#000000',
+      main: '#FFE4E9',
+      contrast: '#000000',
     },
     simple: {
-      background: '#FFFFFF',
-      text: '#000000',
+      main: '#FFFFFF',
+      contrast: '#000000',
     },
   },
   learning: {
     dark: {
-      background: '#3163AC',
-      text: '#ffffff',
+      main: '#3163AC',
+      contrast: '#ffffff',
     },
     intermediate: {
-      background: '#5C85BF',
-      text: '#FFFFFF',
+      main: '#5C85BF',
+      contrast: '#FFFFFF',
     },
     light: {
-      background: '#DFEDF8',
-      text: '#000000',
+      main: '#DFEDF8',
+      contrast: '#000000',
     },
     simple: {
-      background: '#FFFFFF',
-      text: '#000000',
+      main: '#FFFFFF',
+      contrast: '#000000',
     },
   },
   navigation: {

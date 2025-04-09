@@ -94,7 +94,7 @@ export default function Tab() {
 
   return (
     <View style={styles.container}>
-      <Header level={1} text="Révisions" color={Colors.daily.dark.text} />
+      <Header level={1} text="Révisions" color={Colors.daily.dark.contrast} />
       {cardToShow ? (
         <>
           <FlashCard
@@ -102,21 +102,21 @@ export default function Tab() {
             verso={cardToShow.rectoFirst ? cardToShow.verso : cardToShow.recto}
             deckName={deckName}
             delay={delay}
-            backgroundColor={Colors.daily.simple.background}
-            textColor={Colors.daily.simple.text}
-            textDeckColor={Colors.daily.dark.background}
+            backgroundColor={Colors.daily.simple.main}
+            textColor={Colors.daily.simple.contrast}
+            textDeckColor={Colors.daily.dark.main}
           />
           <View style={styles.buttons}>
             <FlashButton
               text="Oubliée"
-              backgroundColor={Colors.daily.light.background}
-              textColor={Colors.daily.light.text}
+              backgroundColor={Colors.daily.light.main}
+              textColor={Colors.daily.light.contrast}
               handleClick={() => handleClick(false)}
             />
             <FlashButton
               text="Connue"
-              backgroundColor={Colors.daily.intermediate.background}
-              textColor={Colors.daily.intermediate.text}
+              backgroundColor={Colors.daily.intermediate.main}
+              textColor={Colors.daily.intermediate.contrast}
               handleClick={() => handleClick(true)}
             />
           </View>
@@ -131,7 +131,7 @@ export default function Tab() {
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
-    backgroundColor: Colors.daily.dark.background,
+    backgroundColor: Colors.daily.dark.main,
   },
   buttons: {
     display: 'flex',
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     height: Sizes.component.large,
   },
   text: {
-    color: Colors.daily.dark.text,
+    color: Colors.daily.dark.contrast,
     textAlign: 'center',
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',

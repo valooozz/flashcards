@@ -28,8 +28,12 @@ export default function Tab() {
 
   return (
     <View style={styles.container}>
-      <Header level={1} text="Bibliothèque" color={Colors.library.dark.text} />
-      <Header level={2} text="Decks" color={Colors.library.dark.text} />
+      <Header
+        level={1}
+        text="Bibliothèque"
+        color={Colors.library.dark.contrast}
+      />
+      <Header level={2} text="Decks" color={Colors.library.dark.contrast} />
       <ScrollView
         contentContainerStyle={styles.decksDisplay}
         showsVerticalScrollIndicator={false}
@@ -41,7 +45,7 @@ export default function Tab() {
       <AddButton
         icon="pluscircle"
         size={70}
-        color={Colors.library.light.background}
+        color={Colors.library.light.main}
         onPress={() => router.push('/modalDeck')}
       />
     </View>
@@ -51,7 +55,7 @@ export default function Tab() {
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
-    backgroundColor: Colors.library.dark.background,
+    backgroundColor: Colors.library.dark.main,
     paddingRight: 0,
     paddingBottom: 0,
   },

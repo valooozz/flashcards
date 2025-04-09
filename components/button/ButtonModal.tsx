@@ -19,14 +19,14 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 10,
     flex: 1,
-    backgroundColor: Colors.library.simple.background,
+    backgroundColor: Colors.library.simple.main,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     height: Sizes.component.small,
   },
   text: {
-    color: Colors.library.simple.text,
+    color: Colors.library.simple.contrast,
     fontSize: Sizes.font.small,
     textAlign: 'center',
     fontFamily: 'JosefinRegular',

@@ -27,12 +27,16 @@ export default function Modal() {
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: 'Nouveau deck', headerShown: false }} />
-      <Header level={1} text="Nouveau Deck" color={Colors.library.light.text} />
+      <Header
+        level={1}
+        text="Nouveau Deck"
+        color={Colors.library.light.contrast}
+      />
       <View style={styles.container}>
         <Header
           level={3}
           text="Nom du deck"
-          color={Colors.library.light.text}
+          color={Colors.library.light.contrast}
         />
         <Input text={deckName} setText={setDeckName} />
         <View style={styles.buttonContainer}>
@@ -47,7 +51,7 @@ export default function Modal() {
 const styles = StyleSheet.create({
   screen: {
     ...globalStyles.page,
-    backgroundColor: Colors.library.light.background,
+    backgroundColor: Colors.library.light.main,
   },
   container: {
     flex: 1,

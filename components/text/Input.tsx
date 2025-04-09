@@ -21,8 +21,8 @@ export function Input({ text, setText }: InputProps) {
 const styles = StyleSheet.create({
   input: {
     height: Sizes.component.small,
-    backgroundColor: Colors.library.dark.background,
-    color: Colors.library.dark.text,
+    backgroundColor: Colors.library.dark.main,
+    color: Colors.library.dark.contrast,
     padding: 10,
     fontFamily: 'JosefinRegular',
     fontSize: Sizes.font.small,

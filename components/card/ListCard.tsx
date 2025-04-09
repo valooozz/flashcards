@@ -21,10 +21,17 @@ export function ListCard({ card }: ListCardProps) {
       <Text style={styles.text}>
         {card.recto.length < 11 ? card.recto : card.recto.slice(0, 9) + '...'}
       </Text>
-      <Text style={styles.text}>
+      <Text style={{ ...styles.text, opacity: card.changeSide ? 1 : 0.3 }}>
         {card.verso.length < 11 ? card.verso : card.verso.slice(0, 8) + '...'}
       </Text>
-      <Text style={styles.textDate}>
+      <Text
+        style={{
+          ...styles.textDate,
+          color: card.toLearn
+            ? Colors.library.dark.main
+            : Colors.library.light.main,
+        }}
+      >
         {card.nextRevision &&
           card.nextRevision.slice(8) + '/' + card.nextRevision.slice(5, 7)}
       </Text>
@@ -40,14 +47,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: Colors.library.simple.background,
+    backgroundColor: Colors.library.simple.main,
     boxShadow: Shadows.listCard,
     borderRadius: Radius.small,
   },
   text: {
     width: 120,
     fontSize: Sizes.font.small,
-    color: Colors.library.simple.text,
+    color: Colors.library.simple.contrast,
     textAlign: 'left',
     fontFamily: 'JosefinRegular',
     overflow: 'hidden',
@@ -55,7 +62,6 @@ const styles = StyleSheet.create({
   textDate: {
     marginLeft: 'auto',
     fontSize: Sizes.font.small,
-    color: Colors.library.simple.text,
     textAlign: 'right',
     fontFamily: 'JosefinRegular',
   },

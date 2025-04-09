@@ -61,7 +61,7 @@ export function FlashCard({
         <Text
           style={{
             ...styles.textDeck,
-            color: Colors.daily.intermediate.background,
+            color: Colors.daily.intermediate.main,
           }}
         >
           {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
