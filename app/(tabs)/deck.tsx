@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { AddButton } from '../../components/button/AddButton';
 import { BackButton } from '../../components/button/BackButton';
+import { SettingsButton } from '../../components/button/SettingsButton';
 import { ListCard } from '../../components/card/ListCard';
 import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
@@ -41,6 +42,10 @@ export default function Screen() {
   return (
     <View style={styles.container}>
       <BackButton color={Colors.library.dark.contrast} />
+      <SettingsButton
+        color={Colors.library.dark.contrast}
+        route={`/modalDeck?idDeck=${idDeck}`}
+      />
       <Header
         level={1}
         text={deckName}

@@ -76,7 +76,7 @@ export default function Modal() {
     if (resetOk) {
       Toast.show({
         type: 'success',
-        text1: "L'apprentissage a été réinitialisé",
+        text1: 'Apprentissage réinitialisé',
         visibilityTime: 2000,
       });
       router.back();

@@ -1,6 +1,11 @@
-import { router, Stack } from 'expo-router';
+import {
+  router,
+  Stack,
+  useFocusEffect,
+  useLocalSearchParams,
+} from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'toastify-react-native';
@@ -10,31 +15,83 @@ import { Input } from '../components/text/Input';
 import { Colors } from '../style/Colors';
 import { globalStyles } from '../style/Styles';
 import { createDeck } from '../utils/database/deck/createDeck.utils';
+import { getNameDeckById } from '../utils/database/deck/getNameDeckById.utils';
+import { renameDeck } from '../utils/database/deck/renameDeck.utils';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
+  const [newDeckName, setNewDeckName] = useState('');
+  const [editMode, setEditMode] = useState(false);
 
   const database = useSQLiteContext();
 
+  const { idDeck } = useLocalSearchParams<{
+    idDeck: string;
+  }>();
+
   const handleValidate = async () => {
-    const creationOk = await createDeck(database, deckName);
-    if (creationOk) {
-      router.back();
-    } else {
+    if (newDeckName === '') {
       Toast.show({
         type: 'error',
-        text1: 'Un deck porte déjà ce nom.',
+        text1: 'Le nom du deck ne peut pas être vide.',
         visibilityTime: 2000,
       });
+      return;
+    }
+
+    if (editMode) {
+      const renameOk = await renameDeck(database, idDeck, newDeckName);
+      if (renameOk) {
+        router.back();
+        Toast.show({
+          type: 'success',
+          text1: 'Deck renommé',
+          visibilityTime: 2000,
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Un deck porte déjà ce nom.',
+          visibilityTime: 2000,
+        });
+      }
+    } else {
+      const creationOk = await createDeck(database, newDeckName);
+      if (creationOk) {
+        router.back();
+        Toast.show({
+          type: 'success',
+          text1: `Deck ${newDeckName} créé.`,
+          visibilityTime: 2000,
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Un deck porte déjà ce nom.',
+          visibilityTime: 2000,
+        });
+      }
     }
   };
 
+  useFocusEffect(
+    useCallback(() => {
+      if (idDeck) {
+        setEditMode(true);
+        getNameDeckById(database, idDeck).then((name) => {
+          setDeckName(name);
+          setNewDeckName(name);
+        });
+      }
+    }, [idDeck]),
+  );
+
   return (
     <SafeAreaView style={styles.screen}>
-      <Stack.Screen options={{ title: 'Nouveau deck', headerShown: false }} />
+      <Stack.Screen options={{ title: 'Deck', headerShown: false }} />
       <Header
         level={1}
-        text="Nouveau Deck"
+        text={editMode ? deckName : 'Nouveau Deck'}
         color={Colors.library.light.contrast}
       />
       <View style={styles.container}>
@@ -43,10 +100,16 @@ export default function Modal() {
           text="Nom du deck"
           color={Colors.library.light.contrast}
         />
-        <Input text={deckName} setText={setDeckName} />
+        <Input text={newDeckName} setText={setNewDeckName} />
         <View style={styles.buttonContainer}>
-          <ButtonModal text="Annuler" onPress={() => router.back()} />
-          <ButtonModal text="Valider" onPress={handleValidate} />
+          <ButtonModal
+            text={editMode ? 'Retour' : 'Annuler'}
+            onPress={() => router.back()}
+          />
+          <ButtonModal
+            text={editMode ? 'Renommer' : 'Ajouter'}
+            onPress={handleValidate}
+          />
         </View>
       </View>
     </SafeAreaView>
