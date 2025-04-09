@@ -35,6 +35,7 @@ export function DeckCard({ deck }: DeckCardProps) {
     <TouchableOpacity
       style={styles.container}
       onPress={() => router.push(`(tabs)/deck?idDeck=${deck.id}`)}
+      onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}
     >
       <Text style={styles.title}>{deck.name}</Text>
       <Text style={styles.nbCards}>{nbCards + word}</Text>
