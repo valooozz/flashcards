@@ -17,9 +17,9 @@ import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
 import { createDeck } from '../utils/database/deck/createDeck.utils';
 import { deleteDeck } from '../utils/database/deck/deleteDeck.utils';
-import { getNameDeckById } from '../utils/database/deck/getNameDeckById.utils';
-import { renameDeck } from '../utils/database/deck/renameDeck.utils';
-import { resetDeck } from '../utils/database/deck/resetDeck.utils';
+import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
+import { renameDeck } from '../utils/database/deck/update/renameDeck.utils';
+import { resetDeck } from '../utils/database/deck/update/resetDeck.utils';
 import { notify } from '../utils/notify.utils';
 
 export default function Modal() {

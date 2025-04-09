@@ -7,10 +7,6 @@ export const renameDeck = async (
 ): Promise<boolean> => {
   return database
     .runAsync('UPDATE Deck SET name=? WHERE id=?', [newName, id])
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
+    .then(() => true)
+    .catch(() => false);
 };

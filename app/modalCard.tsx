@@ -21,7 +21,7 @@ import { deleteCard } from '../utils/database/card/deleteCard.utils';
 import { getCardById } from '../utils/database/card/get/getCardById.utils';
 import { resetCard } from '../utils/database/card/update/resetCard.utils';
 import { updateCardInfo } from '../utils/database/card/update/updateCardInfo.utils';
-import { getNameDeckById } from '../utils/database/deck/getNameDeckById.utils';
+import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
 import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
@@ -63,7 +63,14 @@ export default function Modal() {
     }
 
     if (editMode) {
-      await updateCardInfo(database, idCard, recto, verso, isChecked);
+      const updateOk = await updateCardInfo(
+        database,
+        idCard,
+        recto,
+        verso,
+        isChecked,
+      );
+      notify(updateOk, 'Une erreur est survenue.', 'Carte mise à jour');
     } else {
       await createCard(database, recto, verso, idDeck, isChecked);
     }
@@ -74,6 +81,7 @@ export default function Modal() {
       return;
     }
 
+    notify(true, '', 'Carte(s) ajoutée(s)');
     router.back();
   };
 
@@ -83,8 +91,11 @@ export default function Modal() {
   };
 
   const handleDelete = async () => {
-    await deleteCard(database, idCard);
-    router.back();
+    const deleteOk = await deleteCard(database, idCard);
+    if (deleteOk) {
+      router.back();
+    }
+    notify(deleteOk, 'Une erreur est survenue.', 'Carte supprimée');
   };
 
   return (

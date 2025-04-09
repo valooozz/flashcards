@@ -16,8 +16,8 @@ import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
 import { resetAllCards } from '../../utils/database/card/table/resetAllCards.utils';
 import { setAllRevisionsToToday } from '../../utils/database/card/table/setAllRevisionsToToday.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
-import { emptyTableDeck } from '../../utils/database/deck/emptyTableDeck.utils';
-import { getNameDeckById } from '../../utils/database/deck/getNameDeckById.utils';
+import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
+import { emptyTableDeck } from '../../utils/database/deck/table/emptyTableDeck.utils';
 
 export default function Tab() {
   const [cardsToLearn, setCardsToLearn] = useState<CardType[]>([]);

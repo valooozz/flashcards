@@ -13,8 +13,8 @@ import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
-import { getNameDeckById } from '../../utils/database/deck/getNameDeckById.utils';
-import { getNbCardsInDeck } from '../../utils/database/deck/getNbCardsInDeck.utils';
+import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
+import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 
 export default function Screen() {
   const [deckName, setDeckName] = useState<string>(null);

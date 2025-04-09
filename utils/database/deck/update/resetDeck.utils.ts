@@ -6,10 +6,6 @@ export const resetDeck = async (
 ): Promise<boolean> => {
   return database
     .runAsync('UPDATE Card SET nextRevision=null WHERE deck=?', [id])
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
+    .then(() => true)
+    .catch(() => false);
 };

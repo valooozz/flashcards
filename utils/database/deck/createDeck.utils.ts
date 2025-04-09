@@ -6,10 +6,6 @@ export const createDeck = async (
 ): Promise<boolean> => {
   return database
     .runAsync('INSERT INTO Deck (name) VALUES (?);', [deckName])
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
+    .then(() => true)
+    .catch(() => false);
 };

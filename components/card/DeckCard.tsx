@@ -7,7 +7,7 @@ import { Radius } from '../../style/Radius';
 import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 import { DeckType } from '../../types/DeckType';
-import { getNbCardsInDeck } from '../../utils/database/deck/getNbCardsInDeck.utils';
+import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 
 interface DeckCardProps {
   deck: DeckType;

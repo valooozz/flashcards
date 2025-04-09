@@ -13,7 +13,7 @@ import { getCardsToRevise } from '../../utils/database/card/get/getCardsToRevise
 import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
 import { putCardToNextStep } from '../../utils/database/card/update/putCardToNextStep.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
-import { getNameDeckById } from '../../utils/database/deck/getNameDeckById.utils';
+import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
 import { getDelay } from '../../utils/getDelay.utils';
 
 export default function Tab() {

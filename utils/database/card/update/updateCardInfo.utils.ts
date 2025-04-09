@@ -6,13 +6,14 @@ export const updateCardInfo = async (
   recto: string,
   verso: string,
   changeSide: boolean,
-) => {
-  try {
-    database.runAsync(
-      'UPDATE Card SET recto=?, verso=?, changeSide=? WHERE id=?',
-      [recto, verso, changeSide ? 1 : 0, id],
-    );
-  } catch (error) {
-    console.error(error);
-  }
+): Promise<boolean> => {
+  return database
+    .runAsync('UPDATE Card SET recto=?, verso=?, changeSide=? WHERE id=?', [
+      recto,
+      verso,
+      changeSide ? 1 : 0,
+      id,
+    ])
+    .then(() => true)
+    .catch(() => false);
 };

@@ -7,10 +7,6 @@ export const deleteDeck = async (
   database.runAsync('DELETE FROM Card WHERE deck=?', [id]);
   return database
     .runAsync('DELETE FROM Deck WHERE id=?', [id])
-    .then(() => {
-      return true;
-    })
-    .catch(() => {
-      return false;
-    });
+    .then(() => true)
+    .catch(() => false);
 };
