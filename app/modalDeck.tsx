@@ -3,6 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Toast } from 'toastify-react-native';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
@@ -16,11 +17,15 @@ export default function Modal() {
   const database = useSQLiteContext();
 
   const handleValidate = async () => {
-    try {
-      createDeck(database, deckName);
+    const creationOk = await createDeck(database, deckName);
+    if (creationOk) {
       router.back();
-    } catch (error) {
-      console.error(error);
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Un deck porte déjà ce nom.',
+        visibilityTime: 2000,
+      });
     }
   };
 

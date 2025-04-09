@@ -4,6 +4,7 @@ import { Stack } from 'expo-router/stack';
 import { SQLiteProvider } from 'expo-sqlite';
 import { useEffect } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import ToastManager from 'toastify-react-native';
 import { initDatabase } from '../utils/database/initDatabase.utils';
 
 export default function Layout() {
@@ -38,6 +39,7 @@ export default function Layout() {
               options={{ presentation: 'modal' }}
             />
           </Stack>
+          <ToastManager />
         </SafeAreaView>
       </SafeAreaProvider>
     </SQLiteProvider>

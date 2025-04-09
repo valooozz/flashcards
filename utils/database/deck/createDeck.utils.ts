@@ -1,9 +1,15 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 
-export const createDeck = (database: SQLiteDatabase, deckName: string) => {
-  try {
-    database.runAsync('INSERT INTO Deck (name) VALUES (?);', [deckName]);
-  } catch (error) {
-    console.error(error);
-  }
+export const createDeck = async (
+  database: SQLiteDatabase,
+  deckName: string,
+): Promise<boolean> => {
+  return database
+    .runAsync('INSERT INTO Deck (name) VALUES (?);', [deckName])
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
 };
