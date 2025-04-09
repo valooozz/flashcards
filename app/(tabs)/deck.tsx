@@ -1,12 +1,13 @@
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { AddButton } from '../../components/button/AddButton';
 import { BackButton } from '../../components/button/BackButton';
 import { ListCard } from '../../components/card/ListCard';
 import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
+import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
@@ -51,13 +52,20 @@ export default function Screen() {
         text={`Cartes (${nbCards})`}
         color={Colors.library.dark.contrast}
       />
-      <FlatList
-        data={cards}
-        renderItem={({ item }) => <ListCard card={item} />}
-        keyExtractor={(item, index) => index.toString()}
-        contentContainerStyle={styles.cardsDisplay}
-        showsVerticalScrollIndicator={false}
-      />
+      {cards.length > 0 ? (
+        <FlatList
+          data={cards}
+          renderItem={({ item }) => <ListCard card={item} />}
+          keyExtractor={(item, index) => index.toString()}
+          contentContainerStyle={styles.cardsDisplay}
+          showsVerticalScrollIndicator={false}
+        />
+      ) : (
+        <Text style={styles.text}>
+          Ce deck ne contient aucune carte. Clique sur le bouton + pour en
+          ajouter !
+        </Text>
+      )}
       <AddButton
         icon="pluscircle"
         size={70}
@@ -82,5 +90,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     marginRight: 24,
     paddingBottom: 104,
+  },
+  text: {
+    color: Colors.learning.dark.contrast,
+    textAlign: 'center',
+    fontSize: Sizes.font.small,
+    fontFamily: 'JosefinRegular',
+    marginTop: 80,
+    marginRight: 24,
   },
 });
