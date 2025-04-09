@@ -8,7 +8,6 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Toast } from 'toastify-react-native';
 import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { Header } from '../components/text/Header';
@@ -21,6 +20,7 @@ import { deleteDeck } from '../utils/database/deck/deleteDeck.utils';
 import { getNameDeckById } from '../utils/database/deck/getNameDeckById.utils';
 import { renameDeck } from '../utils/database/deck/renameDeck.utils';
 import { resetDeck } from '../utils/database/deck/resetDeck.utils';
+import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -35,11 +35,7 @@ export default function Modal() {
 
   const handleValidate = async () => {
     if (newDeckName === '') {
-      Toast.show({
-        type: 'error',
-        text1: 'Le nom du deck ne peut pas être vide.',
-        visibilityTime: 2000,
-      });
+      notify(false, 'Le nom du deck ne peut pas être vide.');
       return;
     }
 
@@ -47,34 +43,18 @@ export default function Modal() {
       const renameOk = await renameDeck(database, idDeck, newDeckName);
       if (renameOk) {
         router.back();
-        Toast.show({
-          type: 'success',
-          text1: 'Deck renommé',
-          visibilityTime: 2000,
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Un deck porte déjà ce nom.',
-          visibilityTime: 2000,
-        });
       }
+      notify(renameOk, 'Un deck porte déjà ce nom.', 'Deck renommé');
     } else {
-      const creationOk = await createDeck(database, newDeckName);
-      if (creationOk) {
+      const createOk = await createDeck(database, newDeckName);
+      if (createOk) {
         router.back();
-        Toast.show({
-          type: 'success',
-          text1: `Deck ${newDeckName} créé.`,
-          visibilityTime: 2000,
-        });
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Un deck porte déjà ce nom.',
-          visibilityTime: 2000,
-        });
       }
+      notify(
+        createOk,
+        'Un deck porte déjà ce nom.',
+        `Deck ${newDeckName} créé`,
+      );
     }
   };
 
@@ -82,36 +62,20 @@ export default function Modal() {
     const resetOk = await resetDeck(database, idDeck);
     if (resetOk) {
       router.back();
-      Toast.show({
-        type: 'success',
-        text1: "Apprentissage réinitialisé sur l'ensemble du deck",
-        visibilityTime: 2000,
-      });
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Une erreur est survenue.',
-        visibilityTime: 2000,
-      });
     }
+    notify(
+      resetOk,
+      'Une erreur est survenue.',
+      "Apprentissage réinitialisé sur l'ensemble du deck",
+    );
   };
 
   const handleDelete = async () => {
     const deleteOk = await deleteDeck(database, idDeck);
     if (deleteOk) {
       router.push('/');
-      Toast.show({
-        type: 'success',
-        text1: 'Deck supprimé',
-        visibilityTime: 2000,
-      });
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Une erreur est survenue.',
-        visibilityTime: 2000,
-      });
     }
+    notify(deleteOk, 'Une erreur est survenue.', 'Deck supprimé');
   };
 
   useFocusEffect(

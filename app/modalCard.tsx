@@ -9,7 +9,6 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Toast } from 'toastify-react-native';
 import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { Header } from '../components/text/Header';
@@ -23,6 +22,7 @@ import { getCardById } from '../utils/database/card/get/getCardById.utils';
 import { resetCard } from '../utils/database/card/update/resetCard.utils';
 import { updateCardInfo } from '../utils/database/card/update/updateCardInfo.utils';
 import { getNameDeckById } from '../utils/database/deck/getNameDeckById.utils';
+import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -58,11 +58,7 @@ export default function Modal() {
 
   const handleValidate = async (continueCreating: boolean) => {
     if (recto === '' || verso === '') {
-      Toast.show({
-        type: 'error',
-        text1: 'Les champs Recto et Verso ne peuvent pas être vide.',
-        visibilityTime: 2000,
-      });
+      notify(false, 'Les champs Recto et Verso ne peuvent pas être vide.');
       return;
     }
 
@@ -83,20 +79,7 @@ export default function Modal() {
 
   const handleReset = async () => {
     const resetOk = await resetCard(database, idCard);
-    if (resetOk) {
-      Toast.show({
-        type: 'success',
-        text1: 'Apprentissage réinitialisé',
-        visibilityTime: 2000,
-      });
-      router.back();
-    } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Une erreur est survenue.',
-        visibilityTime: 2000,
-      });
-    }
+    notify(resetOk, 'Une erreur est survenue.', 'Apprentissage réinitialisé');
   };
 
   const handleDelete = async () => {
