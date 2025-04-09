@@ -81,7 +81,7 @@ export default function Modal() {
   };
 
   const handleReset = async () => {
-    const resetOk = resetCard(database, idCard);
+    const resetOk = await resetCard(database, idCard);
     if (resetOk) {
       Toast.show({
         type: 'success',
@@ -122,7 +122,7 @@ export default function Modal() {
           <Text style={styles.checkboxText}>Alterner recto et verso</Text>
         </View>
         {!editMode && (
-          <View style={{ ...styles.buttonContainer, marginTop: 16 }}>
+          <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
             <ButtonModal
               text="Ajouter et continuer à créer"
               onPress={() => {
@@ -131,7 +131,7 @@ export default function Modal() {
             />
           </View>
         )}
-        <View style={{ ...styles.buttonContainer, marginTop: 8 }}>
+        <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
           <ButtonModal text="Annuler" onPress={() => router.back()} />
           <ButtonModal
             text={editMode ? 'Modifier' : 'Ajouter'}
@@ -139,7 +139,7 @@ export default function Modal() {
           />
         </View>
         {editMode && (
-          <View style={styles.buttonDelete}>
+          <View style={styles.buttonBottom}>
             <ButtonModal
               text="Réinitialiser l'apprentissage"
               onPress={handleReset}
@@ -180,12 +180,12 @@ const styles = StyleSheet.create({
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
   },
-  buttonContainer: {
+  buttonLineContainer: {
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
   },
-  buttonDelete: {
+  buttonBottom: {
     marginTop: 'auto',
     display: 'flex',
     flexDirection: 'column',
