@@ -1,24 +1,37 @@
 import { router } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { Radius } from '../../style/Radius';
 import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 import { CardType } from '../../types/CardType';
+import { deleteCard } from '../../utils/database/card/deleteCard.utils';
 import { getProgressBarLength } from '../../utils/getProgressBarLength';
+import { notify } from '../../utils/notify.utils';
 import { ProgressBar } from '../bar/ProgressBar';
 
 interface ListCardProps {
   card: CardType;
+  triggerReload: () => void;
 }
 
-export function ListCard({ card }: ListCardProps) {
+export function ListCard({ card, triggerReload }: ListCardProps) {
+  const database = useSQLiteContext();
+
+  const handleDelete = async () => {
+    const deleteOk = await deleteCard(database, card.id.toString());
+    notify(deleteOk, 'Une erreur est survenue.', 'Carte supprimée');
+    triggerReload();
+  };
+
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() =>
         router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
       }
+      onLongPress={handleDelete}
     >
       <View style={styles.textContainer}>
         <Text style={styles.text}>

@@ -20,9 +20,14 @@ export default function Screen() {
   const [deckName, setDeckName] = useState<string>(null);
   const [cards, setCards] = useState<CardType[]>([]);
   const [nbCards, setNbCards] = useState<number>(0);
+  const [reload, setReload] = useState<boolean>(false);
   const database = useSQLiteContext();
 
   const { idDeck } = useLocalSearchParams<{ idDeck: string }>();
+
+  const triggerReload = () => {
+    setReload(!reload);
+  };
 
   useFocusEffect(
     useCallback(() => {
@@ -36,7 +41,7 @@ export default function Screen() {
       getNbCardsInDeck(database, idDeck).then((nbResult) => {
         setNbCards(nbResult);
       });
-    }, [idDeck]),
+    }, [idDeck, reload]),
   );
 
   return (
@@ -60,7 +65,9 @@ export default function Screen() {
       {cards.length > 0 ? (
         <FlatList
           data={cards}
-          renderItem={({ item }) => <ListCard card={item} />}
+          renderItem={({ item }) => (
+            <ListCard card={item} triggerReload={triggerReload} />
+          )}
           keyExtractor={(item, index) => index.toString()}
           contentContainerStyle={styles.cardsDisplay}
           showsVerticalScrollIndicator={false}
