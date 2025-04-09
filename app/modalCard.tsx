@@ -10,6 +10,7 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'toastify-react-native';
+import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
@@ -106,7 +107,13 @@ export default function Modal() {
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: 'Carte', headerShown: false }} />
-      <Header level={1} text={deckName} color={Colors.library.light.contrast} />
+      <BackButton color={Colors.library.light.contrast} />
+      <Header
+        level={1}
+        text={deckName}
+        color={Colors.library.light.contrast}
+        underButton
+      />
       <View style={styles.container}>
         <Header level={3} text="Recto" color={Colors.library.light.contrast} />
         <Input text={recto} setText={setRecto} />
@@ -132,7 +139,10 @@ export default function Modal() {
           </View>
         )}
         <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
-          <ButtonModal text="Annuler" onPress={() => router.back()} />
+          <ButtonModal
+            text={editMode ? 'Retour' : 'Annuler'}
+            onPress={() => router.back()}
+          />
           <ButtonModal
             text={editMode ? 'Modifier' : 'Ajouter'}
             onPress={() => handleValidate(false)}

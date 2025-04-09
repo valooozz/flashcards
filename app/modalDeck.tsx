@@ -9,6 +9,7 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toast } from 'toastify-react-native';
+import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
@@ -128,10 +129,12 @@ export default function Modal() {
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: 'Deck', headerShown: false }} />
+      <BackButton color={Colors.library.light.contrast} />
       <Header
         level={1}
         text={editMode ? deckName : 'Nouveau Deck'}
         color={Colors.library.light.contrast}
+        underButton
       />
       <View style={styles.container}>
         <Header
