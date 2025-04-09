@@ -9,6 +9,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Toast } from 'toastify-react-native';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
@@ -18,6 +19,7 @@ import { globalStyles } from '../style/Styles';
 import { createCard } from '../utils/database/card/createCard.utils';
 import { deleteCard } from '../utils/database/card/deleteCard.utils';
 import { getCardById } from '../utils/database/card/get/getCardById.utils';
+import { resetCard } from '../utils/database/card/update/resetCard.utils';
 import { updateCardInfo } from '../utils/database/card/update/updateCardInfo.utils';
 import { getNameDeckById } from '../utils/database/deck/getNameDeckById.utils';
 
@@ -69,6 +71,24 @@ export default function Modal() {
     router.back();
   };
 
+  const handleReset = async () => {
+    const resetOk = resetCard(database, idCard);
+    if (resetOk) {
+      Toast.show({
+        type: 'success',
+        text1: "L'apprentissage a été réinitialisé",
+        visibilityTime: 2000,
+      });
+      router.back();
+    } else {
+      Toast.show({
+        type: 'error',
+        text1: 'Une erreur est survenue.',
+        visibilityTime: 2000,
+      });
+    }
+  };
+
   const handleDelete = async () => {
     await deleteCard(database, idCard);
     router.back();
@@ -111,6 +131,10 @@ export default function Modal() {
         </View>
         {editMode && (
           <View style={styles.buttonDelete}>
+            <ButtonModal
+              text="Réinitialiser l'apprentissage"
+              onPress={handleReset}
+            />
             <ButtonModal text="Supprimer" onPress={handleDelete} />
           </View>
         )}
@@ -154,6 +178,11 @@ const styles = StyleSheet.create({
   },
   buttonDelete: {
     marginTop: 'auto',
-    height: Sizes.component.small,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    alignItems: 'stretch',
+    gap: 8,
+    height: Sizes.component.small * 2 + 8,
   },
 });
