@@ -56,6 +56,15 @@ export default function Modal() {
   );
 
   const handleValidate = async (continueCreating: boolean) => {
+    if (recto === '' || verso === '') {
+      Toast.show({
+        type: 'error',
+        text1: 'Les champs Recto et Verso ne peuvent pas être vide.',
+        visibilityTime: 2000,
+      });
+      return;
+    }
+
     if (editMode) {
       await updateCardInfo(database, idCard, recto, verso, isChecked);
     } else {
