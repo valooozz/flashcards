@@ -74,7 +74,7 @@ export default function Screen() {
         />
       ) : (
         <Text style={styles.text}>
-          Ce deck ne contient aucune carte. Clique sur le bouton + pour en
+          Ce deck ne contient aucune carte. Cliquez sur le bouton + pour en
           ajouter !
         </Text>
       )}

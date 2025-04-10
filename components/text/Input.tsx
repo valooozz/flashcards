@@ -6,6 +6,7 @@ import { Sizes } from '../../style/Sizes';
 interface InputProps {
   text: string;
   setText: Dispatch<SetStateAction<string>>;
+  underline: boolean;
   autofocus?: boolean;
   innerRef?: MutableRefObject<TextInput>;
 }
@@ -13,12 +14,16 @@ interface InputProps {
 export function Input({
   text,
   setText,
+  underline,
   autofocus = false,
   innerRef,
 }: InputProps) {
   return (
     <TextInput
-      style={{ ...styles.input }}
+      style={{
+        ...styles.input,
+        textDecorationLine: underline ? 'underline' : 'none',
+      }}
       value={text}
       onChangeText={setText}
       autoFocus={autofocus}

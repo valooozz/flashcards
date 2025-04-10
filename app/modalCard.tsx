@@ -23,12 +23,18 @@ import { getCardById } from '../utils/database/card/get/getCardById.utils';
 import { resetCard } from '../utils/database/card/update/resetCard.utils';
 import { updateCardInfo } from '../utils/database/card/update/updateCardInfo.utils';
 import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
+import { formatDate } from '../utils/formatDate.utils';
+import { getDelay } from '../utils/getDelay.utils';
 import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
   const [recto, setRecto] = useState('');
   const [verso, setVerso] = useState('');
+  const [rectoFirst, setRectoFirst] = useState(true);
+  const [step, setStep] = useState(0);
+  const [nextRevision, setNextRevision] = useState('');
+  const [delay, setDelay] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [isChecked, setIsChecked] = useState(true);
 
@@ -53,6 +59,10 @@ export default function Modal() {
         getCardById(database, idCard).then((card) => {
           setRecto(card.recto);
           setVerso(card.verso);
+          setRectoFirst(Boolean(card.rectoFirst));
+          setStep(card.step);
+          setNextRevision(card.nextRevision);
+          setDelay(getDelay(card.nextRevision));
           setIsChecked(Boolean(card.changeSide));
         });
       }
@@ -116,11 +126,16 @@ export default function Modal() {
         <Input
           text={recto}
           setText={setRecto}
+          underline={editMode && rectoFirst}
           autofocus={!editMode}
           innerRef={rectoInputRef}
         />
         <Header level={3} text="Verso" color={Colors.library.light.contrast} />
-        <Input text={verso} setText={setVerso} />
+        <Input
+          text={verso}
+          setText={setVerso}
+          underline={editMode && !rectoFirst}
+        />
         <View style={styles.checkboxContainer}>
           <Checkbox
             style={styles.checkbox}
@@ -128,7 +143,7 @@ export default function Modal() {
             onValueChange={setIsChecked}
             color={Colors.library.dark.main}
           />
-          <Text style={styles.checkboxText}>Alterner recto et verso</Text>
+          <Text style={styles.text}>Alterner recto et verso</Text>
         </View>
         {!editMode && (
           <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
@@ -152,22 +167,38 @@ export default function Modal() {
           />
         </View>
         {editMode && (
-          <View style={styles.buttonBottom}>
-            <ButtonModal
-              text="Réinitialiser l'apprentissage"
-              onPress={() =>
-                alertAction(
-                  'Réinitialiser',
-                  "l'apprentissage de la carte",
-                  handleReset,
-                )
-              }
-            />
-            <ButtonModal
-              text="Supprimer"
-              onPress={() => alertAction('Supprimer', 'la carte', handleDelete)}
-            />
-          </View>
+          <>
+            <View style={styles.infoContainer}>
+              <Text
+                style={styles.text}
+              >{`Étape d'apprentissage : ${step}/8`}</Text>
+              <Text style={styles.text}>
+                {delay < 0
+                  ? `Prochaine révision : ${formatDate(nextRevision)} (${-getDelay(nextRevision)} j.)`
+                  : delay > 0
+                    ? `${delay} jour${delay > 1 ? 's' : ''} de retard dans les révisions.`
+                    : "À réviser aujourd'hui."}
+              </Text>
+            </View>
+            <View style={{ ...styles.buttonLineContainer, marginTop: 'auto' }}>
+              <ButtonModal
+                text="Réinitialiser"
+                onPress={() =>
+                  alertAction(
+                    'Réinitialiser',
+                    "l'apprentissage de la carte",
+                    handleReset,
+                  )
+                }
+              />
+              <ButtonModal
+                text="Supprimer"
+                onPress={() =>
+                  alertAction('Supprimer', 'la carte', handleDelete)
+                }
+              />
+            </View>
+          </>
         )}
       </View>
     </SafeAreaView>
@@ -197,23 +228,22 @@ const styles = StyleSheet.create({
     width: Sizes.component.tiny,
     height: Sizes.component.tiny,
   },
-  checkboxText: {
+  text: {
     textAlign: 'left',
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
   },
   buttonLineContainer: {
+    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
   },
-  buttonBottom: {
-    marginTop: 'auto',
+  infoContainer: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     alignItems: 'stretch',
-    gap: 8,
-    height: Sizes.component.small * 2 + 8,
+    marginTop: 8,
   },
 });
