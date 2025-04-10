@@ -6,6 +6,7 @@ import { Radius } from '../../style/Radius';
 import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 import { CardType } from '../../types/CardType';
+import { alertAction } from '../../utils/alertAction.utils';
 import { deleteCard } from '../../utils/database/card/deleteCard.utils';
 import { getProgressBarLength } from '../../utils/getProgressBarLength';
 import { notify } from '../../utils/notify.utils';
@@ -31,7 +32,7 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
       onPress={() =>
         router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
       }
-      onLongPress={handleDelete}
+      onLongPress={() => alertAction('Supprimer', 'la carte', handleDelete)}
     >
       <View style={styles.textContainer}>
         <Text style={styles.text}>

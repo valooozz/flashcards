@@ -15,6 +15,7 @@ import { Input } from '../components/text/Input';
 import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
+import { alertAction } from '../utils/alertAction.utils';
 import { createDeck } from '../utils/database/deck/createDeck.utils';
 import { deleteDeck } from '../utils/database/deck/deleteDeck.utils';
 import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
@@ -121,9 +122,18 @@ export default function Modal() {
           <View style={styles.buttonBottom}>
             <ButtonModal
               text="Réinitialiser l'apprentissage"
-              onPress={handleReset}
+              onPress={() =>
+                alertAction(
+                  'Réinitialiser',
+                  "l'apprentissage du deck",
+                  handleReset,
+                )
+              }
             />
-            <ButtonModal text="Supprimer" onPress={handleDelete} />
+            <ButtonModal
+              text="Supprimer"
+              onPress={() => alertAction('Supprimer', 'le deck', handleDelete)}
+            />
           </View>
         )}
       </View>

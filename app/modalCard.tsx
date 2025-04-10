@@ -16,6 +16,7 @@ import { Input } from '../components/text/Input';
 import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
+import { alertAction } from '../utils/alertAction.utils';
 import { createCard } from '../utils/database/card/createCard.utils';
 import { deleteCard } from '../utils/database/card/deleteCard.utils';
 import { getCardById } from '../utils/database/card/get/getCardById.utils';
@@ -146,9 +147,18 @@ export default function Modal() {
           <View style={styles.buttonBottom}>
             <ButtonModal
               text="Réinitialiser l'apprentissage"
-              onPress={handleReset}
+              onPress={() =>
+                alertAction(
+                  'Réinitialiser',
+                  "l'apprentissage de la carte",
+                  handleReset,
+                )
+              }
             />
-            <ButtonModal text="Supprimer" onPress={handleDelete} />
+            <ButtonModal
+              text="Supprimer"
+              onPress={() => alertAction('Supprimer', 'la carte', handleDelete)}
+            />
           </View>
         )}
       </View>
