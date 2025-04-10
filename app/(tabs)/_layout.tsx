@@ -1,7 +1,7 @@
-import { Tabs } from 'expo-router';
-import { Colors } from '../../style/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Tabs } from 'expo-router';
+import { Colors } from '../../style/Colors';
 
 export default function TabLayout() {
   return (
@@ -10,15 +10,19 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors.navigation.main,
         tabBarInactiveTintColor: Colors.navigation.light,
         tabBarShowLabel: false,
+        headerShown: false,
       }}
     >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Bibliothèque',
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <Ionicons name="library" size={25} color={color} />
+          tabBarIcon: () => (
+            <Ionicons
+              name="library"
+              size={25}
+              color={Colors.library.dark.main}
+            />
           ),
         }}
       />
@@ -26,7 +30,6 @@ export default function TabLayout() {
         name="deck"
         options={{
           title: 'Deck',
-          headerShown: false,
           href: null,
         }}
       />
@@ -34,9 +37,12 @@ export default function TabLayout() {
         name="daily"
         options={{
           title: 'Révisions du jour',
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="clock" size={25} color={color} />
+          tabBarIcon: () => (
+            <MaterialCommunityIcons
+              name="clock"
+              size={25}
+              color={Colors.daily.dark.main}
+            />
           ),
         }}
       />
@@ -44,12 +50,11 @@ export default function TabLayout() {
         name="learning"
         options={{
           title: 'Apprentissage',
-          headerShown: false,
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: () => (
             <MaterialCommunityIcons
               name="cards-heart"
               size={25}
-              color={color}
+              color={Colors.learning.dark.main}
             />
           ),
         }}

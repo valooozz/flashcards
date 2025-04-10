@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import FlipCard from 'react-native-flip-card';
 import { Colors } from '../../style/Colors';
@@ -35,6 +36,13 @@ export function FlashCard({
     }
   }, [recto, verso]);
 
+  useFocusEffect(
+    useCallback(() => {
+      setFlipped(false);
+      setFlippedAtFirst(false);
+    }, []),
+  );
+
   return (
     <FlipCard
       friction={100}
@@ -46,6 +54,7 @@ export function FlashCard({
       <TouchableOpacity
         style={{ ...styles.container, backgroundColor: backgroundColor }}
         onPress={() => setFlipped(!flipped)}
+        activeOpacity={1}
       >
         <Text style={{ ...styles.textDeck, color: textDeckColor }}>
           {deckName}
@@ -67,6 +76,7 @@ export function FlashCard({
       <TouchableOpacity
         style={{ ...styles.container, backgroundColor: backgroundColor }}
         onPress={() => setFlipped(!flipped)}
+        activeOpacity={1}
       >
         <Text style={{ ...styles.textDeck, color: textDeckColor }}>
           {deckName}
