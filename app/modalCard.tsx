@@ -6,7 +6,7 @@ import {
   useLocalSearchParams,
 } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BackButton } from '../components/button/BackButton';
@@ -31,6 +31,8 @@ export default function Modal() {
   const [verso, setVerso] = useState('');
   const [editMode, setEditMode] = useState(false);
   const [isChecked, setIsChecked] = useState(true);
+
+  const rectoInputRef = useRef(null);
 
   const database = useSQLiteContext();
 
@@ -111,7 +113,12 @@ export default function Modal() {
       />
       <View style={styles.container}>
         <Header level={3} text="Recto" color={Colors.library.light.contrast} />
-        <Input text={recto} setText={setRecto} />
+        <Input
+          text={recto}
+          setText={setRecto}
+          autofocus={!editMode}
+          innerRef={rectoInputRef}
+        />
         <Header level={3} text="Verso" color={Colors.library.light.contrast} />
         <Input text={verso} setText={setVerso} />
         <View style={styles.checkboxContainer}>
@@ -129,6 +136,7 @@ export default function Modal() {
               text="Ajouter et continuer à créer"
               onPress={() => {
                 handleValidate(true);
+                rectoInputRef.current.focus();
               }}
             />
           </View>

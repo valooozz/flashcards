@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, MutableRefObject, SetStateAction } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
@@ -6,14 +6,23 @@ import { Sizes } from '../../style/Sizes';
 interface InputProps {
   text: string;
   setText: Dispatch<SetStateAction<string>>;
+  autofocus?: boolean;
+  innerRef?: MutableRefObject<TextInput>;
 }
 
-export function Input({ text, setText }: InputProps) {
+export function Input({
+  text,
+  setText,
+  autofocus = false,
+  innerRef,
+}: InputProps) {
   return (
     <TextInput
       style={{ ...styles.input }}
       value={text}
       onChangeText={setText}
+      autoFocus={autofocus}
+      ref={innerRef}
     />
   );
 }
