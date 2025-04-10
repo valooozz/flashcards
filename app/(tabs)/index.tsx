@@ -1,11 +1,12 @@
 import { router, useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AddButton } from '../../components/button/AddButton';
 import { DeckCard } from '../../components/card/DeckCard';
 import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
+import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { DeckType } from '../../types/DeckType';
 
@@ -34,14 +35,21 @@ export default function Tab() {
         color={Colors.library.dark.contrast}
       />
       <Header level={2} text="Decks" color={Colors.library.dark.contrast} />
-      <ScrollView
-        contentContainerStyle={styles.decksDisplay}
-        showsVerticalScrollIndicator={false}
-      >
-        {decks.map((deck, index) => {
-          return <DeckCard deck={deck} key={index} />;
-        })}
-      </ScrollView>
+      {decks.length > 0 ? (
+        <ScrollView
+          contentContainerStyle={styles.decksDisplay}
+          showsVerticalScrollIndicator={false}
+        >
+          {decks.map((deck, index) => {
+            return <DeckCard deck={deck} key={index} />;
+          })}
+        </ScrollView>
+      ) : (
+        <Text style={styles.text}>
+          Il n'y a aucun deck par ici. Cliquez sur le bouton + pour en ajouter !
+        </Text>
+      )}
+
       <AddButton
         icon="pluscircle"
         size={70}
@@ -70,5 +78,13 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     marginRight: 24,
     paddingBottom: 104,
+  },
+  text: {
+    color: Colors.learning.dark.contrast,
+    textAlign: 'center',
+    fontSize: Sizes.font.small,
+    fontFamily: 'JosefinRegular',
+    marginTop: 80,
+    marginRight: 24,
   },
 });
