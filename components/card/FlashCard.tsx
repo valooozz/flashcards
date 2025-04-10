@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import FlipCard from 'react-native-flip-card';
 import { Colors } from '../../style/Colors';
 import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
@@ -23,52 +24,68 @@ export function FlashCard({
   textColor,
   textDeckColor,
 }: FlashCardProps) {
-  const [showRecto, setShowRecto] = useState(true);
-  const [textToShow, setTextToShow] = useState('');
-  const [reloadText, setReloadText] = useState(false);
+  const [flipped, setFlipped] = useState(false);
+  const [flippedAtFirst, setFlippedAtFirst] = useState(false);
 
   useEffect(() => {
-    setShowRecto(true);
-    setReloadText(!reloadText);
+    if (flipped) {
+      setFlippedAtFirst(true);
+    } else {
+      setFlippedAtFirst(false);
+    }
   }, [recto, verso]);
 
-  useEffect(() => {
-    if (showRecto) {
-      setTextToShow(recto);
-    } else {
-      setTextToShow(verso);
-    }
-  }, [reloadText]);
-
-  const flipCard = () => {
-    if (showRecto) {
-      setShowRecto(false);
-    } else {
-      setShowRecto(true);
-    }
-    setReloadText(!reloadText);
-  };
-
   return (
-    <TouchableOpacity
-      style={{ ...styles.container, backgroundColor: backgroundColor }}
-      onPress={flipCard}
+    <FlipCard
+      friction={100}
+      perspective={1000}
+      flipHorizontal={true}
+      flipVertical={false}
+      flip={flipped}
     >
-      <Text style={{ ...styles.textDeck, color: textDeckColor }}>
-        {deckName}
-      </Text>
-      {delay ? (
-        <Text
-          style={{
-            ...styles.textDeck,
-            color: Colors.daily.intermediate.main,
-          }}
-        >
-          {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
+      <TouchableOpacity
+        style={{ ...styles.container, backgroundColor: backgroundColor }}
+        onPress={() => setFlipped(!flipped)}
+      >
+        <Text style={{ ...styles.textDeck, color: textDeckColor }}>
+          {deckName}
         </Text>
-      ) : null}
-      <Text style={{ ...styles.text, color: textColor }}>{textToShow}</Text>
-    </TouchableOpacity>
+        {delay ? (
+          <Text
+            style={{
+              ...styles.textDeck,
+              color: Colors.daily.intermediate.main,
+            }}
+          >
+            {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
+          </Text>
+        ) : null}
+        <Text style={{ ...styles.text, color: textColor }}>
+          {flippedAtFirst ? verso : recto}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{ ...styles.container, backgroundColor: backgroundColor }}
+        onPress={() => setFlipped(!flipped)}
+      >
+        <Text style={{ ...styles.textDeck, color: textDeckColor }}>
+          {deckName}
+        </Text>
+        {delay ? (
+          <Text
+            style={{
+              ...styles.textDeck,
+              color: Colors.daily.intermediate.main,
+            }}
+          >
+            {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
+          </Text>
+        ) : null}
+        <Text style={{ ...styles.text, color: textColor }}>
+          {flippedAtFirst ? recto : verso}
+        </Text>
+      </TouchableOpacity>
+    </FlipCard>
   );
 }
 
