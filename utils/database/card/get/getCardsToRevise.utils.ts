@@ -8,7 +8,7 @@ export const getCardsToRevise = async (database: SQLiteDatabase) => {
 
   try {
     cardsToLearn = await database.getAllAsync<CardType>(
-      'SELECT * FROM Card WHERE nextRevision=? AND toLearn=? ORDER BY nextRevision ASC',
+      'SELECT * FROM Card WHERE nextRevision<=? AND toLearn=? ORDER BY nextRevision ASC',
       [today, 1],
     );
   } catch (error) {

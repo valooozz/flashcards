@@ -9,8 +9,8 @@ export const updateCardInfo = async (
 ): Promise<boolean> => {
   return database
     .runAsync('UPDATE Card SET recto=?, verso=?, changeSide=? WHERE id=?', [
-      recto,
-      verso,
+      recto.trim(),
+      verso.trim(),
       changeSide ? 1 : 0,
       id,
     ])

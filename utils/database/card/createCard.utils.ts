@@ -10,7 +10,7 @@ export const createCard = async (
   return database
     .runAsync(
       'INSERT INTO Card (deck, recto, verso, rectoFirst, step, nextRevision, toLearn, changeSide) VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
-      [idDeck, recto, verso, 1, 0, null, 1, changeSide ? 1 : 0],
+      [idDeck, recto.trim(), verso.trim(), 1, 0, null, 1, changeSide ? 1 : 0],
     )
     .then(() => true)
     .catch(() => false);
