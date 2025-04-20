@@ -5,6 +5,7 @@ import { SQLiteProvider } from 'expo-sqlite';
 import { useEffect } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ToastManager from 'toastify-react-native';
+import { SettingsProvider } from '../context/SettingsContext';
 import { initDatabase } from '../utils/database/initDatabase.utils';
 
 export default function Layout() {
@@ -27,20 +28,22 @@ export default function Layout() {
   return (
     <SQLiteProvider databaseName="flashcards.db" onInit={initDatabase}>
       <SafeAreaProvider style={{ flex: 1 }}>
-        <SafeAreaView style={{ flex: 1 }}>
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="modalDeck"
-              options={{ presentation: 'modal' }}
-            />
-            <Stack.Screen
-              name="modalCard"
-              options={{ presentation: 'modal' }}
-            />
-          </Stack>
-          <ToastManager />
-        </SafeAreaView>
+        <SettingsProvider>
+          <SafeAreaView style={{ flex: 1 }}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="modalDeck"
+                options={{ presentation: 'modal' }}
+              />
+              <Stack.Screen
+                name="modalCard"
+                options={{ presentation: 'modal' }}
+              />
+            </Stack>
+            <ToastManager />
+          </SafeAreaView>
+        </SettingsProvider>
       </SafeAreaProvider>
     </SQLiteProvider>
   );

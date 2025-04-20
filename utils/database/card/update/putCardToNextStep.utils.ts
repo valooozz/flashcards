@@ -5,6 +5,7 @@ import { getNextStep } from '../../../getNextStep.utils';
 
 export const putCardToNextStep = async (
   database: SQLiteDatabase,
+  intervals: number[],
   id: number,
   step: number,
   rectoFirst: number,
@@ -12,7 +13,7 @@ export const putCardToNextStep = async (
 ) => {
   try {
     const nextStep = getNextStep(step);
-    const nextRevision = getNextRevision(nextStep);
+    const nextRevision = getNextRevision(intervals, nextStep);
     const nextSide = getNextSide(rectoFirst, changeSide);
 
     database.runAsync(

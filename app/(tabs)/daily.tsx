@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { Header } from '../../components/text/Header';
+import { useSettingsContext } from '../../context/SettingsContext';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
@@ -23,6 +24,8 @@ export default function Tab() {
   const [deckName, setDeckName] = useState<string>('');
   const [delay, setDelay] = useState<number>(0);
   const [inSecondPhase, setInSecondPhase] = useState<boolean>(false);
+
+  const { intervals } = useSettingsContext();
   const database = useSQLiteContext();
 
   useEffect(() => {
@@ -74,6 +77,7 @@ export default function Tab() {
       } else {
         putCardToNextStep(
           database,
+          intervals,
           cardToShow.id,
           cardToShow.step,
           cardToShow.rectoFirst,

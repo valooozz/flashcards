@@ -1,7 +1,6 @@
 import { getDate } from './getDate.utils';
 
-export const getNextRevision = (step: number): string => {
-  const intervals = [1, 2, 4, 7, 14, 30, 30, 30, 60];
+export const getNextRevision = (intervals: number[], step: number): string => {
   const nextInterval = intervals[step];
   const nextRevision = getDate(nextInterval);
 

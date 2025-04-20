@@ -5,6 +5,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { Header } from '../../components/text/Header';
+import { useSettingsContext } from '../../context/SettingsContext';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
@@ -23,6 +24,8 @@ export default function Tab() {
   const [cardsToLearn, setCardsToLearn] = useState<CardType[]>([]);
   const [cardToShow, setCardToShow] = useState<CardType>(undefined);
   const [deckName, setDeckName] = useState<string>('');
+
+  const { setSettings } = useSettingsContext();
   const database = useSQLiteContext();
 
   useEffect(() => {
@@ -132,6 +135,14 @@ export default function Tab() {
           >
             <Text style={{ fontSize: 30, textAlign: 'center' }}>
               Toutes les révisions à ajd
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ backgroundColor: 'yellow' }}
+            onPress={() => setSettings([1, 2, 4, 7, 14, 30, 30, 30, 60], true)}
+          >
+            <Text style={{ fontSize: 30, textAlign: 'center' }}>
+              Changer paramètres
             </Text>
           </TouchableOpacity>
         </>
