@@ -22,7 +22,7 @@ export function DeckCard({ deck }: DeckCardProps) {
     useCallback(() => {
       getNbCardsInDeck(database, deck.id.toString()).then((nb) => {
         setNbCards(nb);
-        if (nbCards > 1) {
+        if (nb > 1) {
           setWord(' cartes');
         } else {
           setWord(' carte');
