@@ -2,7 +2,7 @@ import { router, Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BackButton } from '../components/button/BackButton';
+import { Toolbar } from '../components/bar/Toolbar';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
@@ -69,12 +69,11 @@ export default function Modal() {
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: 'Settings', headerShown: false }} />
-      <BackButton color={Colors.library.light.contrast} />
+      <Toolbar color={Colors.library.light.contrast} />
       <Header
         level={1}
         text="Paramètres"
         color={Colors.library.light.contrast}
-        underButton
       />
       <View style={styles.container}>
         <CheckboxWithText

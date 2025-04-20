@@ -2,9 +2,8 @@ import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { Toolbar } from '../../components/bar/Toolbar';
 import { AddButton } from '../../components/button/AddButton';
-import { BackButton } from '../../components/button/BackButton';
-import { SettingsButton } from '../../components/button/SettingsButton';
 import { ListCard } from '../../components/card/ListCard';
 import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
@@ -46,17 +45,11 @@ export default function Screen() {
 
   return (
     <View style={styles.container}>
-      <BackButton color={Colors.library.dark.contrast} />
-      <SettingsButton
+      <Toolbar
         color={Colors.library.dark.contrast}
-        route={`/modalDeck?idDeck=${idDeck}`}
+        routeSettingsButton={`/modalDeck?idDeck=${idDeck}`}
       />
-      <Header
-        level={1}
-        text={deckName}
-        color={Colors.library.dark.contrast}
-        underButton={true}
-      />
+      <Header level={1} text={deckName} color={Colors.library.dark.contrast} />
       <Header
         level={2}
         text={`Cartes (${nbCards})`}

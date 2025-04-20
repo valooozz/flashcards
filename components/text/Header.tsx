@@ -5,21 +5,14 @@ interface HeaderProps {
   level: number;
   text: string;
   color: string;
-  underButton?: boolean;
 }
 
-export function Header({
-  level,
-  text,
-  color,
-  underButton = false,
-}: HeaderProps) {
+export function Header({ level, text, color }: HeaderProps) {
   return (
     <Text
       style={{
         ...styles[level],
         color: color,
-        marginTop: underButton ? 24 : 0,
       }}
     >
       {text}
