@@ -9,15 +9,14 @@ import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { DeckType } from '../../types/DeckType';
+import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
 
 export default function Tab() {
   const [decks, setDecks] = useState<DeckType[]>([]);
   const database = useSQLiteContext();
 
   const loadData = async () => {
-    const decksResult = await database.getAllAsync<DeckType>(
-      'SELECT * FROM Deck;',
-    );
+    const decksResult = await getAllDecks(database);
     setDecks(decksResult);
   };
 
@@ -40,9 +39,20 @@ export default function Tab() {
           contentContainerStyle={styles.decksDisplay}
           showsVerticalScrollIndicator={false}
         >
-          {decks.map((deck, index) => {
-            return <DeckCard deck={deck} key={index} />;
-          })}
+          <View style={styles.columnDisplay}>
+            {decks.map((deck, index) => {
+              return index % 2 === 0 ? (
+                <DeckCard deck={deck} key={index} />
+              ) : null;
+            })}
+          </View>
+          <View style={styles.columnDisplay}>
+            {decks.map((deck, index) => {
+              return index % 2 === 0 ? null : (
+                <DeckCard deck={deck} key={index} />
+              );
+            })}
+          </View>
         </ScrollView>
       ) : (
         <Text style={styles.text}>
@@ -69,15 +79,21 @@ const styles = StyleSheet.create({
   },
   decksDisplay: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    alignContent: 'flex-start',
-    rowGap: 16,
     columnGap: 16,
     flexGrow: 1,
     marginRight: 24,
     paddingBottom: 104,
+  },
+  columnDisplay: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    rowGap: 16,
+    minWidth: 152,
   },
   text: {
     color: Colors.learning.dark.contrast,

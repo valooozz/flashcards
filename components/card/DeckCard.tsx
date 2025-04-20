@@ -45,13 +45,11 @@ export function DeckCard({ deck }: DeckCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'stretch',
     backgroundColor: Colors.library.simple.main,
-    minWidth: 152,
     height: Sizes.component.huge,
     paddingHorizontal: 16,
     paddingVertical: 16,
@@ -61,7 +59,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
-    textDecorationLine: 'underline',
     color: Colors.library.simple.contrast,
     textAlign: 'left',
   },
