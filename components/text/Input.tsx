@@ -6,7 +6,8 @@ import { Sizes } from '../../style/Sizes';
 interface InputProps {
   text: string;
   setText: Dispatch<SetStateAction<string>>;
-  underline: boolean;
+  numeric?: boolean;
+  underline?: boolean;
   autofocus?: boolean;
   innerRef?: MutableRefObject<TextInput>;
 }
@@ -14,7 +15,8 @@ interface InputProps {
 export function Input({
   text,
   setText,
-  underline,
+  numeric = false,
+  underline = false,
   autofocus = false,
   innerRef,
 }: InputProps) {
@@ -26,6 +28,7 @@ export function Input({
       }}
       value={text}
       onChangeText={setText}
+      keyboardType={numeric ? 'numeric' : 'default'}
       autoFocus={autofocus}
       ref={innerRef}
     />

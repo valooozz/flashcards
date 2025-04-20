@@ -1,4 +1,3 @@
-import Checkbox from 'expo-checkbox';
 import {
   router,
   Stack,
@@ -11,6 +10,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
+import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
 import { Colors } from '../style/Colors';
@@ -136,15 +136,11 @@ export default function Modal() {
           setText={setVerso}
           underline={editMode && !rectoFirst}
         />
-        <View style={styles.checkboxContainer}>
-          <Checkbox
-            style={styles.checkbox}
-            value={isChecked}
-            onValueChange={setIsChecked}
-            color={Colors.library.dark.main}
-          />
-          <Text style={styles.text}>Alterner recto et verso</Text>
-        </View>
+        <CheckboxWithText
+          isChecked={isChecked}
+          setIsChecked={setIsChecked}
+          textLabel="Alterner recto et verso"
+        />
         {!editMode && (
           <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
             <ButtonModal
@@ -215,18 +211,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-  },
-  checkboxContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    gap: 8,
-    marginTop: 16,
-  },
-  checkbox: {
-    width: Sizes.component.tiny,
-    height: Sizes.component.tiny,
   },
   text: {
     textAlign: 'left',

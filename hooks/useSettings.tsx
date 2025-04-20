@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 const useSettings = () => {
   const [hardThrowback, setHardThrowback] = useState(true);
-
+  const [stopLearning, setStopLearning] = useState(false);
   const [intervals, setIntervals] = useState([1, 2, 4, 7, 14, 30, 30, 30, 60]);
 
   useEffect(() => {
@@ -39,6 +39,7 @@ const useSettings = () => {
   const setSettings = async (
     newIntervals: number[],
     newHardThrowback: boolean,
+    newStopLearning: boolean,
   ) => {
     if (newIntervals.length !== 9) {
       console.error(
@@ -49,10 +50,15 @@ const useSettings = () => {
 
     setIntervals(newIntervals);
     setHardThrowback(newHardThrowback);
+    setStopLearning(newStopLearning);
     saveSettings();
   };
 
-  return { hardThrowback, intervals, setSettings };
+  const resetSettings = async () => {
+    setSettings([1, 2, 4, 7, 14, 30, 30, 30, 60], true, false);
+  };
+
+  return { hardThrowback, stopLearning, intervals, setSettings, resetSettings };
 };
 
 export default useSettings;

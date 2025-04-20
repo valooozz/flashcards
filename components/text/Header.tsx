@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { Sizes } from '../../style/Sizes';
 
 interface HeaderProps {
@@ -15,22 +15,19 @@ export function Header({
   underButton = false,
 }: HeaderProps) {
   return (
-    <View style={styles.container}>
-      <Text
-        style={{
-          ...styles[level],
-          color: color,
-          marginTop: underButton ? 24 : 0,
-        }}
-      >
-        {text}
-      </Text>
-    </View>
+    <Text
+      style={{
+        ...styles[level],
+        color: color,
+        marginTop: underButton ? 24 : 0,
+      }}
+    >
+      {text}
+    </Text>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
   1: {
     textAlign: 'left',
     fontSize: Sizes.font.large,

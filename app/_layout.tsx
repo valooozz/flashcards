@@ -40,6 +40,10 @@ export default function Layout() {
                 name="modalCard"
                 options={{ presentation: 'modal' }}
               />
+              <Stack.Screen
+                name="modalSettings"
+                options={{ presentation: 'modal' }}
+              />
             </Stack>
             <ToastManager />
           </SafeAreaView>

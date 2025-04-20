@@ -13,6 +13,7 @@ import { CardType } from '../../types/CardType';
 import { getCardsToRevise } from '../../utils/database/card/get/getCardsToRevise.utils';
 import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
 import { putCardToNextStep } from '../../utils/database/card/update/putCardToNextStep.utils';
+import { putCardToPreviousStep } from '../../utils/database/card/update/putCardToPreviousStep.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
 import { getDelay } from '../../utils/getDelay.utils';
@@ -25,7 +26,7 @@ export default function Tab() {
   const [delay, setDelay] = useState<number>(0);
   const [inSecondPhase, setInSecondPhase] = useState<boolean>(false);
 
-  const { intervals } = useSettingsContext();
+  const { hardThrowback, stopLearning, intervals } = useSettingsContext();
   const database = useSQLiteContext();
 
   useEffect(() => {
@@ -72,7 +73,18 @@ export default function Tab() {
   const handleClick = (known: boolean) => {
     if (known) {
       if (inSecondPhase) {
-        putCardToReviseTommorow(database, cardToShow.id.toString());
+        if (hardThrowback) {
+          putCardToReviseTommorow(database, cardToShow.id.toString());
+        } else {
+          putCardToPreviousStep(
+            database,
+            intervals,
+            cardToShow.id,
+            cardToShow.step,
+            cardToShow.rectoFirst,
+            cardToShow.changeSide,
+          );
+        }
         setForgottenCards(forgottenCards.slice(1));
       } else {
         putCardToNextStep(
@@ -82,6 +94,7 @@ export default function Tab() {
           cardToShow.step,
           cardToShow.rectoFirst,
           cardToShow.changeSide,
+          stopLearning,
         );
       }
     } else {

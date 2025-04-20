@@ -3,11 +3,14 @@ import useSettings from '../hooks/useSettings';
 
 interface SettingsContextType {
   hardThrowback: boolean;
+  stopLearning: boolean;
   intervals: number[];
   setSettings: (
     newIntervals: number[],
     newHardThrowback: boolean,
+    newStopLearning: boolean,
   ) => Promise<void>;
+  resetSettings: () => Promise<void>;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -18,7 +21,7 @@ export const useSettingsContext = (): SettingsContextType => {
   const context = useContext(SettingsContext);
   if (!context) {
     throw new Error(
-      'useSettingsContext doit être utilisé dans un CountersProvider',
+      'useSettingsContext doit être utilisé dans un SettingsProvider',
     );
   }
   return context;

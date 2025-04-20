@@ -3,6 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { AddButton } from '../../components/button/AddButton';
+import { SettingsButton } from '../../components/button/SettingsButton';
 import { DeckCard } from '../../components/card/DeckCard';
 import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
@@ -28,10 +29,15 @@ export default function Tab() {
 
   return (
     <View style={styles.container}>
+      <SettingsButton
+        color={Colors.library.dark.contrast}
+        route="modalSettings"
+      />
       <Header
         level={1}
         text="Bibliothèque"
         color={Colors.library.dark.contrast}
+        underButton
       />
       <Header level={2} text="Decks" color={Colors.library.dark.contrast} />
       {decks.length > 0 ? (
