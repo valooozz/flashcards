@@ -118,18 +118,22 @@ export default function Modal() {
             onPress={handleValidate}
           />
         </View>
-        <View style={{ ...styles.buttonLineContainer, marginTop: 'auto' }}>
-          <ButtonModal
-            text="Exporter les cartes"
-            onPress={() => exportDeck(database, idDeck, deckName, false)}
-          />
-        </View>
-        <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
-          <ButtonModal
-            text="Exporter avec l'apprentissage"
-            onPress={() => exportDeck(database, idDeck, deckName, true)}
-          />
-        </View>
+        {editMode && (
+          <View style={{ ...styles.buttonLineContainer, marginTop: 32 }}>
+            <ButtonModal
+              text="Exporter les cartes"
+              onPress={() => exportDeck(database, idDeck, deckName, false)}
+            />
+          </View>
+        )}
+        {editMode && (
+          <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
+            <ButtonModal
+              text="Exporter avec l'apprentissage"
+              onPress={() => exportDeck(database, idDeck, deckName, true)}
+            />
+          </View>
+        )}
         {editMode && (
           <View style={styles.buttonBottom}>
             <ButtonModal
