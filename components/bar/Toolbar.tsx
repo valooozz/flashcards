@@ -15,7 +15,7 @@ export function Toolbar({
 }: ToolbarProps) {
   return (
     <View style={styles.container}>
-      {!noBackButton && <BackButton color={'color'} />}
+      {!noBackButton && <BackButton color={color} />}
       {routeSettingsButton !== undefined && (
         <View style={styles.settingsButton}>
           <SettingsButton color={color} route={routeSettingsButton} />
