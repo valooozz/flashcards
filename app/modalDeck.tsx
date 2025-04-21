@@ -18,6 +18,7 @@ import { globalStyles } from '../style/Styles';
 import { alertAction } from '../utils/alertAction.utils';
 import { createDeck } from '../utils/database/deck/createDeck.utils';
 import { deleteDeck } from '../utils/database/deck/deleteDeck.utils';
+import { exportDeck } from '../utils/database/deck/exportDeck.utils';
 import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
 import { renameDeck } from '../utils/database/deck/update/renameDeck.utils';
 import { resetDeck } from '../utils/database/deck/update/resetDeck.utils';
@@ -107,7 +108,7 @@ export default function Modal() {
           color={Colors.library.light.contrast}
         />
         <Input text={newDeckName} setText={setNewDeckName} />
-        <View style={styles.buttonLineContainer}>
+        <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
           <ButtonModal
             text={editMode ? 'Retour' : 'Annuler'}
             onPress={() => router.back()}
@@ -115,6 +116,18 @@ export default function Modal() {
           <ButtonModal
             text={editMode ? 'Renommer' : 'Ajouter'}
             onPress={handleValidate}
+          />
+        </View>
+        <View style={{ ...styles.buttonLineContainer, marginTop: 'auto' }}>
+          <ButtonModal
+            text="Exporter les cartes"
+            onPress={() => exportDeck(database, idDeck, deckName, false)}
+          />
+        </View>
+        <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
+          <ButtonModal
+            text="Exporter avec l'apprentissage"
+            onPress={() => exportDeck(database, idDeck, deckName, true)}
           />
         </View>
         {editMode && (
@@ -154,7 +167,6 @@ const styles = StyleSheet.create({
   buttonLineContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginTop: 16,
   },
   buttonBottom: {
     marginTop: 'auto',
