@@ -1,13 +1,69 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system';
+import { useSQLiteContext } from 'expo-sqlite';
+import { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
+import { DeckDocument } from '../../types/DeckDocument';
+import { importDeck } from '../../utils/database/deck/importDeck.utils';
+import { notify } from '../../utils/notify.utils';
 
 interface BackButtonProps {
   color: string;
 }
 
 export function ImportExportButton({ color }: BackButtonProps) {
+  const [file, setFile] = useState(null);
+  const [fileContent, setFileContent] = useState('');
+
+  const database = useSQLiteContext();
+
+  useEffect(() => {
+    if (fileContent === '') {
+      return;
+    }
+
+    const deckDocument: DeckDocument = JSON.parse(fileContent);
+    importDeck(database, deckDocument).then((deckAdded) => {
+      notify(
+        deckAdded,
+        'Un deck porte déjà ce nom',
+        `Deck ${deckDocument.deckName} ajouté`,
+      );
+    });
+  }, [fileContent]);
+
+  useEffect(() => {
+    if (file === null) {
+      return;
+    }
+
+    console.log('uri:', file.assets[0].uri);
+    FileSystem.readAsStringAsync(file.assets[0].uri)
+      .then((fileRead) => setFileContent(fileRead))
+      .catch((error) => console.log(error));
+  }, [file]);
+
+  const pickDocument = async () => {
+    console.log('pickDocument');
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: 'application/json',
+        multiple: false,
+      });
+
+      if (result.canceled) {
+        console.log('Document picking canceled');
+      } else {
+        setFile(result);
+      }
+    } catch (error) {
+      console.log('Error picking document:', error);
+    }
+  };
+
   return (
-    <TouchableOpacity onPress={() => console.log('import')}>
+    <TouchableOpacity onPress={pickDocument}>
       <MaterialIcons name="import-export" size={40} color={color} />
     </TouchableOpacity>
   );

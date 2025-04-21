@@ -47,12 +47,12 @@ export default function Modal() {
       }
       notify(renameOk, 'Un deck porte déjà ce nom.', 'Deck renommé');
     } else {
-      const createOk = await createDeck(database, newDeckName);
-      if (createOk) {
+      const idCreated = await createDeck(database, newDeckName);
+      if (idCreated >= 0) {
         router.back();
       }
       notify(
-        createOk,
+        idCreated >= 0,
         'Un deck porte déjà ce nom.',
         `Deck ${newDeckName} créé`,
       );
