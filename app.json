@@ -5,9 +5,10 @@
     "plugins": ["expo-router", "expo-sqlite"],
     "name": "flashcards",
     "slug": "flashcards",
+    "version": "1.0.0",
     "android": {
-      "package": "com.valooozz.flashcards"
+      "package": "com.valooozz.flashcards",
+      "versionCode": 1
     }
   }
 }
-

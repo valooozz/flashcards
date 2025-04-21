@@ -69,23 +69,13 @@ export default function Modal() {
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: 'Settings', headerShown: false }} />
-      <Toolbar color={Colors.library.light.contrast} />
+      <Toolbar color={Colors.library.light.contrast} importExportButton />
       <Header
         level={1}
         text="Paramètres"
         color={Colors.library.light.contrast}
       />
       <View style={styles.container}>
-        <CheckboxWithText
-          isChecked={newHardThrowback}
-          setIsChecked={setNewHardThrowback}
-          textLabel="Revenir à la première étape lors d'un oubli"
-        />
-        <CheckboxWithText
-          isChecked={newStopLearning}
-          setIsChecked={setNewStopLearning}
-          textLabel="Arrêter de réviser les cartes qui passent la dernière étape"
-        />
         <Header
           level={3}
           text="Jours d'espacement"
@@ -138,6 +128,23 @@ export default function Modal() {
             setTextInput={setStep8}
           />
         </View>
+        <Header
+          level={3}
+          text="Gestion des révisions"
+          color={Colors.library.light.contrast}
+        />
+        <View style={styles.checkboxContainer}>
+          <CheckboxWithText
+            isChecked={newHardThrowback}
+            setIsChecked={setNewHardThrowback}
+            textLabel="Revenir à la première étape lors d'un oubli"
+          />
+          <CheckboxWithText
+            isChecked={newStopLearning}
+            setIsChecked={setNewStopLearning}
+            textLabel="Arrêter de réviser les cartes qui passent la dernière étape"
+          />
+        </View>
         <View style={styles.buttonLineContainer}>
           <ButtonModal text="Annuler" onPress={() => router.back()} />
           <ButtonModal text="Enregistrer" onPress={handleValidate} />
@@ -175,6 +182,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     columnGap: 24,
+    rowGap: 8,
+  },
+  checkboxContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
     rowGap: 8,
   },
   buttonLineContainer: {

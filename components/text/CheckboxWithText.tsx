@@ -7,17 +7,19 @@ interface CheckboxWithTextProps {
   isChecked: boolean;
   setIsChecked: (value: boolean) => void;
   textLabel: string;
+  spaceTop?: boolean;
 }
 
 export function CheckboxWithText({
   isChecked,
   setIsChecked,
   textLabel,
+  spaceTop = false,
 }: CheckboxWithTextProps) {
   return (
     <View style={styles.checkboxContainer}>
       <Checkbox
-        style={styles.checkbox}
+        style={{ ...styles.checkbox, marginTop: spaceTop ? 16 : 0 }}
         value={isChecked}
         onValueChange={setIsChecked}
         color={Colors.library.dark.main}
@@ -34,7 +36,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     gap: 8,
-    marginTop: 16,
   },
   checkbox: {
     width: Sizes.component.tiny,

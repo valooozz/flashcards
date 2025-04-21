@@ -135,6 +135,7 @@ export default function Modal() {
           isChecked={isChecked}
           setIsChecked={setIsChecked}
           textLabel="Alterner recto et verso"
+          spaceTop
         />
         {!editMode && (
           <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
