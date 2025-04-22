@@ -10,7 +10,6 @@ const useSettings = () => {
     AsyncStorage.getItem('intervals')
       .then((result) => {
         if (result) {
-          console.log('Intervalles:', result);
           setIntervals(JSON.parse(result));
         }
       })
@@ -19,7 +18,6 @@ const useSettings = () => {
     AsyncStorage.getItem('hardThrowback')
       .then((result) => {
         if (result) {
-          console.log('hardThrowback:', result);
           setHardThrowback(JSON.parse(result));
         }
       })

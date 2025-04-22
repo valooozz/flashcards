@@ -38,14 +38,12 @@ export function ImportExportButton({ color }: BackButtonProps) {
       return;
     }
 
-    console.log('uri:', file.assets[0].uri);
     FileSystem.readAsStringAsync(file.assets[0].uri)
       .then((fileRead) => setFileContent(fileRead))
       .catch((error) => console.log(error));
   }, [file]);
 
   const pickDocument = async () => {
-    console.log('pickDocument');
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: 'application/json',
@@ -53,7 +51,6 @@ export function ImportExportButton({ color }: BackButtonProps) {
       });
 
       if (result.canceled) {
-        console.log('Document picking canceled');
       } else {
         setFile(result);
       }

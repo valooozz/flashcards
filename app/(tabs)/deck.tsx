@@ -11,7 +11,6 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
-import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
 import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
 import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 
@@ -30,7 +29,6 @@ export default function Screen() {
 
   useFocusEffect(
     useCallback(() => {
-      logAllCards(database);
       getNameDeckById(database, idDeck).then((nameResult) => {
         setDeckName(nameResult);
       });

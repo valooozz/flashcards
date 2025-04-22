@@ -42,7 +42,5 @@ export const exportDeck = async (
 
   await FileSystem.writeAsStringAsync(exportPath, stringDocument);
 
-  console.log(stringDocument);
-
   await Sharing.shareAsync(exportPath);
 };

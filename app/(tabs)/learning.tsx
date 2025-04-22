@@ -10,7 +10,6 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
-import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
 
@@ -39,7 +38,6 @@ export default function Tab() {
 
   useFocusEffect(
     useCallback(() => {
-      logAllCards(database);
       getCardsToLearn(database).then((cardsResult) => {
         setCardsToLearn(cardsResult);
       });

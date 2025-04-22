@@ -11,7 +11,6 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsToRevise } from '../../utils/database/card/get/getCardsToRevise.utils';
-import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
 import { putCardToNextStep } from '../../utils/database/card/update/putCardToNextStep.utils';
 import { putCardToPreviousStep } from '../../utils/database/card/update/putCardToPreviousStep.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
@@ -62,7 +61,6 @@ export default function Tab() {
 
   useFocusEffect(
     useCallback(() => {
-      logAllCards(database);
       getCardsToRevise(database).then((cardsResult) => {
         setCardsToRevise(cardsResult);
         setInSecondPhase(false);
