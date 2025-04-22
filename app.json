@@ -21,6 +21,14 @@
       "package": "com.valooozz.flashcards",
       "versionCode": 1
     },
-    "icon": "./assets/images/flash-icon.png"
+    "icon": "./assets/images/flash-icon.png",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "975269d3-2cde-4eee-b24c-92caec2d98ed"
+      }
+    }
   }
 }
