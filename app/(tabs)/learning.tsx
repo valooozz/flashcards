@@ -1,31 +1,24 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { Header } from '../../components/text/Header';
-import { useSettingsContext } from '../../context/SettingsContext';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
-import { dropTableCard } from '../../utils/database/card/table/dropTableCard.utils';
-import { emptyTableCard } from '../../utils/database/card/table/emptyTableCard.utils';
 import { logAllCards } from '../../utils/database/card/table/logAllCards.utils';
-import { resetAllCards } from '../../utils/database/card/table/resetAllCards.utils';
-import { setAllRevisionsToToday } from '../../utils/database/card/table/setAllRevisionsToToday.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
-import { emptyTableDeck } from '../../utils/database/deck/table/emptyTableDeck.utils';
 
 export default function Tab() {
   const [cardsToLearn, setCardsToLearn] = useState<CardType[]>([]);
   const [cardToShow, setCardToShow] = useState<CardType>(undefined);
   const [deckName, setDeckName] = useState<string>('');
 
-  const { setSettings } = useSettingsContext();
   const database = useSQLiteContext();
 
   useEffect(() => {
@@ -95,57 +88,7 @@ export default function Tab() {
           </View>
         </>
       ) : (
-        <>
-          <Text style={styles.text}>Toutes les cartes ont été apprises !</Text>
-          <TouchableOpacity
-            style={{ backgroundColor: 'green' }}
-            onPress={() => emptyTableDeck(database)}
-          >
-            <Text style={{ fontSize: 30, textAlign: 'center' }}>
-              Vider la table Deck
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ backgroundColor: 'red' }}
-            onPress={() => emptyTableCard(database)}
-          >
-            <Text style={{ fontSize: 30, textAlign: 'center' }}>
-              Vider la table Card
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ backgroundColor: 'green' }}
-            onPress={() => dropTableCard(database)}
-          >
-            <Text style={{ fontSize: 30, textAlign: 'center' }}>
-              Supprimer la table Card
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ backgroundColor: 'red' }}
-            onPress={() => resetAllCards(database)}
-          >
-            <Text style={{ fontSize: 30, textAlign: 'center' }}>
-              Réinitialiser les cartes
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ backgroundColor: 'green' }}
-            onPress={() => setAllRevisionsToToday(database)}
-          >
-            <Text style={{ fontSize: 30, textAlign: 'center' }}>
-              Toutes les révisions à ajd
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ backgroundColor: 'yellow' }}
-            onPress={() => setSettings([1, 2, 4, 7, 14, 30, 30, 30, 60], true)}
-          >
-            <Text style={{ fontSize: 30, textAlign: 'center' }}>
-              Changer paramètres
-            </Text>
-          </TouchableOpacity>
-        </>
+        <Text style={styles.text}>Toutes les cartes ont été apprises !</Text>
       )}
     </View>
   );
