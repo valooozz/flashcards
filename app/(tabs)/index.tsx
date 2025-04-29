@@ -48,14 +48,14 @@ export default function Tab() {
           <View style={styles.columnDisplay}>
             {decks.map((deck, index) => {
               return index % 2 === 0 ? (
-                <DeckCard deck={deck} key={index} />
+                <DeckCard deck={deck} key={deck.id} />
               ) : null;
             })}
           </View>
           <View style={styles.columnDisplay}>
             {decks.map((deck, index) => {
               return index % 2 === 0 ? null : (
-                <DeckCard deck={deck} key={index} />
+                <DeckCard deck={deck} key={deck.id} />
               );
             })}
           </View>

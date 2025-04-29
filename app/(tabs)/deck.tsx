@@ -59,7 +59,7 @@ export default function Screen() {
           renderItem={({ item }) => (
             <ListCard card={item} triggerReload={triggerReload} />
           )}
-          keyExtractor={(item, index) => index.toString()}
+          keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.cardsDisplay}
           showsVerticalScrollIndicator={false}
         />
