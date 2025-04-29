@@ -94,7 +94,12 @@ export default function Modal() {
       return;
     }
 
-    notify(true, '', 'Carte(s) ajoutée(s)');
+    if (editMode) {
+      notify(true, '', 'Carte modifiée');
+    } else {
+      notify(true, '', 'Carte(s) ajoutée(s)');
+    }
+
     router.back();
   };
 
