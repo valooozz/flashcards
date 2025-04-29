@@ -155,7 +155,7 @@ export default function Modal() {
             onPress={() =>
               alertAction(
                 'Réinitialiser',
-                'revenir aux paramètres par défaut',
+                'les paramètres et revenir aux paramètres par défaut',
                 resetSettings,
               )
             }
