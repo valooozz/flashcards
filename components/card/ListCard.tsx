@@ -52,8 +52,8 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
             ...styles.textDate,
             color:
               getDelay(card.nextRevision) >= 0
-                ? Colors.library.dark.main
-                : Colors.library.light.main,
+                ? Colors.daily.dark.main
+                : Colors.library.dark.main,
           }}
         >
           {card.nextRevision && card.toLearn
