@@ -109,7 +109,11 @@ export default function Tab() {
 
   return (
     <View style={styles.container}>
-      <Header level={1} text="Révisions" color={Colors.daily.dark.contrast} />
+      <Header
+        level={1}
+        text={`Révisions ${cardsToRevise.length + forgottenCards.length > 0 ? `(${cardsToRevise.length + forgottenCards.length})` : ''}`}
+        color={Colors.daily.dark.contrast}
+      />
       {cardToShow ? (
         <>
           <FlashCard
