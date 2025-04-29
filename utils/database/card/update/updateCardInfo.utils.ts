@@ -7,13 +7,23 @@ export const updateCardInfo = async (
   verso: string,
   changeSide: boolean,
 ): Promise<boolean> => {
-  return database
-    .runAsync('UPDATE Card SET recto=?, verso=?, changeSide=? WHERE id=?', [
-      recto.trim(),
-      verso.trim(),
-      changeSide ? 1 : 0,
-      id,
-    ])
-    .then(() => true)
-    .catch(() => false);
+  if (changeSide) {
+    return database
+      .runAsync('UPDATE Card SET recto=?, verso=?, changeSide=? WHERE id=?', [
+        recto.trim(),
+        verso.trim(),
+        1,
+        id,
+      ])
+      .then(() => true)
+      .catch(() => false);
+  } else {
+    return database
+      .runAsync(
+        'UPDATE Card SET recto=?, verso=?, rectoFirst=?, changeSide=? WHERE id=?',
+        [recto.trim(), verso.trim(), 1, 0, id],
+      )
+      .then(() => true)
+      .catch((err) => false);
+  }
 };

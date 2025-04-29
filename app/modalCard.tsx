@@ -94,9 +94,7 @@ export default function Modal() {
       return;
     }
 
-    if (editMode) {
-      notify(true, '', 'Carte modifiée');
-    } else {
+    if (!editMode) {
       notify(true, '', 'Carte(s) ajoutée(s)');
     }
 
