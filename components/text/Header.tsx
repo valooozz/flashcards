@@ -26,6 +26,8 @@ const styles = StyleSheet.create({
     fontSize: Sizes.font.large,
     fontFamily: 'JosefinSemiBold',
     marginBottom: 24,
+    marginRight: 24,
+    flexWrap: 'wrap',
   },
   2: {
     textAlign: 'left',

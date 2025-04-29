@@ -56,7 +56,10 @@ export function FlashCard({
         onPress={() => setFlipped(!flipped)}
         activeOpacity={1}
       >
-        <Text style={{ ...styles.textDeck, color: textDeckColor }}>
+        <Text
+          numberOfLines={1}
+          style={{ ...styles.textDeck, color: textDeckColor }}
+        >
           {deckName}
         </Text>
         {delay ? (
@@ -69,7 +72,7 @@ export function FlashCard({
             {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
           </Text>
         ) : null}
-        <Text style={{ ...styles.text, color: textColor }}>
+        <Text adjustsFontSizeToFit style={{ ...styles.text, color: textColor }}>
           {flippedAtFirst ? verso : recto}
         </Text>
       </TouchableOpacity>
@@ -78,7 +81,10 @@ export function FlashCard({
         onPress={() => setFlipped(!flipped)}
         activeOpacity={1}
       >
-        <Text style={{ ...styles.textDeck, color: textDeckColor }}>
+        <Text
+          numberOfLines={1}
+          style={{ ...styles.textDeck, color: textDeckColor }}
+        >
           {deckName}
         </Text>
         {delay ? (
@@ -91,7 +97,7 @@ export function FlashCard({
             {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
           </Text>
         ) : null}
-        <Text style={{ ...styles.text, color: textColor }}>
+        <Text adjustsFontSizeToFit style={{ ...styles.text, color: textColor }}>
           {flippedAtFirst ? recto : verso}
         </Text>
       </TouchableOpacity>
