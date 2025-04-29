@@ -12,6 +12,7 @@ import { CardType } from '../../types/CardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
+import { shuffle } from '../../utils/shuffle.utils';
 
 export default function Tab() {
   const [cardsToLearn, setCardsToLearn] = useState<CardType[]>([]);
@@ -39,6 +40,7 @@ export default function Tab() {
   useFocusEffect(
     useCallback(() => {
       getCardsToLearn(database).then((cardsResult) => {
+        shuffle(cardsResult);
         setCardsToLearn(cardsResult);
       });
     }, []),

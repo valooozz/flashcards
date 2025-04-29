@@ -16,6 +16,7 @@ import { putCardToPreviousStep } from '../../utils/database/card/update/putCardT
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
 import { getDelay } from '../../utils/getDelay.utils';
+import { shuffle } from '../../utils/shuffle.utils';
 
 export default function Tab() {
   const [cardsToRevise, setCardsToRevise] = useState<CardType[]>([]);
@@ -62,6 +63,7 @@ export default function Tab() {
   useFocusEffect(
     useCallback(() => {
       getCardsToRevise(database).then((cardsResult) => {
+        shuffle(cardsResult);
         setCardsToRevise(cardsResult);
         setInSecondPhase(false);
       });
