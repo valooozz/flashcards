@@ -81,8 +81,6 @@ export default function Tab() {
             intervals,
             cardToShow.id,
             cardToShow.step,
-            cardToShow.rectoFirst,
-            cardToShow.changeSide,
           );
         }
         setForgottenCards(forgottenCards.slice(1));
