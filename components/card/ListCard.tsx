@@ -36,18 +36,23 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
       onLongPress={() => alertAction('Supprimer', 'la carte', handleDelete)}
     >
       <View style={styles.textContainer}>
-        <Text style={{ ...styles.text, opacity: card.toLearn ? 1 : 0.3 }}>
-          {card.recto.length < 11 ? card.recto : card.recto.slice(0, 9) + '...'}
+        <Text
+          numberOfLines={1}
+          style={{ ...styles.text, opacity: card.toLearn ? 1 : 0.3 }}
+        >
+          {card.recto}
         </Text>
         <Text
+          numberOfLines={1}
           style={{
             ...styles.text,
             opacity: card.changeSide && card.toLearn ? 1 : 0.3,
           }}
         >
-          {card.verso.length < 11 ? card.verso : card.verso.slice(0, 8) + '...'}
+          {card.verso}
         </Text>
         <Text
+          numberOfLines={1}
           style={{
             ...styles.textDate,
             color:
@@ -87,6 +92,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    columnGap: 8,
   },
   text: {
     width: 120,
@@ -94,7 +100,6 @@ const styles = StyleSheet.create({
     color: Colors.library.simple.contrast,
     textAlign: 'left',
     fontFamily: 'JosefinRegular',
-    overflow: 'hidden',
   },
   textDate: {
     marginLeft: 'auto',
