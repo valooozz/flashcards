@@ -16,10 +16,10 @@
     ],
     "name": "Flashcards",
     "slug": "flashcards",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "android": {
       "package": "com.valooozz.flashcards",
-      "versionCode": 2
+      "versionCode": 3
     },
     "icon": "./assets/images/flash-icon.png",
     "extra": {
@@ -32,4 +32,3 @@
     }
   }
 }
-

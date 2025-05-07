@@ -1,7 +1,6 @@
-import * as FileSystem from 'expo-file-system';
-import * as Sharing from 'expo-sharing';
 import { SQLiteDatabase } from 'expo-sqlite';
 import { DeckDocument } from '../../../types/DeckDocument';
+import { exportDocument } from '../../exportDocument.utils';
 import { getCardsFromDeck } from '../card/get/getCardsFromDeck.utils';
 
 export const exportDeck = async (
@@ -37,10 +36,5 @@ export const exportDeck = async (
     }
   });
 
-  const stringDocument = JSON.stringify(deckDocument);
-  const exportPath = FileSystem.cacheDirectory + deckName + '.json';
-
-  await FileSystem.writeAsStringAsync(exportPath, stringDocument);
-
-  await Sharing.shareAsync(exportPath);
+  await exportDocument(deckDocument, deckName);
 };

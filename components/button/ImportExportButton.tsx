@@ -5,6 +5,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { DeckDocument } from '../../types/DeckDocument';
+import { exportAllDecks } from '../../utils/database/deck/exportAllDecks.utils';
 import { importDeck } from '../../utils/database/deck/importDeck.utils';
 import { notify } from '../../utils/notify.utils';
 
@@ -60,7 +61,10 @@ export function ImportExportButton({ color }: BackButtonProps) {
   };
 
   return (
-    <TouchableOpacity onPress={pickDocument}>
+    <TouchableOpacity
+      onPress={pickDocument}
+      onLongPress={() => exportAllDecks(database)}
+    >
       <MaterialIcons name="import-export" size={40} color={color} />
     </TouchableOpacity>
   );
