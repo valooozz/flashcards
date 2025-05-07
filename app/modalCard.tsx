@@ -168,11 +168,13 @@ export default function Modal() {
                 style={styles.text}
               >{`Étape d'apprentissage : ${step}/8`}</Text>
               <Text style={styles.text}>
-                {delay < 0
-                  ? `Prochaine révision : ${formatDate(nextRevision)} (${-getDelay(nextRevision)} j.)`
-                  : delay > 0
-                    ? `${delay} jour${delay > 1 ? 's' : ''} de retard dans les révisions.`
-                    : "À réviser aujourd'hui."}
+                {nextRevision
+                  ? delay < 0
+                    ? `Prochaine révision : ${formatDate(nextRevision)} (${-getDelay(nextRevision)} j.)`
+                    : delay > 0
+                      ? `${delay} jour${delay > 1 ? 's' : ''} de retard dans les révisions.`
+                      : "À réviser aujourd'hui."
+                  : 'Pas encore apprise'}
               </Text>
             </View>
             <View style={{ ...styles.buttonLineContainer, marginTop: 'auto' }}>
