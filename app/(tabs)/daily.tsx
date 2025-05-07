@@ -15,6 +15,9 @@ import { putCardToNextStep } from '../../utils/database/card/update/putCardToNex
 import { putCardToPreviousStep } from '../../utils/database/card/update/putCardToPreviousStep.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
+import { addForgottenCard } from '../../utils/database/forgotten/addForgottenCard.utils';
+import { getForgottenCards } from '../../utils/database/forgotten/getForgottenCards.utils';
+import { removeForgottenCard } from '../../utils/database/forgotten/removeForgottenCard.utils';
 import { getDelay } from '../../utils/getDelay.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 
@@ -41,9 +44,6 @@ export default function Tab() {
   }, [cardToShow]);
 
   useEffect(() => {
-    if (!inSecondPhase) {
-      return;
-    }
     if (forgottenCards) {
       setCardToShow(forgottenCards[0]);
     }
@@ -52,11 +52,12 @@ export default function Tab() {
   useEffect(() => {
     if (cardsToRevise.length > 0) {
       setCardToShow(cardsToRevise[0]);
-    } else if (forgottenCards) {
-      setCardToShow(forgottenCards[0]);
-      if (!inSecondPhase) {
+    } else {
+      getForgottenCards(database).then((cardsResult) => {
+        shuffle(cardsResult);
+        setForgottenCards(cardsResult);
         setInSecondPhase(true);
-      }
+      });
     }
   }, [cardsToRevise]);
 
@@ -73,16 +74,7 @@ export default function Tab() {
   const handleClick = (known: boolean) => {
     if (known) {
       if (inSecondPhase) {
-        if (hardThrowback) {
-          putCardToReviseTommorow(database, cardToShow.id.toString());
-        } else {
-          putCardToPreviousStep(
-            database,
-            intervals,
-            cardToShow.id,
-            cardToShow.step,
-          );
-        }
+        removeForgottenCard(database, cardToShow.id);
         setForgottenCards(forgottenCards.slice(1));
       } else {
         putCardToNextStep(
@@ -99,7 +91,17 @@ export default function Tab() {
       if (inSecondPhase) {
         setForgottenCards([...forgottenCards.slice(1), cardToShow]);
       } else {
-        setForgottenCards([...forgottenCards, cardToShow]);
+        addForgottenCard(database, cardToShow.id);
+        if (hardThrowback) {
+          putCardToReviseTommorow(database, cardToShow.id.toString());
+        } else {
+          putCardToPreviousStep(
+            database,
+            intervals,
+            cardToShow.id,
+            cardToShow.step,
+          );
+        }
       }
     }
     if (!inSecondPhase) {

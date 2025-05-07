@@ -62,7 +62,7 @@ export function FlashCard({
         >
           {deckName}
         </Text>
-        {delay ? (
+        {delay > 0 ? (
           <Text
             style={{
               ...styles.textDeck,
@@ -87,7 +87,7 @@ export function FlashCard({
         >
           {deckName}
         </Text>
-        {delay ? (
+        {delay > 0 ? (
           <Text
             style={{
               ...styles.textDeck,
