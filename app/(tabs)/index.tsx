@@ -38,8 +38,14 @@ export default function Tab() {
         level={1}
         text="Bibliothèque"
         color={Colors.library.dark.contrast}
+        rightMargin
       />
-      <Header level={2} text="Decks" color={Colors.library.dark.contrast} />
+      <Header
+        level={2}
+        text="Decks"
+        color={Colors.library.dark.contrast}
+        rightMargin
+      />
       {decks.length > 0 ? (
         <ScrollView
           contentContainerStyle={styles.decksDisplay}

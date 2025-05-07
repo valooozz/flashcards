@@ -38,7 +38,7 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
     if (card.nextRevision !== null) {
       alertAction('Oublier', 'la carte', handleForget);
     } else {
-      alertAction('Apprendre', 'la carte', handleLearn);
+      handleLearn();
     }
   };
 

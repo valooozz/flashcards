@@ -47,11 +47,17 @@ export default function Screen() {
         color={Colors.library.dark.contrast}
         routeSettingsButton={`/modalDeck?idDeck=${idDeck}`}
       />
-      <Header level={1} text={deckName} color={Colors.library.dark.contrast} />
+      <Header
+        level={1}
+        text={deckName}
+        color={Colors.library.dark.contrast}
+        rightMargin
+      />
       <Header
         level={2}
         text={`Cartes (${nbCards})`}
         color={Colors.library.dark.contrast}
+        rightMargin
       />
       {cards.length > 0 ? (
         <FlatList

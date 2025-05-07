@@ -5,16 +5,23 @@ interface HeaderProps {
   level: number;
   text: string;
   color: string;
+  rightMargin?: boolean;
 }
 
-export function Header({ level, text, color }: HeaderProps) {
+export function Header({
+  level,
+  text,
+  color,
+  rightMargin = false,
+}: HeaderProps) {
   return (
     <Text
-      numberOfLines={1} 
+      numberOfLines={1}
       adjustsFontSizeToFit
       style={{
         ...styles[level],
         color: color,
+        marginRight: rightMargin ? 24 : 0,
       }}
     >
       {text}
@@ -28,7 +35,6 @@ const styles = StyleSheet.create({
     fontSize: Sizes.font.large,
     fontFamily: 'JosefinSemiBold',
     marginBottom: 24,
-    marginRight: 24,
     flexWrap: 'wrap',
   },
   2: {

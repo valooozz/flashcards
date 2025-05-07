@@ -59,7 +59,7 @@ export default function Tab() {
     <View style={styles.container}>
       <Header
         level={1}
-        text="Apprentissage"
+        text={`Apprentissage ${cardsToLearn.length > 0 ? `(${cardsToLearn.length})` : ''}`}
         color={Colors.learning.dark.contrast}
       />
       {cardToShow ? (
