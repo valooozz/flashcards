@@ -7,7 +7,8 @@ import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 import { CardType } from '../../types/CardType';
 import { alertAction } from '../../utils/alertAction.utils';
-import { deleteCard } from '../../utils/database/card/deleteCard.utils';
+import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
+import { resetCard } from '../../utils/database/card/update/resetCard.utils';
 import { getDelay } from '../../utils/getDelay.utils';
 import { getProgressBarLength } from '../../utils/getProgressBarLength';
 import { notify } from '../../utils/notify.utils';
@@ -21,10 +22,24 @@ interface ListCardProps {
 export function ListCard({ card, triggerReload }: ListCardProps) {
   const database = useSQLiteContext();
 
-  const handleDelete = async () => {
-    const deleteOk = await deleteCard(database, card.id.toString());
-    notify(deleteOk, 'Une erreur est survenue.', 'Carte supprimée');
+  const handleForget = async () => {
+    const resetOk = await resetCard(database, card.id.toString());
+    notify(resetOk, 'Une erreur est survenue.', 'Carte oubliée');
     triggerReload();
+  };
+
+  const handleLearn = async () => {
+    await putCardToReviseTommorow(database, card.id.toString());
+    notify(true, '', 'Carte apprise');
+    triggerReload();
+  };
+
+  const handleLongPress = () => {
+    if (card.nextRevision !== null) {
+      alertAction('Oublier', 'la carte', handleForget);
+    } else {
+      alertAction('Apprendre', 'la carte', handleLearn);
+    }
   };
 
   return (
@@ -33,7 +48,7 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
       onPress={() =>
         router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
       }
-      onLongPress={() => alertAction('Supprimer', 'la carte', handleDelete)}
+      onLongPress={handleLongPress}
     >
       <View style={styles.textContainer}>
         <Text

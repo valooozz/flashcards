@@ -10,6 +10,8 @@ interface HeaderProps {
 export function Header({ level, text, color }: HeaderProps) {
   return (
     <Text
+      numberOfLines={1} 
+      adjustsFontSizeToFit
       style={{
         ...styles[level],
         color: color,
