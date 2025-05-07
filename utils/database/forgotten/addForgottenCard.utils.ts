@@ -8,7 +8,7 @@ export const addForgottenCard = async (
   const today = getDate(0);
 
   return database
-    .runAsync('INSERT INTO Forgotten (idCard, date) VALUES (?, ?,);', [
+    .runAsync('INSERT INTO Forgotten (idCard, date) VALUES (?, ?);', [
       idCard,
       today,
     ])
