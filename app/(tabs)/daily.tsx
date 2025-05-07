@@ -10,7 +10,9 @@ import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
+import { NbCardsToReviseType } from '../../types/NbCardsToReviseType';
 import { getCardsToRevise } from '../../utils/database/card/get/getCardsToRevise.utils';
+import { getNbCardsToReviseThisWeek } from '../../utils/database/card/get/getNbCardsToReviseThisWeek.utils';
 import { putCardToNextStep } from '../../utils/database/card/update/putCardToNextStep.utils';
 import { putCardToPreviousStep } from '../../utils/database/card/update/putCardToPreviousStep.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
@@ -29,11 +31,18 @@ export default function Tab() {
   const [delay, setDelay] = useState<number>(0);
   const [inSecondPhase, setInSecondPhase] = useState<boolean>(false);
 
+  const [nbCardsToReviseThisWeek, setNbCardsToReviseThisWeek] = useState<
+    NbCardsToReviseType[]
+  >([]);
+
   const { hardThrowback, stopLearning, intervals } = useSettingsContext();
   const database = useSQLiteContext();
 
   useEffect(() => {
     if (cardToShow === undefined) {
+      getNbCardsToReviseThisWeek(database).then((result) => {
+        setNbCardsToReviseThisWeek(result);
+      });
       return;
     }
 
@@ -143,7 +152,31 @@ export default function Tab() {
           </View>
         </>
       ) : (
-        <Text style={styles.text}>Toutes les cartes ont été révisées !</Text>
+        <>
+          <Text
+            style={{
+              ...styles.text,
+              textAlign: 'center',
+              marginVertical: '30%',
+              marginHorizontal: '20%',
+            }}
+          >
+            Toutes les cartes ont été révisées !
+          </Text>
+          <View>
+            <Header
+              level={3}
+              text="Révisions de la semaine"
+              color={Colors.daily.dark.contrast}
+            />
+            {nbCardsToReviseThisWeek.map((nbCardsToRevise) => (
+              <Text style={styles.text} key={nbCardsToRevise.day}>
+                {nbCardsToRevise.day} : {nbCardsToRevise.nbCards} carte
+                {nbCardsToRevise.nbCards > 1 ? 's' : ''}
+              </Text>
+            ))}
+          </View>
+        </>
       )}
     </View>
   );
@@ -161,10 +194,14 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Colors.daily.dark.contrast,
-    textAlign: 'center',
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
-    marginVertical: 'auto',
-    marginHorizontal: '20%',
+  },
+  weekRevisionsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    // marginVertical: 'auto',
   },
 });
