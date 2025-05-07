@@ -11,7 +11,6 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
-import { setAllRevisionsToToday } from '../../utils/database/card/table/setAllRevisionsToToday.utils';
 import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
 import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 
@@ -25,7 +24,6 @@ export default function Screen() {
   const { idDeck } = useLocalSearchParams<{ idDeck: string }>();
 
   const triggerReload = () => {
-    setAllRevisionsToToday(database);
     setReload(!reload);
   };
 
