@@ -62,14 +62,16 @@ export function FlashCard({
         >
           {deckName}
         </Text>
-        {delay > 0 ? (
+        {delay ? (
           <Text
             style={{
               ...styles.textDeck,
               color: Colors.daily.intermediate.main,
             }}
           >
-            {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
+            {delay > 0
+              ? `${delay} jour${delay > 1 ? 's' : ''} de retard`
+              : 'Oubliée'}
           </Text>
         ) : null}
         <Text adjustsFontSizeToFit style={{ ...styles.text, color: textColor }}>
@@ -87,14 +89,16 @@ export function FlashCard({
         >
           {deckName}
         </Text>
-        {delay > 0 ? (
+        {delay ? (
           <Text
             style={{
               ...styles.textDeck,
               color: Colors.daily.intermediate.main,
             }}
           >
-            {`${delay} jour${delay > 1 ? 's' : ''} de retard`}
+            {delay > 0
+              ? `${delay} jour${delay > 1 ? 's' : ''} de retard`
+              : 'Oubliée'}
           </Text>
         ) : null}
         <Text adjustsFontSizeToFit style={{ ...styles.text, color: textColor }}>

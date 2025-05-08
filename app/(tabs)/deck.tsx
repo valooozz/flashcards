@@ -24,6 +24,7 @@ export default function Screen() {
   const { idDeck } = useLocalSearchParams<{ idDeck: string }>();
 
   const triggerReload = () => {
+    // setAllRevisionsToToday(database);
     setReload(!reload);
   };
 
