@@ -48,7 +48,7 @@ export default function Tab() {
 
   const handleClick = (learnt: boolean) => {
     if (learnt) {
-      putCardToReviseTommorow(database, cardToShow.id.toString());
+      putCardToReviseTommorow(database, cardToShow.id);
       setCardsToLearn(cardsToLearn.slice(1));
     } else {
       setCardsToLearn([...cardsToLearn.slice(1), cardToShow]);

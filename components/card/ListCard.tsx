@@ -29,7 +29,7 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
   };
 
   const handleLearn = async () => {
-    await putCardToReviseTommorow(database, card.id.toString());
+    await putCardToReviseTommorow(database, card.id);
     notify(true, '', 'Carte apprise');
     triggerReload();
   };

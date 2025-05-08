@@ -3,7 +3,7 @@ import { getDate } from '../../../getDate.utils';
 
 export const putCardToReviseTommorow = async (
   database: SQLiteDatabase,
-  id: string,
+  id: number,
 ) => {
   try {
     const tomorrow = getDate(1);

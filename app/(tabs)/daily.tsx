@@ -102,7 +102,7 @@ export default function Tab() {
       } else {
         addForgottenCard(database, cardToShow.id);
         if (hardThrowback) {
-          putCardToReviseTommorow(database, cardToShow.id.toString());
+          putCardToReviseTommorow(database, cardToShow.id);
         } else {
           putCardToPreviousStep(
             database,
