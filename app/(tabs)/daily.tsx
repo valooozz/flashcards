@@ -77,6 +77,9 @@ export default function Tab() {
         setCardsToRevise(cardsResult);
         setInSecondPhase(false);
       });
+      getNbCardsToReviseThisWeek(database).then((result) => {
+        setNbCardsToReviseThisWeek(result);
+      });
     }, []),
   );
 
