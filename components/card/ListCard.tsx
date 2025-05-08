@@ -12,7 +12,7 @@ import { resetCard } from '../../utils/database/card/update/resetCard.utils';
 import { getDelay } from '../../utils/getDelay.utils';
 import { getProgressBarLength } from '../../utils/getProgressBarLength';
 import { notify } from '../../utils/notify.utils';
-import { ProgressBar } from '../bar/ProgressBar';
+import { CardProgressBar } from '../bar/CardProgressBar';
 
 interface ListCardProps {
   card: CardType;
@@ -81,7 +81,7 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
             : null}
         </Text>
       </View>
-      <ProgressBar
+      <CardProgressBar
         width={`${getProgressBarLength(card.step)}%`}
         color={Colors.library.intermediate.main}
       />

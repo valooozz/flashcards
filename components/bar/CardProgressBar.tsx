@@ -1,11 +1,11 @@
 import { DimensionValue, View } from 'react-native';
 
-interface ProgressBarProps {
+interface CardProgressBarProps {
   width: DimensionValue;
   color: string;
 }
 
-export function ProgressBar({ width, color }: ProgressBarProps) {
+export function CardProgressBar({ width, color }: CardProgressBarProps) {
   return (
     <View
       style={{

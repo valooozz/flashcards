@@ -11,7 +11,9 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
+import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
+import { DeckProgressBar } from '../bar/DeckProgressBar';
 
 interface DeckProps {
   idDeck: number;
@@ -24,10 +26,11 @@ export function Deck({ idDeck, deckName, closeDeck }: DeckProps) {
   const [nbCards, setNbCards] = useState<number>(0);
   const [reload, setReload] = useState<boolean>(false);
   const [showCards, setShowCards] = useState(true);
+  const [progress, setProgress] = useState(0);
+
   const database = useSQLiteContext();
 
   const triggerReload = () => {
-    // setAllRevisionsToToday(database);
     setReload(!reload);
   };
 
@@ -40,6 +43,9 @@ export function Deck({ idDeck, deckName, closeDeck }: DeckProps) {
       if (nbResult <= 0) {
         setShowCards(false);
       }
+    });
+    getProgressInDeck(database, idDeck).then((nb) => {
+      setProgress(Number(nb.toFixed(2)));
     });
   }, [reload]);
 
@@ -55,6 +61,10 @@ export function Deck({ idDeck, deckName, closeDeck }: DeckProps) {
         text={deckName}
         color={Colors.library.dark.contrast}
         rightMargin
+      />
+      <DeckProgressBar
+        progress={progress}
+        color={Colors.library.intermediate.main}
       />
       <Header
         level={2}
