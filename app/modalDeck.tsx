@@ -6,7 +6,7 @@ import {
 } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toolbar } from '../components/bar/Toolbar';
 import { ButtonModal } from '../components/button/ButtonModal';
@@ -16,10 +16,13 @@ import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
 import { alertAction } from '../utils/alertAction.utils';
+import { getProgressInDeck } from '../utils/database/card/get/getProgressInDeck.utils';
 import { createDeck } from '../utils/database/deck/createDeck.utils';
 import { deleteDeck } from '../utils/database/deck/deleteDeck.utils';
 import { exportDeck } from '../utils/database/deck/exportDeck.utils';
 import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
+import { getNbCardsLearntInDeck } from '../utils/database/deck/get/getNbCardsLearntInDeck.utils';
+import { getNbCardsToLearnInDeck } from '../utils/database/deck/get/getNbCardsToLearnInDeck.utils';
 import { renameDeck } from '../utils/database/deck/update/renameDeck.utils';
 import { resetDeck } from '../utils/database/deck/update/resetDeck.utils';
 import { notify } from '../utils/notify.utils';
@@ -28,6 +31,10 @@ export default function Modal() {
   const [deckName, setDeckName] = useState('');
   const [newDeckName, setNewDeckName] = useState('');
   const [editMode, setEditMode] = useState(false);
+
+  const [nbCardsLearnt, setNbCardsLearnt] = useState(0);
+  const [nbCardsToLearn, setNbCardsToLearn] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   const database = useSQLiteContext();
 
@@ -88,6 +95,15 @@ export default function Modal() {
           setDeckName(name);
           setNewDeckName(name);
         });
+        getNbCardsLearntInDeck(database, Number(idDeck)).then((nb) => {
+          setNbCardsLearnt(nb);
+        });
+        getNbCardsToLearnInDeck(database, Number(idDeck)).then((nb) => {
+          setNbCardsToLearn(nb);
+        });
+        getProgressInDeck(database, Number(idDeck)).then((nb) => {
+          setProgress(nb ? Number(nb.toFixed(2)) : 0);
+        });
       }
     }, [idDeck]),
   );
@@ -119,7 +135,7 @@ export default function Modal() {
           />
         </View>
         {editMode && (
-          <View style={{ ...styles.buttonLineContainer, marginTop: 32 }}>
+          <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
             <ButtonModal
               text="Exporter les cartes"
               onPress={() => exportDeck(database, idDeck, deckName, false)}
@@ -132,6 +148,19 @@ export default function Modal() {
               text="Exporter avec l'apprentissage"
               onPress={() => exportDeck(database, idDeck, deckName, true)}
             />
+          </View>
+        )}
+        {editMode && (
+          <View style={styles.statContainer}>
+            <Text style={styles.textStat}>
+              Cartes apprises : {nbCardsLearnt}
+            </Text>
+            <Text style={styles.textStat}>
+              Cartes à apprendre : {nbCardsToLearn}
+            </Text>
+            <Text style={styles.textStat}>
+              Progression totale : {progress} %
+            </Text>
           </View>
         )}
         {editMode && (
@@ -180,5 +209,14 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     gap: 8,
     height: Sizes.component.small * 2 + 8,
+  },
+  statContainer: {
+    marginTop: 8,
+  },
+  textStat: {
+    color: Colors.library.light.contrast,
+    fontSize: Sizes.font.small,
+    textAlign: 'left',
+    fontFamily: 'JosefinRegular',
   },
 });
