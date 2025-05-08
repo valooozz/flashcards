@@ -3,7 +3,7 @@ import { CardType } from '../../../../types/CardType';
 
 export const getCardsFromDeck = async (
   database: SQLiteDatabase,
-  idDeck: string,
+  idDeck: number,
 ) => {
   let cards: CardType[] = [];
   try {

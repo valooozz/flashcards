@@ -1,6 +1,6 @@
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Toolbar } from '../../components/bar/Toolbar';
 import { AddButton } from '../../components/button/AddButton';
@@ -11,41 +11,43 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
-import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
 import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 
-export default function Screen() {
-  const [deckName, setDeckName] = useState<string>(null);
+interface DeckProps {
+  idDeck: number;
+  deckName: string;
+  closeDeck: () => void;
+}
+
+export function Deck({ idDeck, deckName, closeDeck }: DeckProps) {
   const [cards, setCards] = useState<CardType[]>([]);
   const [nbCards, setNbCards] = useState<number>(0);
   const [reload, setReload] = useState<boolean>(false);
+  const [showCards, setShowCards] = useState(true);
   const database = useSQLiteContext();
-
-  const { idDeck } = useLocalSearchParams<{ idDeck: string }>();
 
   const triggerReload = () => {
     // setAllRevisionsToToday(database);
     setReload(!reload);
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      getNameDeckById(database, idDeck).then((nameResult) => {
-        setDeckName(nameResult);
-      });
-      getCardsFromDeck(database, idDeck).then((cardsResult) => {
-        setCards(cardsResult);
-      });
-      getNbCardsInDeck(database, idDeck).then((nbResult) => {
-        setNbCards(nbResult);
-      });
-    }, [idDeck, reload]),
-  );
+  useEffect(() => {
+    getCardsFromDeck(database, idDeck).then((cardsResult) => {
+      setCards(cardsResult);
+    });
+    getNbCardsInDeck(database, idDeck).then((nbResult) => {
+      setNbCards(nbResult);
+      if (nbResult <= 0) {
+        setShowCards(false);
+      }
+    });
+  }, [reload]);
 
   return (
     <View style={styles.container}>
       <Toolbar
         color={Colors.library.dark.contrast}
+        actionBackButton={closeDeck}
         routeSettingsButton={`/modalDeck?idDeck=${idDeck}`}
       />
       <Header
@@ -56,11 +58,11 @@ export default function Screen() {
       />
       <Header
         level={2}
-        text={`Cartes (${nbCards})`}
+        text={`Cartes ${nbCards > 0 ? `(${nbCards})` : ''}`}
         color={Colors.library.dark.contrast}
         rightMargin
       />
-      {cards.length > 0 ? (
+      {showCards ? (
         <FlatList
           data={cards}
           renderItem={({ item }) => (

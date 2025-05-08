@@ -11,16 +11,17 @@ import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck
 
 interface DeckCardProps {
   deck: DeckType;
+  openDeck: (id: number, name: string) => void;
 }
 
-export function DeckCard({ deck }: DeckCardProps) {
+export function DeckCard({ deck, openDeck }: DeckCardProps) {
   const database = useSQLiteContext();
   const [nbCards, setNbCards] = useState(0);
   const [word, setWord] = useState('');
 
   useFocusEffect(
     useCallback(() => {
-      getNbCardsInDeck(database, deck.id.toString()).then((nb) => {
+      getNbCardsInDeck(database, deck.id).then((nb) => {
         setNbCards(nb);
         if (nb > 1) {
           setWord(' cartes');
@@ -34,7 +35,7 @@ export function DeckCard({ deck }: DeckCardProps) {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => router.push(`(tabs)/deck?idDeck=${deck.id}`)}
+      onPress={() => openDeck(deck.id, deck.name)}
       onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}
     >
       <Text numberOfLines={2} adjustsFontSizeToFit style={styles.title}>

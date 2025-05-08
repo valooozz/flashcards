@@ -4,11 +4,14 @@ import { TouchableOpacity } from 'react-native';
 
 interface BackButtonProps {
   color: string;
+  action?: () => void;
 }
 
-export function BackButton({ color }: BackButtonProps) {
+export function BackButton({ color, action }: BackButtonProps) {
   return (
-    <TouchableOpacity onPress={() => router.back()}>
+    <TouchableOpacity
+      onPress={action !== undefined ? action : () => router.back()}
+    >
       <MaterialIcons name="arrow-back" size={40} color={color} />
     </TouchableOpacity>
   );

@@ -2,7 +2,7 @@ import { SQLiteDatabase } from 'expo-sqlite';
 
 export const getNbCardsInDeck = async (
   database: SQLiteDatabase,
-  idDeck: string,
+  idDeck: number,
 ) => {
   let nbCardsResult: object = undefined;
   try {

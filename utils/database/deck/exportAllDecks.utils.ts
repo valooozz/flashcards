@@ -16,7 +16,7 @@ export const exportAllDecks = async (database: SQLiteDatabase) => {
       cards: [],
     };
 
-    const cards = await getCardsFromDeck(database, deck.id.toString());
+    const cards = await getCardsFromDeck(database, deck.id);
     cards.forEach((card) => {
       deckDocument.cards.push({
         recto: card.recto,

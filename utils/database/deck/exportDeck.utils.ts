@@ -9,7 +9,7 @@ export const exportDeck = async (
   deckName: string,
   fullExport: boolean,
 ) => {
-  const cards = await getCardsFromDeck(database, idDeck);
+  const cards = await getCardsFromDeck(database, Number(idDeck));
 
   const deckDocument: DeckDocument = {
     deckName,

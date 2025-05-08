@@ -5,6 +5,7 @@ import { SettingsButton } from '../button/SettingsButton';
 
 interface ToolbarProps {
   color: string;
+  actionBackButton?: () => void;
   routeSettingsButton?: string;
   noBackButton?: boolean;
   importExportButton?: boolean;
@@ -12,6 +13,7 @@ interface ToolbarProps {
 
 export function Toolbar({
   color,
+  actionBackButton,
   routeSettingsButton,
   noBackButton = false,
   importExportButton = false,
@@ -20,7 +22,7 @@ export function Toolbar({
     <View
       style={{ ...styles.container, marginRight: importExportButton ? 0 : 24 }}
     >
-      {!noBackButton && <BackButton color={color} />}
+      {!noBackButton && <BackButton color={color} action={actionBackButton} />}
       {routeSettingsButton !== undefined && (
         <View style={styles.rightButton}>
           <SettingsButton color={color} route={routeSettingsButton} />
