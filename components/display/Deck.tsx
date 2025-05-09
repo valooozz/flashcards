@@ -1,5 +1,4 @@
 import { router } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Toolbar } from '../../components/bar/Toolbar';
@@ -10,46 +9,36 @@ import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
-import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
-import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
-import { setAllRevisionsToToday } from '../../utils/database/card/table/setAllRevisionsToToday.utils';
-import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 import { DeckProgressBar } from '../bar/DeckProgressBar';
 
 interface DeckProps {
   idDeck: number;
   deckName: string;
+  cards: CardType[];
+  nbCards: number;
+  progress: number;
+  reload: () => void;
   closeDeck: () => void;
 }
 
-export function Deck({ idDeck, deckName, closeDeck }: DeckProps) {
-  const [cards, setCards] = useState<CardType[]>([]);
-  const [nbCards, setNbCards] = useState<number>(0);
-  const [reload, setReload] = useState<boolean>(false);
+export function Deck({
+  idDeck,
+  deckName,
+  cards,
+  nbCards,
+  progress,
+  reload,
+  closeDeck,
+}: DeckProps) {
   const [showCards, setShowCards] = useState(true);
-  const [progress, setProgress] = useState(0);
-
-  const database = useSQLiteContext();
-
-  const triggerReload = () => {
-    setAllRevisionsToToday(database);
-    setReload(!reload);
-  };
 
   useEffect(() => {
-    getCardsFromDeck(database, idDeck).then((cardsResult) => {
-      setCards(cardsResult);
-    });
-    getNbCardsInDeck(database, idDeck).then((nbResult) => {
-      setNbCards(nbResult);
-      if (nbResult <= 0) {
-        setShowCards(false);
-      }
-    });
-    getProgressInDeck(database, idDeck).then((nb) => {
-      setProgress(Number(nb.toFixed(2)));
-    });
-  }, [reload]);
+    if (nbCards > 0) {
+      setShowCards(true);
+    } else {
+      setShowCards(false);
+    }
+  }, [nbCards]);
 
   return (
     <View style={styles.container}>
@@ -78,7 +67,7 @@ export function Deck({ idDeck, deckName, closeDeck }: DeckProps) {
         <FlatList
           data={cards}
           renderItem={({ item }) => (
-            <ListCard card={item} triggerReload={triggerReload} />
+            <ListCard card={item} triggerReload={reload} />
           )}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={styles.cardsDisplay}

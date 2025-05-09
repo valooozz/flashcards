@@ -12,6 +12,7 @@ export const importDecks = async (
     const idDeck = await createDeck(database, deckDocument.deckName);
     if (idDeck === -1) {
       allDecksAdded = false;
+      continue;
     }
 
     deckDocument.cards.forEach((card: CardDocument) => {

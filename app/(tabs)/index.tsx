@@ -1,42 +1,107 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Deck } from '../../components/display/Deck';
 import { Library } from '../../components/display/Library';
+import { CardType } from '../../types/CardType';
 import { DeckType } from '../../types/DeckType';
+import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
+import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
+import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 
 export default function Tab() {
-  const [inLibrary, setInLibrary] = useState(true);
+  const [inDeck, setInDeck] = useState(false);
   const [decks, setDecks] = useState<DeckType[]>([]);
+
   const [idDeck, setIdDeck] = useState(-1);
   const [deckName, setDeckName] = useState('');
 
+  const [cards, setCards] = useState<CardType[]>([]);
+  const [nbCards, setNbCards] = useState(0);
+  const [progressInDeck, setProgressInDeck] = useState(0);
+
   const database = useSQLiteContext();
+
+  const saveState = async () => {
+    await AsyncStorage.setItem(
+      'tabState',
+      JSON.stringify({
+        inDeck,
+        idDeck,
+        deckName,
+      }),
+    );
+  };
+
+  const loadState = async () => {
+    const savedState = await AsyncStorage.getItem('tabState');
+    if (savedState) {
+      const {
+        inDeck: savedInDeck,
+        idDeck: savedIdDeck,
+        deckName: savedDeckName,
+      } = JSON.parse(savedState);
+      setInDeck(savedInDeck);
+      setIdDeck(savedIdDeck);
+      setDeckName(savedDeckName);
+      if (savedInDeck && savedIdDeck) {
+        loadCards(savedIdDeck);
+      }
+    }
+  };
+
+  const loadCards = async (id: number) => {
+    await getCardsFromDeck(database, id).then((cardsResult) => {
+      setCards(cardsResult);
+    });
+    await getNbCardsInDeck(database, id).then((nbResult) => {
+      setNbCards(nbResult);
+    });
+    await getProgressInDeck(database, id).then((nb) => {
+      setProgressInDeck(Number(nb.toFixed(2)));
+    });
+  };
+
+  useEffect(() => {
+    saveState();
+  }, [idDeck, deckName, inDeck]);
 
   const openDeck = (id: number, name: string) => {
     setIdDeck(id);
     setDeckName(name);
-    setInLibrary(false);
+    loadCards(id).then(() => {
+      setInDeck(true);
+    });
   };
 
   const closeDeck = () => {
     setIdDeck(-1);
     setDeckName('');
-    setInLibrary(true);
+    setInDeck(false);
   };
 
   useFocusEffect(
     useCallback(() => {
+      loadState();
       getAllDecks(database).then((decksResult) => {
         setDecks(decksResult);
       });
     }, []),
   );
 
-  return inLibrary ? (
-    <Library decks={decks} openDeck={openDeck} />
+  return inDeck ? (
+    <Deck
+      idDeck={idDeck}
+      deckName={deckName}
+      cards={cards}
+      nbCards={nbCards}
+      progress={progressInDeck}
+      reload={() => loadCards(idDeck)}
+      closeDeck={closeDeck}
+    />
   ) : (
-    <Deck idDeck={idDeck} deckName={deckName} closeDeck={closeDeck} />
+    <Library decks={decks} openDeck={openDeck} />
   );
 }
