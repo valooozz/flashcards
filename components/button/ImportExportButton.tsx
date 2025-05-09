@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { DeckDocument } from '../../types/DeckDocument';
 import { exportAllDecks } from '../../utils/database/deck/exportAllDecks.utils';
-import { importDeck } from '../../utils/database/deck/importDeck.utils';
+import { importDecks } from '../../utils/database/deck/importDecks.utils';
 import { notify } from '../../utils/notify.utils';
 
 interface BackButtonProps {
@@ -24,12 +24,12 @@ export function ImportExportButton({ color }: BackButtonProps) {
       return;
     }
 
-    const deckDocument: DeckDocument = JSON.parse(fileContent);
-    importDeck(database, deckDocument).then((deckAdded) => {
+    const decksDocument: DeckDocument[] = JSON.parse(fileContent);
+    importDecks(database, decksDocument).then((allDecksAdded) => {
       notify(
-        deckAdded,
-        'Un deck porte déjà ce nom',
-        `Deck ${deckDocument.deckName} ajouté`,
+        allDecksAdded,
+        "Certains decks existaient déjà et n'ont pas pu être ajoutés",
+        'Decks ajoutés',
       );
     });
   }, [fileContent]);
@@ -62,8 +62,8 @@ export function ImportExportButton({ color }: BackButtonProps) {
 
   return (
     <TouchableOpacity
-      onPress={pickDocument}
-      onLongPress={() => exportAllDecks(database)}
+      onPress={() => exportAllDecks(database)}
+      onLongPress={pickDocument}
     >
       <MaterialIcons name="import-export" size={40} color={color} />
     </TouchableOpacity>

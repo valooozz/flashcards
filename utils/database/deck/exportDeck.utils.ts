@@ -36,5 +36,5 @@ export const exportDeck = async (
     }
   });
 
-  await exportDocument(deckDocument, deckName);
+  await exportDocument([deckDocument], deckName);
 };
