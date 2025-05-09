@@ -12,6 +12,7 @@ import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
+import { setAllRevisionsToToday } from '../../utils/database/card/table/setAllRevisionsToToday.utils';
 import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 import { DeckProgressBar } from '../bar/DeckProgressBar';
 
@@ -31,6 +32,7 @@ export function Deck({ idDeck, deckName, closeDeck }: DeckProps) {
   const database = useSQLiteContext();
 
   const triggerReload = () => {
+    setAllRevisionsToToday(database);
     setReload(!reload);
   };
 

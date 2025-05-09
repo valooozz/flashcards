@@ -20,6 +20,9 @@ import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.u
 import { addForgottenCard } from '../../utils/database/forgotten/addForgottenCard.utils';
 import { getForgottenCards } from '../../utils/database/forgotten/getForgottenCards.utils';
 import { removeForgottenCard } from '../../utils/database/forgotten/removeForgottenCard.utils';
+import { getStatsOfDay } from '../../utils/database/stats/getStatsOfDay.utils';
+import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
+import { getDate } from '../../utils/getDate.utils';
 import { getDelay } from '../../utils/getDelay.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 
@@ -31,6 +34,9 @@ export default function Tab() {
   const [delay, setDelay] = useState<number>(0);
   const [inSecondPhase, setInSecondPhase] = useState<boolean>(false);
 
+  const [nbRevised, setNbRevised] = useState(0);
+  const [nbKnown, setNbKown] = useState(0);
+  const [nbForgotten, setNbForgotten] = useState(0);
   const [nbCardsToReviseThisWeek, setNbCardsToReviseThisWeek] = useState<
     NbCardsToReviseType[]
   >([]);
@@ -40,6 +46,11 @@ export default function Tab() {
 
   useEffect(() => {
     if (cardToShow === undefined) {
+      getStatsOfDay(database, getDate(0)).then((stats) => {
+        setNbRevised(stats.nbRevised);
+        setNbKown(stats.nbKnown);
+        setNbForgotten(stats.nbForgotten);
+      });
       getNbCardsToReviseThisWeek(database).then((result) => {
         setNbCardsToReviseThisWeek(result);
       });
@@ -89,6 +100,7 @@ export default function Tab() {
         removeForgottenCard(database, cardToShow.id);
         setForgottenCards(forgottenCards.slice(1));
       } else {
+        incrementStatOfToday(database, 'nbKnown');
         putCardToNextStep(
           database,
           intervals,
@@ -103,6 +115,7 @@ export default function Tab() {
       if (inSecondPhase) {
         setForgottenCards([...forgottenCards.slice(1), cardToShow]);
       } else {
+        incrementStatOfToday(database, 'nbForgotten');
         addForgottenCard(database, cardToShow.id);
         if (hardThrowback) {
           putCardToReviseTommorow(database, cardToShow.id);
@@ -160,13 +173,23 @@ export default function Tab() {
             style={{
               ...styles.text,
               textAlign: 'center',
-              marginVertical: '30%',
+              marginVertical: '10%',
               marginHorizontal: '20%',
             }}
           >
             Toutes les cartes ont été révisées !
           </Text>
           <View>
+            <Header
+              level={3}
+              text="Aujourd'hui"
+              color={Colors.daily.dark.contrast}
+            />
+            <Text style={styles.text}>Cartes révisées : {nbRevised}</Text>
+            <Text style={styles.text}>Cartes connues : {nbKnown}</Text>
+            <Text style={styles.text}>Cartes oubliées : {nbForgotten}</Text>
+          </View>
+          <View style={{ marginTop: 16 }}>
             <Header
               level={3}
               text="Révisions de la semaine"

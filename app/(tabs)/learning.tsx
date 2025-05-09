@@ -12,6 +12,7 @@ import { CardType } from '../../types/CardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
+import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 
 export default function Tab() {
@@ -50,6 +51,7 @@ export default function Tab() {
     if (learnt) {
       putCardToReviseTommorow(database, cardToShow.id);
       setCardsToLearn(cardsToLearn.slice(1));
+      incrementStatOfToday(database, 'nbLearnt');
     } else {
       setCardsToLearn([...cardsToLearn.slice(1), cardToShow]);
     }
