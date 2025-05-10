@@ -7,7 +7,7 @@ export const getProgressInDeck = async (
   let result: object = undefined;
   try {
     result = await database.getFirstAsync(
-      'SELECT SUM(step), COUNT(*) FROM Card WHERE deck=?',
+      'SELECT SUM(step), COUNT(*) FROM Card WHERE deck=? AND toLearn=1',
       [idDeck],
     );
   } catch (error) {

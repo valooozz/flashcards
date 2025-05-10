@@ -36,7 +36,8 @@ export default function Modal() {
   const [nextRevision, setNextRevision] = useState('');
   const [delay, setDelay] = useState(0);
   const [editMode, setEditMode] = useState(false);
-  const [isChecked, setIsChecked] = useState(true);
+  const [checkedAlternate, setCheckedAlternate] = useState(true);
+  const [checkedLearn, setCheckedLearn] = useState(true);
 
   const rectoInputRef = useRef(null);
 
@@ -63,7 +64,8 @@ export default function Modal() {
           setStep(card.step);
           setNextRevision(card.nextRevision);
           setDelay(getDelay(card.nextRevision));
-          setIsChecked(Boolean(card.changeSide));
+          setCheckedAlternate(Boolean(card.changeSide));
+          setCheckedLearn(Boolean(card.toLearn));
         });
       }
     }, [idDeck, idCard]),
@@ -81,11 +83,12 @@ export default function Modal() {
         idCard,
         recto,
         verso,
-        isChecked,
+        checkedAlternate,
+        checkedLearn,
       );
       notify(updateOk, 'Une erreur est survenue.', 'Carte mise à jour');
     } else {
-      await createCard(database, recto, verso, idDeck, isChecked);
+      await createCard(database, recto, verso, idDeck, checkedAlternate);
     }
 
     if (continueCreating) {
@@ -135,9 +138,15 @@ export default function Modal() {
           underline={editMode && !rectoFirst}
         />
         <CheckboxWithText
-          isChecked={isChecked}
-          setIsChecked={setIsChecked}
+          isChecked={checkedAlternate}
+          setIsChecked={setCheckedAlternate}
           textLabel="Alterner recto et verso"
+          spaceTop
+        />
+        <CheckboxWithText
+          isChecked={checkedLearn}
+          setIsChecked={setCheckedLearn}
+          textLabel="Carte à apprendre"
           spaceTop
         />
         {!editMode && (

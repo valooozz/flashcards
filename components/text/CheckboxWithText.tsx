@@ -24,7 +24,9 @@ export function CheckboxWithText({
         onValueChange={setIsChecked}
         color={Colors.library.dark.main}
       />
-      <Text style={styles.text}>{textLabel}</Text>
+      <Text style={{ ...styles.text, marginTop: spaceTop ? 16 : 0 }}>
+        {textLabel}
+      </Text>
     </View>
   );
 }
