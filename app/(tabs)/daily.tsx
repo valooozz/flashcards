@@ -1,6 +1,6 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
@@ -44,8 +44,22 @@ export default function Tab() {
   const { hardThrowback, stopLearning, intervals } = useSettingsContext();
   const database = useSQLiteContext();
 
-  useEffect(() => {
-    if (cardToShow === undefined) {
+  useFocusEffect(
+    useCallback(() => {
+      getCardsToRevise(database).then((cardsResult) => {
+        shuffle(cardsResult);
+        updateCardsToRevise(cardsResult);
+        setInSecondPhase(false);
+      });
+      getNbCardsToReviseThisWeek(database).then((result) => {
+        setNbCardsToReviseThisWeek(result);
+      });
+    }, []),
+  );
+
+  const udpateCardToShow = (newCard: CardType) => {
+    setCardToShow(newCard);
+    if (newCard === undefined) {
       getStatsOfDay(database, getDate(0)).then((stats) => {
         setNbRevised(stats.nbRevised);
         setNbKown(stats.nbKnown);
@@ -57,81 +71,67 @@ export default function Tab() {
       return;
     }
 
-    setDelay(getDelay(cardToShow.nextRevision));
-    getNameDeckById(database, cardToShow.deck.toString()).then((nameResult) => {
+    setDelay(getDelay(newCard.nextRevision));
+    getNameDeckById(database, newCard.deck.toString()).then((nameResult) => {
       setDeckName(nameResult);
     });
-  }, [cardToShow]);
+  };
 
-  useEffect(() => {
-    if (forgottenCards) {
-      setCardToShow(forgottenCards[0]);
-    }
-  }, [forgottenCards]);
-
-  useEffect(() => {
-    if (cardsToRevise.length > 0) {
-      setCardToShow(cardsToRevise[0]);
+  const updateCardsToRevise = (newCardsToRevise: CardType[]) => {
+    setCardsToRevise(newCardsToRevise);
+    if (newCardsToRevise.length > 0) {
+      udpateCardToShow(newCardsToRevise[0]);
     } else {
       getForgottenCards(database).then((cardsResult) => {
         shuffle(cardsResult);
-        setForgottenCards(cardsResult);
+        updateForgottenCards(cardsResult);
         setInSecondPhase(true);
       });
     }
-  }, [cardsToRevise]);
+  };
 
-  useFocusEffect(
-    useCallback(() => {
-      getCardsToRevise(database).then((cardsResult) => {
-        shuffle(cardsResult);
-        setCardsToRevise(cardsResult);
-        setInSecondPhase(false);
-      });
-      getNbCardsToReviseThisWeek(database).then((result) => {
-        setNbCardsToReviseThisWeek(result);
-      });
-    }, []),
-  );
+  const updateForgottenCards = (newForgottenCards: CardType[]) => {
+    setForgottenCards(newForgottenCards);
+    udpateCardToShow(newForgottenCards[0]);
+  };
 
   const handleClick = (known: boolean) => {
-    if (known) {
-      if (inSecondPhase) {
+    if (inSecondPhase) {
+      if (known) {
         removeForgottenCard(database, cardToShow.id);
-        setForgottenCards(forgottenCards.slice(1));
+        updateForgottenCards(forgottenCards.slice(1));
       } else {
-        incrementStatOfToday(database, 'nbKnown');
-        putCardToNextStep(
+        updateForgottenCards([...forgottenCards.slice(1), cardToShow]);
+      }
+      return;
+    }
+
+    if (known) {
+      incrementStatOfToday(database, 'nbKnown');
+      putCardToNextStep(
+        database,
+        intervals,
+        cardToShow.id,
+        cardToShow.step,
+        cardToShow.rectoFirst,
+        cardToShow.changeSide,
+        stopLearning,
+      );
+    } else {
+      incrementStatOfToday(database, 'nbForgotten');
+      addForgottenCard(database, cardToShow.id);
+      if (hardThrowback) {
+        putCardToReviseTommorow(database, cardToShow.id);
+      } else {
+        putCardToPreviousStep(
           database,
           intervals,
           cardToShow.id,
           cardToShow.step,
-          cardToShow.rectoFirst,
-          cardToShow.changeSide,
-          stopLearning,
         );
       }
-    } else {
-      if (inSecondPhase) {
-        setForgottenCards([...forgottenCards.slice(1), cardToShow]);
-      } else {
-        incrementStatOfToday(database, 'nbForgotten');
-        addForgottenCard(database, cardToShow.id);
-        if (hardThrowback) {
-          putCardToReviseTommorow(database, cardToShow.id);
-        } else {
-          putCardToPreviousStep(
-            database,
-            intervals,
-            cardToShow.id,
-            cardToShow.step,
-          );
-        }
-      }
     }
-    if (!inSecondPhase) {
-      setCardsToRevise(cardsToRevise.slice(1));
-    }
+    updateCardsToRevise(cardsToRevise.slice(1));
   };
 
   return (
