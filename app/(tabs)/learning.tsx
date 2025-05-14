@@ -1,6 +1,6 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
@@ -22,38 +22,41 @@ export default function Tab() {
 
   const database = useSQLiteContext();
 
-  useEffect(() => {
-    if (cardToShow === undefined) {
-      return;
-    }
-
-    getNameDeckById(database, cardToShow.deck.toString()).then((nameResult) => {
-      setDeckName(nameResult);
-    });
-  }, [cardToShow]);
-
-  useEffect(() => {
-    if (cardsToLearn) {
-      setCardToShow(cardsToLearn[0]);
-    }
-  }, [cardsToLearn]);
-
   useFocusEffect(
     useCallback(() => {
       getCardsToLearn(database).then((cardsResult) => {
         shuffle(cardsResult);
-        setCardsToLearn(cardsResult);
+        updateCardsToLearn(cardsResult);
       });
     }, []),
   );
 
+  const updateCardToShow = (newCardToShow: CardType) => {
+    if (newCardToShow === undefined) {
+      setCardToShow(undefined);
+      return;
+    }
+
+    getNameDeckById(database, newCardToShow.deck.toString()).then(
+      (nameResult) => {
+        setDeckName(nameResult);
+        setCardToShow(newCardToShow);
+      },
+    );
+  };
+
+  const updateCardsToLearn = (newCardsToLearn: CardType[]) => {
+    setCardsToLearn(newCardsToLearn);
+    updateCardToShow(newCardsToLearn[0]);
+  };
+
   const handleClick = (learnt: boolean) => {
     if (learnt) {
       putCardToReviseTommorow(database, cardToShow.id);
-      setCardsToLearn(cardsToLearn.slice(1));
       incrementStatOfToday(database, 'nbLearnt');
+      updateCardsToLearn(cardsToLearn.slice(1));
     } else {
-      setCardsToLearn([...cardsToLearn.slice(1), cardToShow]);
+      updateCardsToLearn([...cardsToLearn.slice(1), cardToShow]);
     }
   };
 
