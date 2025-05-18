@@ -25,6 +25,7 @@ import { getNbCardsLearntInDeck } from '../utils/database/deck/get/getNbCardsLea
 import { getNbCardsToLearnInDeck } from '../utils/database/deck/get/getNbCardsToLearnInDeck.utils';
 import { renameDeck } from '../utils/database/deck/update/renameDeck.utils';
 import { resetDeck } from '../utils/database/deck/update/resetDeck.utils';
+import { importDocument } from '../utils/import/importDocument.utils';
 import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
@@ -82,9 +83,14 @@ export default function Modal() {
   const handleDelete = async () => {
     const deleteOk = await deleteDeck(database, idDeck);
     if (deleteOk) {
-      router.push('/');
+      router.back();
     }
     notify(deleteOk, 'Une erreur est survenue.', 'Deck supprimé');
+  };
+
+  const handleImport = async (importType: 'json' | 'csv') => {
+    await importDocument(database, importType);
+    router.back();
   };
 
   useFocusEffect(
@@ -134,6 +140,18 @@ export default function Modal() {
             onPress={handleValidate}
           />
         </View>
+        {!editMode && (
+          <View style={styles.buttonBottom}>
+            <ButtonModal
+              text="Importer JSON"
+              onPress={() => handleImport('json')}
+            />
+            <ButtonModal
+              text="Importer CSV"
+              onPress={() => handleImport('csv')}
+            />
+          </View>
+        )}
         {editMode && (
           <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
             <ButtonModal
