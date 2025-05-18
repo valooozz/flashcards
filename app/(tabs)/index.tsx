@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useEffect, useState } from 'react';
+import { BackHandler } from 'react-native';
 import { Deck } from '../../components/display/Deck';
 import { Library } from '../../components/display/Library';
 import { CardType } from '../../types/CardType';
@@ -88,6 +89,23 @@ export default function Tab() {
       });
     }, []),
   );
+
+  useEffect(() => {
+    const backAction = () => {
+      if (inDeck) {
+        closeDeck();
+        return true; // Empêche le comportement par défaut de retour
+      }
+      return false; // Permet le comportement par défaut de retour
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove(); // Nettoyage de l'écouteur d'événements
+  }, [inDeck]);
 
   return inDeck ? (
     <Deck
