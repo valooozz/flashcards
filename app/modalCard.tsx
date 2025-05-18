@@ -73,7 +73,7 @@ export default function Modal() {
 
   const handleValidate = async (continueCreating: boolean) => {
     if (recto === '' || verso === '') {
-      notify(false, 'Les champs Recto et Verso ne peuvent pas être vide.');
+      notify(false, 'Les champs Recto et Verso ne peuvent pas être vides.');
       return;
     }
 

@@ -8,17 +8,15 @@ import { Header } from '../../components/text/Header';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
-import { CardType } from '../../types/CardType';
+import { FlashCardType } from '../../types/FlashCardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
-import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
 import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 
 export default function Tab() {
-  const [cardsToLearn, setCardsToLearn] = useState<CardType[]>([]);
-  const [cardToShow, setCardToShow] = useState<CardType>(undefined);
-  const [deckName, setDeckName] = useState<string>('');
+  const [cardsToLearn, setCardsToLearn] = useState<FlashCardType[]>([]);
+  const [cardToShow, setCardToShow] = useState<FlashCardType>(undefined);
 
   const database = useSQLiteContext();
 
@@ -31,23 +29,9 @@ export default function Tab() {
     }, []),
   );
 
-  const updateCardToShow = (newCardToShow: CardType) => {
-    if (newCardToShow === undefined) {
-      setCardToShow(undefined);
-      return;
-    }
-
-    getNameDeckById(database, newCardToShow.deck.toString()).then(
-      (nameResult) => {
-        setDeckName(nameResult);
-        setCardToShow(newCardToShow);
-      },
-    );
-  };
-
-  const updateCardsToLearn = (newCardsToLearn: CardType[]) => {
+  const updateCardsToLearn = (newCardsToLearn: FlashCardType[]) => {
     setCardsToLearn(newCardsToLearn);
-    updateCardToShow(newCardsToLearn[0]);
+    setCardToShow(newCardsToLearn[0]);
   };
 
   const handleClick = (learnt: boolean) => {
@@ -72,7 +56,7 @@ export default function Tab() {
           <FlashCard
             recto={cardToShow.recto}
             verso={cardToShow.verso}
-            deckName={deckName}
+            deckName={cardToShow.name}
             backgroundColor={Colors.learning.simple.main}
             textColor={Colors.learning.simple.contrast}
             textDeckColor={Colors.learning.dark.main}

@@ -9,7 +9,6 @@ import { DeckType } from '../../types/DeckType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
-import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 
 export default function Tab() {
   const [inDeck, setInDeck] = useState(false);
@@ -53,11 +52,10 @@ export default function Tab() {
   };
 
   const loadCards = async (id: number) => {
+    // setAllRevisionsToToday(database);
     await getCardsFromDeck(database, id).then((cardsResult) => {
       setCards(cardsResult);
-    });
-    await getNbCardsInDeck(database, id).then((nbResult) => {
-      setNbCards(nbResult);
+      setNbCards(cardsResult.length);
     });
     await getProgressInDeck(database, id).then((nb) => {
       setProgressInDeck(Number(nb.toFixed(2)));

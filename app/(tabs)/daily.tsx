@@ -9,14 +9,13 @@ import { useSettingsContext } from '../../context/SettingsContext';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
-import { CardType } from '../../types/CardType';
+import { FlashCardType } from '../../types/FlashCardType';
 import { NbCardsToReviseType } from '../../types/NbCardsToReviseType';
 import { getCardsToRevise } from '../../utils/database/card/get/getCardsToRevise.utils';
 import { getNbCardsToReviseThisWeek } from '../../utils/database/card/get/getNbCardsToReviseThisWeek.utils';
 import { putCardToNextStep } from '../../utils/database/card/update/putCardToNextStep.utils';
 import { putCardToPreviousStep } from '../../utils/database/card/update/putCardToPreviousStep.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
-import { getNameDeckById } from '../../utils/database/deck/get/getNameDeckById.utils';
 import { addForgottenCard } from '../../utils/database/forgotten/addForgottenCard.utils';
 import { getForgottenCards } from '../../utils/database/forgotten/getForgottenCards.utils';
 import { removeForgottenCard } from '../../utils/database/forgotten/removeForgottenCard.utils';
@@ -27,10 +26,9 @@ import { getDelay } from '../../utils/getDelay.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 
 export default function Tab() {
-  const [cardsToRevise, setCardsToRevise] = useState<CardType[]>([]);
-  const [forgottenCards, setForgottenCards] = useState<CardType[]>([]);
-  const [cardToShow, setCardToShow] = useState<CardType>(undefined);
-  const [deckName, setDeckName] = useState<string>('');
+  const [cardsToRevise, setCardsToRevise] = useState<FlashCardType[]>([]);
+  const [forgottenCards, setForgottenCards] = useState<FlashCardType[]>([]);
+  const [cardToShow, setCardToShow] = useState<FlashCardType>(undefined);
   const [delay, setDelay] = useState<number>(0);
   const [inSecondPhase, setInSecondPhase] = useState<boolean>(false);
 
@@ -50,14 +48,17 @@ export default function Tab() {
         shuffle(cardsResult);
         updateCardsToRevise(cardsResult);
         setInSecondPhase(false);
-      });
-      getNbCardsToReviseThisWeek(database).then((result) => {
-        setNbCardsToReviseThisWeek(result);
+
+        if (cardsResult.length === 0) {
+          getNbCardsToReviseThisWeek(database).then((result) => {
+            setNbCardsToReviseThisWeek(result);
+          });
+        }
       });
     }, []),
   );
 
-  const udpateCardToShow = (newCard: CardType) => {
+  const udpateCardToShow = (newCard: FlashCardType) => {
     setCardToShow(newCard);
     if (newCard === undefined) {
       getStatsOfDay(database, getDate(0)).then((stats) => {
@@ -72,12 +73,9 @@ export default function Tab() {
     }
 
     setDelay(getDelay(newCard.nextRevision));
-    getNameDeckById(database, newCard.deck.toString()).then((nameResult) => {
-      setDeckName(nameResult);
-    });
   };
 
-  const updateCardsToRevise = (newCardsToRevise: CardType[]) => {
+  const updateCardsToRevise = (newCardsToRevise: FlashCardType[]) => {
     setCardsToRevise(newCardsToRevise);
     if (newCardsToRevise.length > 0) {
       udpateCardToShow(newCardsToRevise[0]);
@@ -90,7 +88,7 @@ export default function Tab() {
     }
   };
 
-  const updateForgottenCards = (newForgottenCards: CardType[]) => {
+  const updateForgottenCards = (newForgottenCards: FlashCardType[]) => {
     setForgottenCards(newForgottenCards);
     udpateCardToShow(newForgottenCards[0]);
   };
@@ -146,7 +144,7 @@ export default function Tab() {
           <FlashCard
             recto={cardToShow.rectoFirst ? cardToShow.recto : cardToShow.verso}
             verso={cardToShow.rectoFirst ? cardToShow.verso : cardToShow.recto}
-            deckName={deckName}
+            deckName={cardToShow.name}
             delay={delay}
             backgroundColor={Colors.daily.simple.main}
             textColor={Colors.daily.simple.contrast}

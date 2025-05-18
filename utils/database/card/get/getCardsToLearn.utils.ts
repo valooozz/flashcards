@@ -1,11 +1,13 @@
 import { SQLiteDatabase } from 'expo-sqlite';
-import { CardType } from '../../../../types/CardType';
+import { FlashCardType } from '../../../../types/FlashCardType';
 
 export const getCardsToLearn = async (database: SQLiteDatabase) => {
-  let cardsToLearn: CardType[];
+  let cardsToLearn: FlashCardType[];
   try {
-    cardsToLearn = await database.getAllAsync<CardType>(
-      'SELECT * FROM Card WHERE nextRevision IS NULL AND toLearn=1',
+    cardsToLearn = await database.getAllAsync<FlashCardType>(
+      `SELECT C.id, C.recto, C.verso, C.rectoFirst, C.step, C.nextRevision, C.changeSide, D.name 
+      FROM Card C INNER JOIN Deck D ON C.deck=D.id
+      WHERE nextRevision IS NULL AND toLearn=1`,
     );
   } catch (error) {
     console.log(error);
