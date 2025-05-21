@@ -11,17 +11,21 @@ import { globalStyles } from '../../style/Styles';
 import { FlashCardType } from '../../types/FlashCardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
+import { resetCard } from '../../utils/database/card/update/resetCard.utils';
 import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
+import { isLastItem } from '../../utils/isLastItem.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 
 export default function Tab() {
   const [cardsToLearn, setCardsToLearn] = useState<FlashCardType[]>([]);
   const [cardToShow, setCardToShow] = useState<FlashCardType>(undefined);
+  const [previousCard, setPreviousCard] = useState<FlashCardType>(undefined);
 
   const database = useSQLiteContext();
 
   useFocusEffect(
     useCallback(() => {
+      setPreviousCard(undefined);
       getCardsToLearn(database).then((cardsResult) => {
         shuffle(cardsResult);
         updateCardsToLearn(cardsResult);
@@ -30,11 +34,25 @@ export default function Tab() {
   );
 
   const updateCardsToLearn = (newCardsToLearn: FlashCardType[]) => {
+    if (cardsToLearn.length === 1) {
+      setPreviousCard(undefined);
+    }
     setCardsToLearn(newCardsToLearn);
     setCardToShow(newCardsToLearn[0]);
   };
 
-  const handleClick = (learnt: boolean) => {
+  const handlePrevious = () => {
+    setPreviousCard(undefined);
+    if (isLastItem(previousCard, cardsToLearn)) {
+      updateCardsToLearn([previousCard, ...cardsToLearn.slice(0, -1)]);
+    } else {
+      resetCard(database, previousCard.id.toString());
+      updateCardsToLearn([previousCard, ...cardsToLearn]);
+    }
+  };
+
+  const handleNext = (learnt: boolean) => {
+    setPreviousCard(cardToShow);
     if (learnt) {
       putCardToReviseTommorow(database, cardToShow.id);
       incrementStatOfToday(database, 'nbLearnt');
@@ -60,19 +78,21 @@ export default function Tab() {
             backgroundColor={Colors.learning.simple.main}
             textColor={Colors.learning.simple.contrast}
             textDeckColor={Colors.learning.dark.main}
+            previousPossible={previousCard !== undefined}
+            handlePrevious={handlePrevious}
           />
           <View style={styles.buttons}>
             <FlashButton
               text="A revoir"
               backgroundColor={Colors.learning.light.main}
               textColor={Colors.learning.light.contrast}
-              handleClick={() => handleClick(false)}
+              handleClick={() => handleNext(false)}
             />
             <FlashButton
               text="Apprise"
               backgroundColor={Colors.learning.intermediate.main}
               textColor={Colors.learning.intermediate.contrast}
-              handleClick={() => handleClick(true)}
+              handleClick={() => handleNext(true)}
             />
           </View>
         </>

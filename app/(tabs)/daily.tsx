@@ -48,6 +48,7 @@ export default function Tab() {
 
   useFocusEffect(
     useCallback(() => {
+      setPreviousCard(undefined);
       getCardsToRevise(database).then((cardsResult) => {
         shuffle(cardsResult);
         updateCardsToRevise(cardsResult);
