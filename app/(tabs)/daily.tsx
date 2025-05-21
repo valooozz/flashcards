@@ -20,6 +20,7 @@ import { putCardToReviseTommorow } from '../../utils/database/card/update/putCar
 import { addForgottenCard } from '../../utils/database/forgotten/addForgottenCard.utils';
 import { getForgottenCards } from '../../utils/database/forgotten/getForgottenCards.utils';
 import { removeForgottenCard } from '../../utils/database/forgotten/removeForgottenCard.utils';
+import { decrementStatOfToday } from '../../utils/database/stats/decrementStatOfToday.utils';
 import { getStatsOfDay } from '../../utils/database/stats/getStatsOfDay.utils';
 import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
 import { getDate } from '../../utils/getDate.utils';
@@ -42,6 +43,8 @@ export default function Tab() {
   >([]);
 
   const [previousCard, setPreviousCard] = useState<FlashCardType>(undefined);
+  const [previousStatIncremented, setPreviousStatIncremented] =
+    useState<string>(undefined);
 
   const { hardThrowback, stopLearning, intervals } = useSettingsContext();
   const database = useSQLiteContext();
@@ -113,6 +116,7 @@ export default function Tab() {
     } else {
       updateCardsToRevise([previousCard, ...cardsToRevise]);
       removeForgottenCard(database, previousCard.id);
+      decrementStatOfToday(database, previousStatIncremented);
       cancelLastActionOnCard(
         database,
         previousCard.id,
@@ -122,6 +126,7 @@ export default function Tab() {
       );
     }
     setPreviousCard(undefined);
+    setPreviousStatIncremented(undefined);
   };
 
   const handleNext = (known: boolean) => {
@@ -139,6 +144,7 @@ export default function Tab() {
 
     if (known) {
       incrementStatOfToday(database, 'nbKnown');
+      setPreviousStatIncremented('nbKnown');
       putCardToNextStep(
         database,
         intervals,
@@ -150,6 +156,7 @@ export default function Tab() {
       );
     } else {
       incrementStatOfToday(database, 'nbForgotten');
+      setPreviousStatIncremented('nbForgotten');
       addForgottenCard(database, cardToShow.id);
       if (hardThrowback) {
         putCardToReviseTommorow(database, cardToShow.id);

@@ -83,7 +83,6 @@ export default function Tab() {
 
   useFocusEffect(
     useCallback(() => {
-      // setAllRevisionsToToday(database);
       loadState();
       getAllDecks(database).then((decksResult) => {
         setDecks(decksResult);

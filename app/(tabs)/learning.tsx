@@ -12,6 +12,7 @@ import { FlashCardType } from '../../types/FlashCardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { resetCard } from '../../utils/database/card/update/resetCard.utils';
+import { decrementStatOfToday } from '../../utils/database/stats/decrementStatOfToday.utils';
 import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
 import { isLastItem } from '../../utils/isLastItem.utils';
 import { shuffle } from '../../utils/shuffle.utils';
@@ -47,6 +48,7 @@ export default function Tab() {
       updateCardsToLearn([previousCard, ...cardsToLearn.slice(0, -1)]);
     } else {
       resetCard(database, previousCard.id.toString());
+      decrementStatOfToday(database, 'nbLearnt');
       updateCardsToLearn([previousCard, ...cardsToLearn]);
     }
   };
