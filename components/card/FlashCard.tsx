@@ -5,6 +5,7 @@ import FlipCard from 'react-native-flip-card';
 import { Colors } from '../../style/Colors';
 import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
+import { CancelButton } from '../button/CancelButton';
 
 interface FlashCardProps {
   recto: string;
@@ -14,6 +15,8 @@ interface FlashCardProps {
   backgroundColor: string;
   textColor: string;
   textDeckColor: string;
+  previousPossible: boolean;
+  handlePrevious: () => void;
 }
 
 export function FlashCard({
@@ -24,6 +27,8 @@ export function FlashCard({
   backgroundColor,
   textColor,
   textDeckColor,
+  previousPossible,
+  handlePrevious,
 }: FlashCardProps) {
   const [flipped, setFlipped] = useState(false);
   const [flippedAtFirst, setFlippedAtFirst] = useState(false);
@@ -56,6 +61,13 @@ export function FlashCard({
         onPress={() => setFlipped(!flipped)}
         activeOpacity={1}
       >
+        {previousPossible && (
+          <CancelButton
+            backgroundColor={textDeckColor}
+            color={backgroundColor}
+            handleClick={handlePrevious}
+          />
+        )}
         <Text
           numberOfLines={1}
           style={{ ...styles.textDeck, color: textDeckColor }}
@@ -83,6 +95,13 @@ export function FlashCard({
         onPress={() => setFlipped(!flipped)}
         activeOpacity={1}
       >
+        {previousPossible && (
+          <CancelButton
+            backgroundColor={textDeckColor}
+            color={backgroundColor}
+            handleClick={handlePrevious}
+          />
+        )}
         <Text
           numberOfLines={1}
           style={{ ...styles.textDeck, color: textDeckColor }}

@@ -13,6 +13,7 @@ import { FlashCardType } from '../../types/FlashCardType';
 import { NbCardsToReviseType } from '../../types/NbCardsToReviseType';
 import { getCardsToRevise } from '../../utils/database/card/get/getCardsToRevise.utils';
 import { getNbCardsToReviseThisWeek } from '../../utils/database/card/get/getNbCardsToReviseThisWeek.utils';
+import { cancelLastActionOnCard } from '../../utils/database/card/update/cancelLastActionOnCard.utils';
 import { putCardToNextStep } from '../../utils/database/card/update/putCardToNextStep.utils';
 import { putCardToPreviousStep } from '../../utils/database/card/update/putCardToPreviousStep.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
@@ -23,6 +24,7 @@ import { getStatsOfDay } from '../../utils/database/stats/getStatsOfDay.utils';
 import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
 import { getDate } from '../../utils/getDate.utils';
 import { getDelay } from '../../utils/getDelay.utils';
+import { isLastItem } from '../../utils/isLastItem.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 
 export default function Tab() {
@@ -38,6 +40,8 @@ export default function Tab() {
   const [nbCardsToReviseThisWeek, setNbCardsToReviseThisWeek] = useState<
     NbCardsToReviseType[]
   >([]);
+
+  const [previousCard, setPreviousCard] = useState<FlashCardType>(undefined);
 
   const { hardThrowback, stopLearning, intervals } = useSettingsContext();
   const database = useSQLiteContext();
@@ -80,6 +84,7 @@ export default function Tab() {
     if (newCardsToRevise.length > 0) {
       udpateCardToShow(newCardsToRevise[0]);
     } else {
+      setPreviousCard(undefined);
       getForgottenCards(database).then((cardsResult) => {
         shuffle(cardsResult);
         updateForgottenCards(cardsResult);
@@ -89,11 +94,38 @@ export default function Tab() {
   };
 
   const updateForgottenCards = (newForgottenCards: FlashCardType[]) => {
+    if (forgottenCards.length === 1) {
+      setPreviousCard(undefined);
+    }
     setForgottenCards(newForgottenCards);
     udpateCardToShow(newForgottenCards[0]);
   };
 
-  const handleClick = (known: boolean) => {
+  const handlePrevious = () => {
+    if (inSecondPhase) {
+      if (isLastItem(previousCard, forgottenCards)) {
+        updateForgottenCards([previousCard, ...forgottenCards.slice(0, -1)]);
+      } else {
+        updateForgottenCards([previousCard, ...forgottenCards]);
+        addForgottenCard(database, previousCard.id);
+      }
+    } else {
+      updateCardsToRevise([previousCard, ...cardsToRevise]);
+      removeForgottenCard(database, previousCard.id);
+      cancelLastActionOnCard(
+        database,
+        previousCard.id,
+        previousCard.step,
+        previousCard.nextRevision,
+        previousCard.rectoFirst,
+      );
+    }
+    setPreviousCard(undefined);
+  };
+
+  const handleNext = (known: boolean) => {
+    setPreviousCard(cardToShow);
+
     if (inSecondPhase) {
       if (known) {
         removeForgottenCard(database, cardToShow.id);
@@ -149,19 +181,21 @@ export default function Tab() {
             backgroundColor={Colors.daily.simple.main}
             textColor={Colors.daily.simple.contrast}
             textDeckColor={Colors.daily.dark.main}
+            previousPossible={previousCard !== undefined}
+            handlePrevious={handlePrevious}
           />
           <View style={styles.buttons}>
             <FlashButton
               text="Oubliée"
               backgroundColor={Colors.daily.light.main}
               textColor={Colors.daily.light.contrast}
-              handleClick={() => handleClick(false)}
+              handleClick={() => handleNext(false)}
             />
             <FlashButton
               text="Connue"
               backgroundColor={Colors.daily.intermediate.main}
               textColor={Colors.daily.intermediate.contrast}
-              handleClick={() => handleClick(true)}
+              handleClick={() => handleNext(true)}
             />
           </View>
         </>
