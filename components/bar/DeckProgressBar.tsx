@@ -10,7 +10,7 @@ interface DeckProgressBarProps {
 
 export function DeckProgressBar({ progress, color }: DeckProgressBarProps) {
   return progress ? (
-    <View style={styles.container}>
+    <View style={styles.container} testID="deck-progress-bar">
       <View
         style={{
           ...styles.bar,
@@ -18,6 +18,7 @@ export function DeckProgressBar({ progress, color }: DeckProgressBarProps) {
           backgroundColor: Colors.daily.simple.main,
           justifyContent: 'flex-start',
         }}
+        testID="deck-progress-bar-background"
       >
         {progress < 30 && (
           <Text
@@ -39,6 +40,7 @@ export function DeckProgressBar({ progress, color }: DeckProgressBarProps) {
           position: 'absolute',
           justifyContent: 'center',
         }}
+        testID="deck-progress-bar-foreground"
       >
         {progress >= 30 && (
           <Text

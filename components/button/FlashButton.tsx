@@ -19,6 +19,7 @@ export function FlashButton({
     <TouchableOpacity
       style={{ ...styles.container, backgroundColor: backgroundColor }}
       onPress={handleClick}
+      testID="flash-button"
     >
       <Text style={{ ...styles.text, color: textColor }}>{text}</Text>
     </TouchableOpacity>

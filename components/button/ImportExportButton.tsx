@@ -15,6 +15,7 @@ export function ImportExportButton({ color }: BackButtonProps) {
     <TouchableOpacity
       onPress={() => exportAllDecks(database)}
       onLongPress={() => importDocument(database, 'json')}
+      testID="import-export-button"
     >
       <MaterialIcons name="import-export" size={40} color={color} />
     </TouchableOpacity>

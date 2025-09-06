@@ -11,7 +11,7 @@ interface AddButtonProps {
 
 export function AddButton({ icon, size, color, onPress }: AddButtonProps) {
   return (
-    <TouchableOpacity onPress={onPress} style={style.button}>
+    <TouchableOpacity onPress={onPress} style={style.button} testID="add-button">
       <AntDesign name={icon} size={size} color={color} />
     </TouchableOpacity>
   );

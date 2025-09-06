@@ -9,7 +9,7 @@ interface ButtonModalProps {
 
 export function ButtonModal({ text, onPress }: ButtonModalProps) {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.button}>
+    <TouchableOpacity onPress={onPress} style={styles.button} testID="button-modal">
       <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   );

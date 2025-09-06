@@ -15,6 +15,7 @@ export function CardProgressBar({ width, color }: CardProgressBarProps) {
         borderTopRightRadius: width === '100%' ? 0 : 10,
         borderBottomRightRadius: width === '100%' ? 0 : 10,
       }}
+      testID="card-progress-bar"
     ></View>
   );
 }

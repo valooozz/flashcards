@@ -11,6 +11,7 @@ export function BackButton({ color, action }: BackButtonProps) {
   return (
     <TouchableOpacity
       onPress={action !== undefined ? action : () => router.back()}
+      testID="back-button"
     >
       <MaterialIcons name="arrow-back" size={40} color={color} />
     </TouchableOpacity>

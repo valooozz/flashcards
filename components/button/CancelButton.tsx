@@ -17,6 +17,7 @@ export function CancelButton({
     <TouchableOpacity
       onPress={handleClick}
       style={[styles.button, { backgroundColor }]}
+      testID="cancel-button"
     >
       <MaterialCommunityIcons name="arrow-u-left-top" size={40} color={color} />
     </TouchableOpacity>

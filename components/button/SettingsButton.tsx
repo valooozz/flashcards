@@ -9,7 +9,7 @@ interface BackButtonProps {
 
 export function SettingsButton({ color, route }: BackButtonProps) {
   return (
-    <TouchableOpacity onPress={() => router.push(route)}>
+    <TouchableOpacity onPress={() => router.push(route)} testID="settings-button">
       <MaterialIcons name="settings" size={40} color={color} />
     </TouchableOpacity>
   );
