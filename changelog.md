@@ -1,4 +1,4 @@
-
+- Fix : le bouton retour du téléphone fait revenir au deck lorsqu'on était dans les paramètres d'une carte ou d'un deck
 
 ### Version 1.4.0
 

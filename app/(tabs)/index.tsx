@@ -90,22 +90,24 @@ export default function Tab() {
     }, []),
   );
 
-  useEffect(() => {
-    const backAction = () => {
-      if (inDeck) {
-        closeDeck();
-        return true; // Empêche le comportement par défaut de retour
-      }
-      return false; // Permet le comportement par défaut de retour
-    };
+  useFocusEffect(
+    useCallback(() => {
+      const backAction = () => {
+        if (inDeck) {
+          closeDeck();
+          return true; // Empêche le comportement par défaut de retour
+        }
+        return false; // Permet le comportement par défaut de retour
+      };
 
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        backAction,
+      );
 
-    return () => backHandler.remove(); // Nettoyage de l'écouteur d'événements
-  }, [inDeck]);
+      return () => backHandler.remove(); // Nettoyage de l'écouteur d'événements
+    }, [inDeck]),
+  );
 
   return inDeck ? (
     <Deck
