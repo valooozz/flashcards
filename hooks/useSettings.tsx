@@ -22,14 +22,26 @@ const useSettings = () => {
         }
       })
       .catch((error) => console.log(error));
+
+    AsyncStorage.getItem('stopLearning')
+      .then((result) => {
+        if (result) {
+          setStopLearning(JSON.parse(result));
+        }
+      })
+      .catch((error) => console.log(error));
   }, []);
 
-  const saveSettings = async () => {
-    AsyncStorage.setItem('intervals', JSON.stringify(intervals)).catch(
+  const saveSettings = async (newIntervals: number[], newHardThrowback: boolean, newStopLearning: boolean) => {
+    AsyncStorage.setItem('intervals', JSON.stringify(newIntervals)).catch(
       (error) => console.log(error),
     );
 
-    AsyncStorage.setItem('hardThrowback', JSON.stringify(hardThrowback)).catch(
+    AsyncStorage.setItem('hardThrowback', JSON.stringify(newHardThrowback)).catch(
+      (error) => console.log(error),
+    );
+
+    AsyncStorage.setItem('stopLearning', JSON.stringify(newStopLearning)).catch(
       (error) => console.log(error),
     );
   };
@@ -42,14 +54,14 @@ const useSettings = () => {
     if (newIntervals.length !== 9) {
       console.error(
         "La liste des intervalles n'est pas de la bonne longueur : " +
-          newIntervals.length,
+        newIntervals.length,
       );
     }
 
     setIntervals(newIntervals);
     setHardThrowback(newHardThrowback);
     setStopLearning(newStopLearning);
-    saveSettings();
+    saveSettings(newIntervals, newHardThrowback, newStopLearning);
   };
 
   const resetSettings = async () => {

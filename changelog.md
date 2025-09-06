@@ -1,5 +1,7 @@
+
 - Fix de l'affichage des statistiques d'une carte qui pouvait déborder sur une autre ligne
 - Fix du bouton retour du téléphone qui fait maintenant revenir au deck lorsqu'on était dans les paramètres d'une carte ou d'un deck
+- Fix sauvegarde des paramètres
 
 ### Version 1.4.0
 
