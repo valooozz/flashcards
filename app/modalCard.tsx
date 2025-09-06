@@ -174,9 +174,11 @@ export default function Modal() {
           <>
             <View style={styles.infoContainer}>
               <Text
+                numberOfLines={1}
+                adjustsFontSizeToFit
                 style={styles.text}
               >{`Étape d'apprentissage : ${step}/8`}</Text>
-              <Text style={styles.text}>
+              <Text numberOfLines={1} adjustsFontSizeToFit style={styles.text}>
                 {nextRevision
                   ? delay < 0
                     ? `Prochaine révision : ${formatDate(nextRevision)} (${-getDelay(nextRevision)} j.)`
