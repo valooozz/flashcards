@@ -10,6 +10,23 @@ Elle peut être construite avec l'outil EAS d'Expo. Pour plus d'informations, vo
 
 Une [documentation utilisateur](https://github.com/valooozz/flashcards/blob/main/doc/Documentation%20Utilisateur.md) est également disponible sur le projet.
 
+Voici quelques exemples de l'interface :
+
+<img src="./doc/images/ScreenshotLibrary.jpg" alt="Capture d'écran de la Bibliothèque de l'application" width="200"/>
+<img src="./doc/images/ScreenshotDailyOver.jpg" alt="Capture d'écran de l'onglet Révisions une fois toutes les cartes révisées" width="200"/>
+<img src="./doc/images/ScreenshotLearningCardRecto.jpg" alt="Capture d'écran du recto d'une carte de l'onglet Apprentissage" width="200"/>
+<img src="./doc/images/ScreenshotLearningCardVerso.jpg" alt="Capture d'écran du verso d'une carte de l'onglet Apprentissage" width="200"/>
+
+## 📆 Nouveautés prévues prochainement
+
+- Gestion de plusieurs langues via un fichier de traduction
+- Bouton dans l'onglet Apprentissage pour dire qu'on ne veut pas apprendre une carte
+- Nouveau mode pour afficher trois boutons lors de la révision, pour plus de précision dans l'algorithme de répétition espacée
+- Pouvoir indiquer sur le deck entier s'il faut alterner recto et verso pour les cartes du deck en question, avec une possibilité de surcharge au niveau de la carte, comme présent actuellement
+- Pouvoir ne pas afficher le nom du deck lors des révisions
+- Pouvoir repousser la révision d'une carte
+- Meilleur système de notifications
+
 ## 📜 Licence
 
 Ce projet est sous licence Mozilla Public License (MPL). Voir le fichier [LICENSE](https://github.com/valooozz/flashcards/blob/main/LICENSE) pour plus de détails.
