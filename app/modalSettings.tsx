@@ -6,10 +6,12 @@ import { Toolbar } from '../components/bar/Toolbar';
 import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { ImportExportButton } from '../components/button/ImportExportButton';
+import { LanguageButton } from '../components/button/LanguageButton';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
 import { SettingStep } from '../components/text/SettingStep';
 import { useSettingsContext } from '../context/SettingsContext';
+import { useTranslation } from '../hooks/useTranslation';
 import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
@@ -29,8 +31,9 @@ export default function Modal() {
   const [step7, setStep7] = useState('30');
   const [step8, setStep8] = useState('60');
 
-  const { hardThrowback, stopLearning, intervals, setSettings, resetSettings } =
+  const { hardThrowback, stopLearning, intervals, setSettings, switchLanguage, resetSettings } =
     useSettingsContext();
+  const { t } = useTranslation();
 
   const handleValidate = async () => {
     setSettings(
@@ -70,20 +73,21 @@ export default function Modal() {
 
   return (
     <SafeAreaView style={styles.screen}>
-      <Stack.Screen options={{ title: 'Settings', headerShown: false }} />
+      <Stack.Screen options={{ title: t('settings.title'), headerShown: false }} />
       <Toolbar>
         <BackButton color={Colors.library.light.contrast} />
+        <LanguageButton color={Colors.library.light.contrast} switchLanguage={switchLanguage} />
         <ImportExportButton color={Colors.library.light.contrast} />
       </Toolbar>
       <Header
         level={1}
-        text="Paramètres"
+        text={t('settings.title')}
         color={Colors.library.light.contrast}
       />
       <View style={styles.container}>
         <Header
           level={3}
-          text="Jours d'espacement"
+          text={t('settings.intervals')}
           color={Colors.library.light.contrast}
         />
         <View style={styles.stepsContainer}>
@@ -135,32 +139,32 @@ export default function Modal() {
         </View>
         <Header
           level={3}
-          text="Gestion des révisions"
+          text={t('settings.revisionSettings')}
           color={Colors.library.light.contrast}
         />
         <View style={styles.checkboxContainer}>
           <CheckboxWithText
             isChecked={newHardThrowback}
             setIsChecked={setNewHardThrowback}
-            textLabel="Revenir à la première étape lors d'un oubli"
+            textLabel={t('settings.hardThrowback')}
           />
           <CheckboxWithText
             isChecked={newStopLearning}
             setIsChecked={setNewStopLearning}
-            textLabel="Arrêter de réviser les cartes qui passent la dernière étape"
+            textLabel={t('settings.stopLearning')}
           />
         </View>
         <View style={styles.buttonLineContainer}>
-          <ButtonModal text="Annuler" onPress={() => router.back()} />
-          <ButtonModal text="Enregistrer" onPress={handleValidate} />
+          <ButtonModal text={t('common.cancel')} onPress={() => router.back()} />
+          <ButtonModal text={t('common.save')} onPress={handleValidate} />
         </View>
         <View style={styles.buttonBottom}>
           <ButtonModal
-            text="Réinitialiser les paramètres"
+            text={t('settings.resetSettings')}
             onPress={() =>
               alertAction(
-                'Réinitialiser',
-                'les paramètres et revenir aux paramètres par défaut',
+                t('settings.reset'),
+                t('settings.resettingSettings'),
                 resetSettings,
               )
             }

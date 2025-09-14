@@ -4,11 +4,11 @@ import { TouchableOpacity } from 'react-native';
 import { exportAllDecks } from '../../utils/database/deck/exportAllDecks.utils';
 import { importDocument } from '../../utils/import/importDocument.utils';
 
-interface BackButtonProps {
+interface ImportExportButtonProps {
   color: string;
 }
 
-export function ImportExportButton({ color }: BackButtonProps) {
+export function ImportExportButton({ color }: ImportExportButtonProps) {
   const database = useSQLiteContext();
 
   return (

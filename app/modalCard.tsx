@@ -14,6 +14,7 @@ import { ButtonModal } from '../components/button/ButtonModal';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
+import { useTranslation } from '../hooks/useTranslation';
 import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
@@ -41,6 +42,7 @@ export default function Modal() {
   const [checkedLearn, setCheckedLearn] = useState(true);
 
   const rectoInputRef = useRef(null);
+  const { t } = useTranslation();
 
   const database = useSQLiteContext();
 
@@ -73,8 +75,13 @@ export default function Modal() {
   );
 
   const handleValidate = async (continueCreating: boolean) => {
-    if (recto === '' || verso === '') {
-      notify(false, 'Les champs Recto et Verso ne peuvent pas être vides.');
+    if (recto === '') {
+      notify(false, t('card.emptyFrontError'));
+      return;
+    }
+
+    if (verso === '') {
+      notify(false, t('card.emptyBackError'));
       return;
     }
 
@@ -87,7 +94,7 @@ export default function Modal() {
         checkedAlternate,
         checkedLearn,
       );
-      notify(updateOk, 'Une erreur est survenue.', 'Carte mise à jour');
+      notify(updateOk, t('notifications.errorOccurred'), t('card.cardUpdated'));
     } else {
       await createCard(database, recto, verso, idDeck, checkedAlternate);
     }
@@ -99,7 +106,7 @@ export default function Modal() {
     }
 
     if (!editMode) {
-      notify(true, '', 'Carte(s) ajoutée(s)');
+      notify(true, '', t('card.cardAdded'));
     }
 
     router.back();
@@ -107,7 +114,7 @@ export default function Modal() {
 
   const handleReset = async () => {
     const resetOk = await resetCard(database, idCard);
-    notify(resetOk, 'Une erreur est survenue.', 'Apprentissage réinitialisé');
+    notify(resetOk, t('notifications.errorOccurred'), t('learning.learningComplete'));
   };
 
   const handleDelete = async () => {
@@ -115,18 +122,18 @@ export default function Modal() {
     if (deleteOk) {
       router.back();
     }
-    notify(deleteOk, 'Une erreur est survenue.', 'Carte supprimée');
+    notify(deleteOk, t('notifications.errorOccurred'), t('card.cardDeleted'));
   };
 
   return (
     <SafeAreaView style={styles.screen}>
-      <Stack.Screen options={{ title: 'Carte', headerShown: false }} />
+      <Stack.Screen options={{ title: t('card.title'), headerShown: false }} />
       <Toolbar>
         <BackButton color={Colors.library.light.contrast} />
       </Toolbar>
       <Header level={1} text={deckName} color={Colors.library.light.contrast} />
       <View style={styles.container}>
-        <Header level={3} text="Recto" color={Colors.library.light.contrast} />
+        <Header level={3} text={t('card.front')} color={Colors.library.light.contrast} />
         <Input
           text={recto}
           setText={setRecto}
@@ -134,7 +141,7 @@ export default function Modal() {
           autofocus={!editMode}
           innerRef={rectoInputRef}
         />
-        <Header level={3} text="Verso" color={Colors.library.light.contrast} />
+        <Header level={3} text={t('card.back')} color={Colors.library.light.contrast} />
         <Input
           text={verso}
           setText={setVerso}
@@ -143,19 +150,19 @@ export default function Modal() {
         <CheckboxWithText
           isChecked={checkedAlternate}
           setIsChecked={setCheckedAlternate}
-          textLabel="Alterner recto et verso"
+          textLabel={t('card.alternateSides')}
           spaceTop
         />
         <CheckboxWithText
           isChecked={checkedLearn}
           setIsChecked={setCheckedLearn}
-          textLabel="Carte à apprendre"
+          textLabel={t('card.learningCard')}
           spaceTop
         />
         {!editMode && (
           <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
             <ButtonModal
-              text="Ajouter et continuer à créer"
+              text={t('card.addAndContinue')}
               onPress={() => {
                 handleValidate(true);
                 rectoInputRef.current.focus();
@@ -165,11 +172,11 @@ export default function Modal() {
         )}
         <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
           <ButtonModal
-            text={editMode ? 'Retour' : 'Annuler'}
+            text={editMode ? t('common.back') : t('common.cancel')}
             onPress={() => router.back()}
           />
           <ButtonModal
-            text={editMode ? 'Modifier' : 'Ajouter'}
+            text={editMode ? t('common.edit') : t('common.add')}
             onPress={() => handleValidate(false)}
           />
         </View>

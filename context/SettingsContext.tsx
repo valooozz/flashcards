@@ -1,5 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createContext, FC, ReactNode, useContext } from 'react';
 import useSettings from '../hooks/useSettings';
+import { useTranslation } from '../hooks/useTranslation';
 
 interface SettingsContextType {
   hardThrowback: boolean;
@@ -10,6 +12,7 @@ interface SettingsContextType {
     newHardThrowback: boolean,
     newStopLearning: boolean,
   ) => Promise<void>;
+  switchLanguage: () => Promise<void>;
   resetSettings: () => Promise<void>;
 }
 
@@ -33,8 +36,28 @@ interface SettingsProviderProps {
 
 export const SettingsProvider: FC<SettingsProviderProps> = ({ children }) => {
   const settings = useSettings();
+  const { changeLanguage, getCurrentLanguage } = useTranslation();
+
+  const switchLanguage = async () => {
+    const currentLanguage = getCurrentLanguage();
+    let newLanguage = 'fr';
+
+    if (currentLanguage === 'fr') {
+      newLanguage = 'en';
+    }
+
+    changeLanguage(newLanguage);
+
+    AsyncStorage.setItem('language', newLanguage).catch(
+      (error) => console.log(error),
+    );
+  }
+
   return (
-    <SettingsContext.Provider value={settings}>
+    <SettingsContext.Provider value={{
+      ...settings,
+      switchLanguage,
+    }}>
       {children}
     </SettingsContext.Provider>
   );
