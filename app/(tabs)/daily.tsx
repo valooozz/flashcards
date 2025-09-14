@@ -6,6 +6,7 @@ import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { Header } from '../../components/text/Header';
 import { useSettingsContext } from '../../context/SettingsContext';
+import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
@@ -47,6 +48,9 @@ export default function Tab() {
     useState<string>(undefined);
 
   const { hardThrowback, stopLearning, intervals } = useSettingsContext();
+
+  const { t } = useTranslation();
+
   const database = useSQLiteContext();
 
   useFocusEffect(
@@ -176,7 +180,7 @@ export default function Tab() {
     <View style={styles.container}>
       <Header
         level={1}
-        text={`Révisions ${cardsToRevise.length + forgottenCards.length > 0 ? `(${cardsToRevise.length + forgottenCards.length})` : ''}`}
+        text={`${t('daily.title')} ${cardsToRevise.length + forgottenCards.length > 0 ? `(${cardsToRevise.length + forgottenCards.length})` : ''}`}
         color={Colors.daily.dark.contrast}
       />
       {cardToShow ? (
@@ -194,13 +198,13 @@ export default function Tab() {
           />
           <View style={styles.buttons}>
             <FlashButton
-              text="Oubliée"
+              text={t('daily.forgotten')}
               backgroundColor={Colors.daily.light.main}
               textColor={Colors.daily.light.contrast}
               handleClick={() => handleNext(false)}
             />
             <FlashButton
-              text="Connue"
+              text={t('daily.known')}
               backgroundColor={Colors.daily.intermediate.main}
               textColor={Colors.daily.intermediate.contrast}
               handleClick={() => handleNext(true)}
@@ -217,22 +221,22 @@ export default function Tab() {
               marginHorizontal: '20%',
             }}
           >
-            Toutes les cartes ont été révisées !
+            {t('daily.over')}
           </Text>
           <View>
             <Header
               level={3}
-              text="Aujourd'hui"
+              text={t('days.today')}
               color={Colors.daily.dark.contrast}
             />
-            <Text style={styles.text}>Cartes révisées : {nbRevised}</Text>
-            <Text style={styles.text}>Cartes connues : {nbKnown}</Text>
-            <Text style={styles.text}>Cartes oubliées : {nbForgotten}</Text>
+            <Text style={styles.text}>{t('daily.cardsReviewed')} : {nbRevised}</Text>
+            <Text style={styles.text}>{t('daily.cardsKnown')} : {nbKnown}</Text>
+            <Text style={styles.text}>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
           </View>
           <View style={{ marginTop: 16 }}>
             <Header
               level={3}
-              text="Révisions de la semaine"
+              text={t('daily.weekRevisions')}
               color={Colors.daily.dark.contrast}
             />
             {nbCardsToReviseThisWeek.map((nbCardsToRevise) => (

@@ -94,7 +94,7 @@ export default function Modal() {
         checkedAlternate,
         checkedLearn,
       );
-      notify(updateOk, t('notifications.errorOccurred'), t('card.cardUpdated'));
+      notify(updateOk, t('notifications.errorOccurred'), t('card.updated'));
     } else {
       await createCard(database, recto, verso, idDeck, checkedAlternate);
     }
@@ -106,7 +106,7 @@ export default function Modal() {
     }
 
     if (!editMode) {
-      notify(true, '', t('card.cardAdded'));
+      notify(true, '', t('card.added'));
     }
 
     router.back();
@@ -114,7 +114,7 @@ export default function Modal() {
 
   const handleReset = async () => {
     const resetOk = await resetCard(database, idCard);
-    notify(resetOk, t('notifications.errorOccurred'), t('learning.learningComplete'));
+    notify(resetOk, t('notifications.errorOccurred'), t('card.resetted'));
   };
 
   const handleDelete = async () => {
@@ -122,7 +122,7 @@ export default function Modal() {
     if (deleteOk) {
       router.back();
     }
-    notify(deleteOk, t('notifications.errorOccurred'), t('card.cardDeleted'));
+    notify(deleteOk, t('notifications.errorOccurred'), t('card.deleted'));
   };
 
   return (
@@ -156,7 +156,7 @@ export default function Modal() {
         <CheckboxWithText
           isChecked={checkedLearn}
           setIsChecked={setCheckedLearn}
-          textLabel={t('card.learningCard')}
+          textLabel={t('card.toLearn')}
           spaceTop
         />
         {!editMode && (
@@ -187,32 +187,34 @@ export default function Modal() {
                 numberOfLines={1}
                 adjustsFontSizeToFit
                 style={styles.text}
-              >{`Étape d'apprentissage : ${step}/8`}</Text>
+              >{`${t('card.learningStep')} : ${step}/8`}</Text>
               <Text numberOfLines={1} adjustsFontSizeToFit style={styles.text}>
                 {nextRevision
                   ? delay < 0
-                    ? `Prochaine révision : ${formatDate(nextRevision)} (${-getDelay(nextRevision)} j.)`
+                    ? `${t('card.nextRevision')} : ${formatDate(nextRevision)} (${-getDelay(nextRevision)} ${t('common.dayAbbreviation')})`
                     : delay > 0
-                      ? `${delay} jour${delay > 1 ? 's' : ''} de retard dans les révisions.`
-                      : "À réviser aujourd'hui."
-                  : 'Pas encore apprise'}
+                      ? `${delay} ${delay > 1 ? t('common.dayPlural') : t('common.daySingular')} ${t('card.delayInRevisions')}`
+                      : t('card.reviseToday')
+                  : t('card.notLearnt')}
               </Text>
             </View>
             <View style={{ ...styles.buttonLineContainer, marginTop: 'auto' }}>
               <ButtonModal
-                text="Réinitialiser"
+                text={t('common.reset')}
                 onPress={() =>
                   alertAction(
-                    'Réinitialiser',
-                    "l'apprentissage de la carte",
+                    t('notifications.confirm'),
+                    t('common.reset'),
+                    t('card.learningOfCard'),
+                    t('common.cancel'),
                     handleReset,
                   )
                 }
               />
               <ButtonModal
-                text="Supprimer"
+                text={t('common.delete')}
                 onPress={() =>
-                  alertAction('Supprimer', 'la carte', handleDelete)
+                  alertAction(t('notifications.confirm'), t('common.delete'), t('card.theCard'), t('common.cancel'), handleDelete)
                 }
               />
             </View>

@@ -52,7 +52,7 @@ export default function Modal() {
       newStopLearning,
     );
     router.back();
-    notify(true, '', 'Paramètres mis à jour');
+    notify(true, '', t('settings.updatedSettings'));
   };
 
   useFocusEffect(
@@ -163,8 +163,10 @@ export default function Modal() {
             text={t('settings.resetSettings')}
             onPress={() =>
               alertAction(
-                t('settings.reset'),
+                t('notifications.confirm'),
+                t('common.reset'),
                 t('settings.resettingSettings'),
+                t('common.cancel'),
                 resetSettings,
               )
             }

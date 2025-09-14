@@ -13,6 +13,7 @@ import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
+import { useTranslation } from '../hooks/useTranslation';
 import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
@@ -38,6 +39,8 @@ export default function Modal() {
   const [nbCardsToLearn, setNbCardsToLearn] = useState(0);
   const [progress, setProgress] = useState(0);
 
+  const { t } = useTranslation();
+
   const database = useSQLiteContext();
 
   const { idDeck } = useLocalSearchParams<{
@@ -46,7 +49,7 @@ export default function Modal() {
 
   const handleValidate = async () => {
     if (newDeckName === '') {
-      notify(false, 'Le nom du deck ne peut pas être vide.');
+      notify(false, t('deck.emptyNameError'));
       return;
     }
 
@@ -55,7 +58,7 @@ export default function Modal() {
       if (renameOk) {
         router.back();
       }
-      notify(renameOk, 'Un deck porte déjà ce nom.', 'Deck renommé');
+      notify(renameOk, t('deck.existingNameError'), t('deck.renamed'));
     } else {
       const idCreated = await createDeck(database, newDeckName);
       if (idCreated >= 0) {
@@ -63,8 +66,8 @@ export default function Modal() {
       }
       notify(
         idCreated >= 0,
-        'Un deck porte déjà ce nom.',
-        `Deck ${newDeckName} créé`,
+        t('deck.existingNameError'),
+        `${t('deck.title')} ${newDeckName} ${t('common.created')}`,
       );
     }
   };
@@ -76,8 +79,8 @@ export default function Modal() {
     }
     notify(
       resetOk,
-      'Une erreur est survenue.',
-      "Apprentissage réinitialisé sur l'ensemble du deck",
+      t('notifications.errorOccured'),
+      t('deck.learningResetted'),
     );
   };
 
@@ -86,7 +89,7 @@ export default function Modal() {
     if (deleteOk) {
       router.back();
     }
-    notify(deleteOk, 'Une erreur est survenue.', 'Deck supprimé');
+    notify(deleteOk, t('notifications.errorOccured'), t('deck.deleted'));
   };
 
   const handleImport = async (importType: 'json' | 'csv') => {
@@ -117,40 +120,40 @@ export default function Modal() {
 
   return (
     <SafeAreaView style={styles.screen}>
-      <Stack.Screen options={{ title: 'Deck', headerShown: false }} />
+      <Stack.Screen options={{ title: t('deck.title'), headerShown: false }} />
       <Toolbar>
         <BackButton color={Colors.library.light.contrast} />
       </Toolbar>
       <Header
         level={1}
-        text={editMode ? deckName : 'Nouveau Deck'}
+        text={editMode ? deckName : t('deck.new')}
         color={Colors.library.light.contrast}
       />
       <View style={styles.container}>
         <Header
           level={3}
-          text="Nom du deck"
+          text={t('deck.name')}
           color={Colors.library.light.contrast}
         />
         <Input text={newDeckName} setText={setNewDeckName} />
         <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
           <ButtonModal
-            text={editMode ? 'Retour' : 'Annuler'}
+            text={editMode ? t('common.back') : t('common.cancel')}
             onPress={() => router.back()}
           />
           <ButtonModal
-            text={editMode ? 'Renommer' : 'Ajouter'}
+            text={editMode ? t('common.rename') : t('common.add')}
             onPress={handleValidate}
           />
         </View>
         {!editMode && (
           <View style={styles.buttonBottom}>
             <ButtonModal
-              text="Importer JSON"
+              text={t('deck.importJson')}
               onPress={() => handleImport('json')}
             />
             <ButtonModal
-              text="Importer CSV"
+              text={t('deck.importCsv')}
               onPress={() => handleImport('csv')}
             />
           </View>
@@ -158,7 +161,7 @@ export default function Modal() {
         {editMode && (
           <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
             <ButtonModal
-              text="Exporter les cartes"
+              text={t('deck.exportCards')}
               onPress={() => exportDeck(database, idDeck, deckName, false)}
             />
           </View>
@@ -166,7 +169,7 @@ export default function Modal() {
         {editMode && (
           <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
             <ButtonModal
-              text="Exporter avec l'apprentissage"
+              text={t('deck.exportLearning')}
               onPress={() => exportDeck(database, idDeck, deckName, true)}
             />
           </View>
@@ -174,31 +177,33 @@ export default function Modal() {
         {editMode && (
           <View style={styles.statContainer}>
             <Text style={styles.textStat}>
-              Cartes apprises : {nbCardsLearnt}
+              {t('deck.cardsLearnt')} : {nbCardsLearnt}
             </Text>
             <Text style={styles.textStat}>
-              Cartes à apprendre : {nbCardsToLearn}
+              {t('deck.cardsToLearn')} : {nbCardsToLearn}
             </Text>
             <Text style={styles.textStat}>
-              Progression totale : {progress} %
+              {t('deck.progress')} : {progress} %
             </Text>
           </View>
         )}
         {editMode && (
           <View style={styles.buttonBottom}>
             <ButtonModal
-              text="Réinitialiser l'apprentissage"
+              text={t('deck.reset')}
               onPress={() =>
                 alertAction(
-                  'Réinitialiser',
-                  "l'apprentissage du deck",
+                  t('notifications.confirm'),
+                  t('common.reset'),
+                  t('deck.learning'),
+                  t('common.cancel'),
                   handleReset,
                 )
               }
             />
             <ButtonModal
-              text="Supprimer"
-              onPress={() => alertAction('Supprimer', 'le deck', handleDelete)}
+              text={t('common.delete')}
+              onPress={() => alertAction(t('notifications.confirm'), t('common.delete'), t('deck.theDeck'), t('common.cancel'), handleDelete)}
             />
           </View>
         )}

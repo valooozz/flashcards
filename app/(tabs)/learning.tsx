@@ -5,6 +5,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { Header } from '../../components/text/Header';
+import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
@@ -21,6 +22,8 @@ export default function Tab() {
   const [cardsToLearn, setCardsToLearn] = useState<FlashCardType[]>([]);
   const [cardToShow, setCardToShow] = useState<FlashCardType>(undefined);
   const [previousCard, setPreviousCard] = useState<FlashCardType>(undefined);
+
+  const { t } = useTranslation();
 
   const database = useSQLiteContext();
 
@@ -68,7 +71,7 @@ export default function Tab() {
     <View style={styles.container}>
       <Header
         level={1}
-        text={`Apprentissage ${cardsToLearn.length > 0 ? `(${cardsToLearn.length})` : ''}`}
+        text={`${t('learning.title')} ${cardsToLearn.length > 0 ? `(${cardsToLearn.length})` : ''}`}
         color={Colors.learning.dark.contrast}
       />
       {cardToShow ? (
@@ -85,13 +88,13 @@ export default function Tab() {
           />
           <View style={styles.buttons}>
             <FlashButton
-              text="A revoir"
+              text={t('learning.again')}
               backgroundColor={Colors.learning.light.main}
               textColor={Colors.learning.light.contrast}
               handleClick={() => handleNext(false)}
             />
             <FlashButton
-              text="Apprise"
+              text={t('learning.learnt')}
               backgroundColor={Colors.learning.intermediate.main}
               textColor={Colors.learning.intermediate.contrast}
               handleClick={() => handleNext(true)}
@@ -99,7 +102,7 @@ export default function Tab() {
           </View>
         </>
       ) : (
-        <Text style={styles.text}>Toutes les cartes ont été apprises !</Text>
+        <Text style={styles.text}>{t('learning.over')}</Text>
       )}
     </View>
   );

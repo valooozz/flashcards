@@ -5,6 +5,7 @@ import { Toolbar } from '../../components/bar/Toolbar';
 import { AddButton } from '../../components/button/AddButton';
 import { ListCard } from '../../components/card/ListCard';
 import { Header } from '../../components/text/Header';
+import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
@@ -34,6 +35,8 @@ export function Deck({
 }: DeckProps) {
   const [showCards, setShowCards] = useState(true);
 
+  const { t } = useTranslation();
+
   useEffect(() => {
     if (nbCards > 0) {
       setShowCards(true);
@@ -60,7 +63,7 @@ export function Deck({
       />
       <Header
         level={2}
-        text={`Cartes ${nbCards > 0 ? `(${nbCards})` : ''}`}
+        text={`${t('deck.cards')} ${nbCards > 0 ? `(${nbCards})` : ''}`}
         color={Colors.library.dark.contrast}
         rightMargin
       />
@@ -75,10 +78,7 @@ export function Deck({
           showsVerticalScrollIndicator={false}
         />
       ) : (
-        <Text style={styles.text}>
-          Ce deck ne contient aucune carte. Cliquez sur le bouton + pour en
-          ajouter !
-        </Text>
+        <Text style={styles.text}>{t('deck.noCards')}</Text>
       )}
       <AddButton
         icon="pluscircle"

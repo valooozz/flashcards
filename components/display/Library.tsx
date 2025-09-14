@@ -4,6 +4,7 @@ import { Toolbar } from '../../components/bar/Toolbar';
 import { AddButton } from '../../components/button/AddButton';
 import { DeckCard } from '../../components/card/DeckCard';
 import { Header } from '../../components/text/Header';
+import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
@@ -16,6 +17,8 @@ interface LibraryProps {
 }
 
 export function Library({ decks, openDeck }: LibraryProps) {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <Toolbar childrenOnTheRight addMarginRight>
@@ -23,13 +26,13 @@ export function Library({ decks, openDeck }: LibraryProps) {
       </Toolbar>
       <Header
         level={1}
-        text="Bibliothèque"
+        text={t('library.title')}
         color={Colors.library.dark.contrast}
         rightMargin
       />
       <Header
         level={2}
-        text="Decks"
+        text={t('library.decks')}
         color={Colors.library.dark.contrast}
         rightMargin
       />
@@ -55,7 +58,7 @@ export function Library({ decks, openDeck }: LibraryProps) {
         </ScrollView>
       ) : (
         <Text style={styles.text}>
-          Il n'y a aucun deck par ici. Cliquez sur le bouton + pour en ajouter !
+          {t('library.noDeck')}
         </Text>
       )}
 

@@ -1,6 +1,7 @@
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Radius } from '../../style/Radius';
 import { Shadows } from '../../style/Shadows';
@@ -20,23 +21,25 @@ interface ListCardProps {
 }
 
 export function ListCard({ card, triggerReload }: ListCardProps) {
+  const { t } = useTranslation();
+
   const database = useSQLiteContext();
 
   const handleForget = async () => {
     const resetOk = await resetCard(database, card.id.toString());
-    notify(resetOk, 'Une erreur est survenue.', 'Carte oubliée');
+    notify(resetOk, t('notifications.errorOccured'), t('card.forgotten'));
     triggerReload();
   };
 
   const handleLearn = async () => {
     await putCardToReviseTommorow(database, card.id);
-    notify(true, '', 'Carte apprise');
+    notify(true, '', t('card.learnt'));
     triggerReload();
   };
 
   const handleLongPress = () => {
     if (card.nextRevision !== null) {
-      alertAction('Oublier', 'la carte', handleForget);
+      alertAction(t('notifications.confirm'), t('common.forget'), t('card.theCard'), t('common.cancel'), handleForget);
     } else {
       handleLearn();
     }
