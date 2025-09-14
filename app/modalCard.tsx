@@ -9,6 +9,7 @@ import { useCallback, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toolbar } from '../components/bar/Toolbar';
+import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
@@ -120,7 +121,9 @@ export default function Modal() {
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: 'Carte', headerShown: false }} />
-      <Toolbar color={Colors.library.light.contrast} />
+      <Toolbar>
+        <BackButton color={Colors.library.light.contrast} />
+      </Toolbar>
       <Header level={1} text={deckName} color={Colors.library.light.contrast} />
       <View style={styles.container}>
         <Header level={3} text="Recto" color={Colors.library.light.contrast} />

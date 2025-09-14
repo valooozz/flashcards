@@ -8,6 +8,7 @@ import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { DeckType } from '../../types/DeckType';
+import { SettingsButton } from '../button/SettingsButton';
 
 interface LibraryProps {
   decks: DeckType[];
@@ -17,11 +18,9 @@ interface LibraryProps {
 export function Library({ decks, openDeck }: LibraryProps) {
   return (
     <View style={styles.container}>
-      <Toolbar
-        color={Colors.library.dark.contrast}
-        routeSettingsButton="modalSettings"
-        noBackButton
-      />
+      <Toolbar childrenOnTheRight addMarginRight>
+        <SettingsButton color={Colors.library.dark.contrast} route={"modalSettings"} />
+      </Toolbar>
       <Header
         level={1}
         text="Bibliothèque"

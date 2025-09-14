@@ -10,6 +10,8 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { DeckProgressBar } from '../bar/DeckProgressBar';
+import { BackButton } from '../button/BackButton';
+import { SettingsButton } from '../button/SettingsButton';
 
 interface DeckProps {
   idDeck: number;
@@ -42,11 +44,10 @@ export function Deck({
 
   return (
     <View style={styles.container}>
-      <Toolbar
-        color={Colors.library.dark.contrast}
-        actionBackButton={closeDeck}
-        routeSettingsButton={`/modalDeck?idDeck=${idDeck}`}
-      />
+      <Toolbar addMarginRight>
+        <BackButton color={Colors.library.dark.contrast} action={closeDeck} />
+        <SettingsButton color={Colors.library.dark.contrast} route={`/modalDeck?idDeck=${idDeck}`} />
+      </Toolbar>
       <Header
         level={1}
         text={deckName}

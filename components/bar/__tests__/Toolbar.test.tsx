@@ -1,60 +1,97 @@
+import { render } from '@testing-library/react-native';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { Text } from 'react-native';
 import { Toolbar } from '../Toolbar';
 
-jest.mock('../../button/BackButton', () => {
-    const { Pressable } = require('react-native');
-    return {
-        BackButton: ({ action }: any) => (
-            <Pressable testID="back-button" onPress={action} />
-        ),
-    };
-});
-
-jest.mock('../../button/SettingsButton', () => {
-    const { Pressable } = require('react-native');
-    return {
-        SettingsButton: ({ route }: any) => (
-            <Pressable testID={`settings-button-${route}`} />
-        ),
-    };
-});
-
-jest.mock('../../button/ImportExportButton', () => {
-    const { Pressable } = require('react-native');
-    return {
-        ImportExportButton: () => <Pressable testID="import-export-button" />,
-    };
-});
-
 describe('Toolbar', () => {
-    it('renders back button by default and triggers action on press', () => {
-        const onBack = jest.fn();
-        const { getByTestId } = render(
-            <Toolbar color="#000" actionBackButton={onBack} />
+    it('renders children correctly', () => {
+        const { queryByText } = render(
+            <Toolbar>
+                <Text>Test Content</Text>
+            </Toolbar>
         );
-        fireEvent.press(getByTestId('back-button'));
-        expect(onBack).toHaveBeenCalled();
+
+        expect(queryByText('Test Content')).toBeTruthy();
     });
 
-    it('hides back button when noBackButton is true', () => {
+    it('applies rightButton style when childrenOnTheRight is true', () => {
+        const { queryByText, getByTestId } = render(
+            <Toolbar childrenOnTheRight={true}>
+                <Text>Right Content</Text>
+            </Toolbar>
+        );
+
+        expect(queryByText('Right Content')).toBeTruthy();
+
+        const toolbarChildrenContainer = getByTestId('toolbar-children-container');
+        expect(toolbarChildrenContainer.props.style).toEqual(
+            expect.objectContaining({ marginLeft: 'auto' })
+        );
+    });
+
+    it('does not apply rightButton style when childrenOnTheRight is false', () => {
         const { queryByTestId } = render(
-            <Toolbar color="#000" noBackButton />
+            <Toolbar childrenOnTheRight={false}>
+                <Text>Left Content</Text>
+            </Toolbar>
         );
-        expect(queryByTestId('back-button')).toBeNull();
+
+        expect(queryByTestId('toolbar-children-container')).toBeFalsy();
     });
 
-    it('renders settings button when routeSettingsButton provided', () => {
+    it('applies marginRight when addMarginRight is true', () => {
         const { getByTestId } = render(
-            <Toolbar color="#000" routeSettingsButton="/settings" />
+            <Toolbar addMarginRight={true}>
+                <Text>Test Content</Text>
+            </Toolbar>
         );
-        expect(getByTestId('settings-button-/settings')).toBeTruthy();
+
+        const toolbar = getByTestId('toolbar');
+        expect(toolbar.props.style).toEqual(
+            expect.objectContaining({ marginRight: 24 })
+        );
     });
 
-    it('renders import/export button when importExportButton is true', () => {
+    it('does not apply marginRight when addMarginRight is false', () => {
         const { getByTestId } = render(
-            <Toolbar color="#000" importExportButton />
+            <Toolbar addMarginRight={false}>
+                <Text>Test Content</Text>
+            </Toolbar>
         );
-        expect(getByTestId('import-export-button')).toBeTruthy();
+
+        const toolbar = getByTestId('toolbar');
+        expect(toolbar.props.style).toEqual(
+            expect.objectContaining({ marginRight: 0 })
+        );
+    });
+
+    it('handles multiple children correctly', () => {
+        const { queryByText } = render(
+            <Toolbar>
+                <Text>First Child</Text>
+                <Text>Second Child</Text>
+            </Toolbar>
+        );
+
+        expect(queryByText('First Child')).toBeTruthy();
+        expect(queryByText('Second Child')).toBeTruthy();
+    });
+
+    it('combines addMarginRight and childrenOnTheRight correctly', () => {
+        const { getByTestId } = render(
+            <Toolbar addMarginRight={true} childrenOnTheRight={true}>
+                <Text testID="test-content">Test Content</Text>
+            </Toolbar>
+        );
+
+        const toolbar = getByTestId('toolbar');
+        expect(toolbar.props.style).toEqual(
+            expect.objectContaining({ marginRight: 24 })
+        );
+
+        const toolbarChildrenContainer = getByTestId('toolbar-children-container');
+        expect(toolbarChildrenContainer.props.style).toEqual(
+            expect.objectContaining({ marginLeft: 'auto' })
+        );
     });
 });

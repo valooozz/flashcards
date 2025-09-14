@@ -1,38 +1,29 @@
+import { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BackButton } from '../button/BackButton';
-import { ImportExportButton } from '../button/ImportExportButton';
-import { SettingsButton } from '../button/SettingsButton';
 
 interface ToolbarProps {
-  color: string;
-  actionBackButton?: () => void;
-  routeSettingsButton?: string;
-  noBackButton?: boolean;
-  importExportButton?: boolean;
+  childrenOnTheRight?: boolean;
+  addMarginRight?: boolean;
+  children: ReactNode;
 }
 
 export function Toolbar({
-  color,
-  actionBackButton,
-  routeSettingsButton,
-  noBackButton = false,
-  importExportButton = false,
+  childrenOnTheRight = false,
+  addMarginRight = false,
+  children,
 }: ToolbarProps) {
   return (
     <View
-      style={{ ...styles.container, marginRight: importExportButton ? 0 : 24 }}
+      style={{ ...styles.container, marginRight: addMarginRight ? 24 : 0 }}
+      testID='toolbar'
     >
-      {!noBackButton && <BackButton color={color} action={actionBackButton} />}
-      {routeSettingsButton !== undefined && (
-        <View style={styles.rightButton}>
-          <SettingsButton color={color} route={routeSettingsButton} />
+      {childrenOnTheRight ?
+        <View style={styles.rightButton} testID='toolbar-children-container'>
+          {children}
         </View>
-      )}
-      {importExportButton && (
-        <View style={styles.rightButton}>
-          <ImportExportButton color={color} />
-        </View>
-      )}
+        :
+        children}
+
     </View>
   );
 }

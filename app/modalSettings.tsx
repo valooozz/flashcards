@@ -3,7 +3,9 @@ import { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toolbar } from '../components/bar/Toolbar';
+import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
+import { ImportExportButton } from '../components/button/ImportExportButton';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
 import { SettingStep } from '../components/text/SettingStep';
@@ -69,7 +71,10 @@ export default function Modal() {
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: 'Settings', headerShown: false }} />
-      <Toolbar color={Colors.library.light.contrast} importExportButton />
+      <Toolbar>
+        <BackButton color={Colors.library.light.contrast} />
+        <ImportExportButton color={Colors.library.light.contrast} />
+      </Toolbar>
       <Header
         level={1}
         text="Paramètres"
