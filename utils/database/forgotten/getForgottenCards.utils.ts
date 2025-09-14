@@ -10,9 +10,19 @@ export const getForgottenCards = async (
 
   try {
     forgottenCards = await database.getAllAsync<FlashCardType>(
-      `SELECT C.id, C.recto, C.verso, C.deck, C.rectoFirst, C.step, C.nextRevision, C.changeSide, D.name
-      FROM Forgotten F INNER JOIN Card C ON F.idCard=C.id INNER JOIN Deck D ON C.deck=D.id
-      WHERE date=?;`,
+      `SELECT
+        C.id,
+        CASE WHEN C.rectoFirst=1 THEN C.recto ELSE C.verso END AS recto,
+        CASE WHEN C.rectoFirst=1 THEN C.verso ELSE C.recto END AS verso,
+        C.rectoFirst,
+        C.step,
+        C.nextRevision,
+        C.changeSide,
+        D.name
+      FROM Forgotten F
+      INNER JOIN Card C ON F.idCard=C.id
+      INNER JOIN Deck D ON C.deck=D.id
+      WHERE date=?`,
       today,
     );
   } catch (error) {

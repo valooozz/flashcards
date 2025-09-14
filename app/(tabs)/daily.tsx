@@ -182,8 +182,8 @@ export default function Tab() {
       {cardToShow ? (
         <>
           <FlashCard
-            recto={cardToShow.rectoFirst ? cardToShow.recto : cardToShow.verso}
-            verso={cardToShow.rectoFirst ? cardToShow.verso : cardToShow.recto}
+            recto={cardToShow.recto}
+            verso={cardToShow.verso}
             deckName={cardToShow.name}
             delay={delay}
             backgroundColor={Colors.daily.simple.main}
