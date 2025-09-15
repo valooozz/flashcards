@@ -21,7 +21,7 @@ export function FlashButton({
       onPress={handleClick}
       testID="flash-button"
     >
-      <Text style={{ ...styles.text, color: textColor }}>{text}</Text>
+      <Text numberOfLines={1} adjustsFontSizeToFit style={{ ...styles.text, color: textColor }}>{text}</Text>
     </TouchableOpacity>
   );
 }
@@ -40,5 +40,6 @@ const styles = StyleSheet.create({
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
     marginBottom: 8,
+    marginHorizontal: 8,
   },
 });

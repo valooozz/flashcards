@@ -89,6 +89,7 @@
         "title": "Learning",
         "again": "To review",
         "learnt": "Learnt",
+        "ignore": "Ignore",
         "over": "All cards have been learnt!"
     },
     "daily": {

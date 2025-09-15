@@ -9,19 +9,21 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
+import { LearningAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { resetCard } from '../../utils/database/card/update/resetCard.utils';
+import { stopLearningCard } from '../../utils/database/card/update/stopLearningCard.utils';
 import { decrementStatOfToday } from '../../utils/database/stats/decrementStatOfToday.utils';
 import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
-import { isLastItem } from '../../utils/isLastItem.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 
 export default function Tab() {
   const [cardsToLearn, setCardsToLearn] = useState<FlashCardType[]>([]);
   const [cardToShow, setCardToShow] = useState<FlashCardType>(undefined);
   const [previousCard, setPreviousCard] = useState<FlashCardType>(undefined);
+  const [lastAction, setLastAction] = useState<LearningAction>(undefined);
 
   const { t } = useTranslation();
 
@@ -47,24 +49,30 @@ export default function Tab() {
 
   const handlePrevious = () => {
     setPreviousCard(undefined);
-    if (isLastItem(previousCard, cardsToLearn)) {
+    if (lastAction === 'again') {
       updateCardsToLearn([previousCard, ...cardsToLearn.slice(0, -1)]);
-    } else {
-      resetCard(database, previousCard.id.toString());
+      return;
+    }
+    resetCard(database, previousCard.id.toString());
+    updateCardsToLearn([previousCard, ...cardsToLearn]);
+    if (lastAction === 'learnt') {
       decrementStatOfToday(database, 'nbLearnt');
-      updateCardsToLearn([previousCard, ...cardsToLearn]);
     }
   };
 
-  const handleNext = (learnt: boolean) => {
+  const handleNext = (learningAction: LearningAction) => {
     setPreviousCard(cardToShow);
-    if (learnt) {
+    if (learningAction === 'learnt') {
       putCardToReviseTommorow(database, cardToShow.id);
       incrementStatOfToday(database, 'nbLearnt');
       updateCardsToLearn(cardsToLearn.slice(1));
-    } else {
+    } else if (learningAction === 'again') {
       updateCardsToLearn([...cardsToLearn.slice(1), cardToShow]);
+    } else if (learningAction === 'ignore') {
+      stopLearningCard(database, cardToShow.id);
+      updateCardsToLearn(cardsToLearn.slice(1));
     }
+    setLastAction(learningAction);
   };
 
   return (
@@ -88,16 +96,22 @@ export default function Tab() {
           />
           <View style={styles.buttons}>
             <FlashButton
-              text={t('learning.again')}
+              text={t('learning.ignore')}
               backgroundColor={Colors.learning.light.main}
               textColor={Colors.learning.light.contrast}
-              handleClick={() => handleNext(false)}
+              handleClick={() => handleNext('ignore')}
+            />
+            <FlashButton
+              text={t('learning.again')}
+              backgroundColor={Colors.learning.middle.main}
+              textColor={Colors.learning.light.contrast}
+              handleClick={() => handleNext('again')}
             />
             <FlashButton
               text={t('learning.learnt')}
               backgroundColor={Colors.learning.intermediate.main}
               textColor={Colors.learning.intermediate.contrast}
-              handleClick={() => handleNext(true)}
+              handleClick={() => handleNext('learnt')}
             />
           </View>
         </>
