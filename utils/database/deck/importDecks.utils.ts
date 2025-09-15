@@ -22,10 +22,10 @@ export const importDecks = async (
         card.verso,
         String(idDeck),
         card.changeSide,
+        card.toLearn,
         card.rectoFirst,
         card.step,
         card.nextRevision,
-        card.toLearn,
       );
     });
   }

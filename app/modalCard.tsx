@@ -96,7 +96,7 @@ export default function Modal() {
       );
       notify(updateOk, t('notifications.errorOccurred'), t('card.updated'));
     } else {
-      await createCard(database, recto, verso, idDeck, checkedAlternate);
+      await createCard(database, recto, verso, idDeck, checkedAlternate, checkedLearn);
     }
 
     if (continueCreating) {

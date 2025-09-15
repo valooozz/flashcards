@@ -6,10 +6,10 @@ export const createCard = async (
   verso: string,
   idDeck: string,
   changeSide: boolean = true,
+  toLearn: boolean = true,
   rectoFirst: boolean = true,
   step: number = 0,
   nextRevision: string = null,
-  toLearn: boolean = true,
 ): Promise<boolean> => {
   return database
     .runAsync(
