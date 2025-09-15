@@ -4,11 +4,13 @@ import useSettings from '../hooks/useSettings';
 interface SettingsContextType {
   hardThrowback: boolean;
   stopLearning: boolean;
+  advancedRevisionMode: boolean;
   intervals: number[];
   setSettings: (
     newIntervals: number[],
     newHardThrowback: boolean,
     newStopLearning: boolean,
+    newAdvancedRevisionMode: boolean,
   ) => Promise<void>;
   resetSettings: () => Promise<void>;
 }

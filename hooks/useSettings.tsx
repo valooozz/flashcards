@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 const useSettings = () => {
   const [hardThrowback, setHardThrowback] = useState(true);
   const [stopLearning, setStopLearning] = useState(false);
+  const [advancedRevisionMode, setAdvancedRevisionMode] = useState(false);
   const [intervals, setIntervals] = useState([1, 2, 4, 7, 14, 30, 30, 30, 60]);
 
   useEffect(() => {
@@ -30,9 +31,17 @@ const useSettings = () => {
         }
       })
       .catch((error) => console.log(error));
+
+    AsyncStorage.getItem('advancedRevisionMode')
+      .then((result) => {
+        if (result) {
+          setAdvancedRevisionMode(JSON.parse(result));
+        }
+      })
+      .catch((error) => console.log(error));
   }, []);
 
-  const saveSettings = async (newIntervals: number[], newHardThrowback: boolean, newStopLearning: boolean) => {
+  const saveSettings = async (newIntervals: number[], newHardThrowback: boolean, newStopLearning: boolean, newAdvancedRevisionMode: boolean) => {
     AsyncStorage.setItem('intervals', JSON.stringify(newIntervals)).catch(
       (error) => console.log(error),
     );
@@ -44,12 +53,17 @@ const useSettings = () => {
     AsyncStorage.setItem('stopLearning', JSON.stringify(newStopLearning)).catch(
       (error) => console.log(error),
     );
+
+    AsyncStorage.setItem('advancedRevisionMode', JSON.stringify(newAdvancedRevisionMode)).catch(
+      (error) => console.log(error),
+    );
   };
 
   const setSettings = async (
     newIntervals: number[],
     newHardThrowback: boolean,
     newStopLearning: boolean,
+    newAdvancedRevisionMode: boolean,
   ) => {
     if (newIntervals.length !== 9) {
       console.error(
@@ -61,14 +75,15 @@ const useSettings = () => {
     setIntervals(newIntervals);
     setHardThrowback(newHardThrowback);
     setStopLearning(newStopLearning);
-    saveSettings(newIntervals, newHardThrowback, newStopLearning);
+    setAdvancedRevisionMode(newAdvancedRevisionMode);
+    saveSettings(newIntervals, newHardThrowback, newStopLearning, newAdvancedRevisionMode);
   };
 
   const resetSettings = async () => {
-    setSettings([1, 2, 4, 7, 14, 30, 30, 30, 60], true, false);
+    setSettings([1, 2, 4, 7, 14, 30, 30, 30, 60], true, false, false);
   };
 
-  return { hardThrowback, stopLearning, intervals, setSettings, resetSettings };
+  return { hardThrowback, stopLearning, advancedRevisionMode, intervals, setSettings, resetSettings };
 };
 
 export default useSettings;

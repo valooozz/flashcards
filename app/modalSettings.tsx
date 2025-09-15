@@ -17,6 +17,7 @@ import { notify } from '../utils/notify.utils';
 export default function Modal() {
   const [newHardThrowback, setNewHardThrowback] = useState(true);
   const [newStopLearning, setNewStopLearning] = useState(false);
+  const [newAdvancedRevisionMode, setNewAdvancedRevisionMode] = useState(false);
   const [step0, setStep0] = useState('1');
   const [step1, setStep1] = useState('2');
   const [step2, setStep2] = useState('4');
@@ -27,7 +28,7 @@ export default function Modal() {
   const [step7, setStep7] = useState('30');
   const [step8, setStep8] = useState('60');
 
-  const { hardThrowback, stopLearning, intervals, setSettings, resetSettings } =
+  const { hardThrowback, stopLearning, advancedRevisionMode, intervals, setSettings, resetSettings } =
     useSettingsContext();
 
   const handleValidate = async () => {
@@ -45,6 +46,7 @@ export default function Modal() {
       ],
       newHardThrowback,
       newStopLearning,
+      newAdvancedRevisionMode,
     );
     router.back();
     notify(true, '', 'Paramètres mis à jour');
@@ -54,6 +56,7 @@ export default function Modal() {
     useCallback(() => {
       setNewHardThrowback(hardThrowback);
       setNewStopLearning(stopLearning);
+      setNewAdvancedRevisionMode(advancedRevisionMode);
       setStep0(String(intervals[0]));
       setStep1(String(intervals[1]));
       setStep2(String(intervals[2]));
@@ -63,7 +66,7 @@ export default function Modal() {
       setStep6(String(intervals[6]));
       setStep7(String(intervals[7]));
       setStep8(String(intervals[8]));
-    }, [hardThrowback, stopLearning, intervals]),
+    }, [hardThrowback, stopLearning, advancedRevisionMode, intervals]),
   );
 
   return (
@@ -143,6 +146,11 @@ export default function Modal() {
             isChecked={newStopLearning}
             setIsChecked={setNewStopLearning}
             textLabel="Arrêter de réviser les cartes qui passent la dernière étape"
+          />
+          <CheckboxWithText
+            isChecked={newAdvancedRevisionMode}
+            setIsChecked={setNewAdvancedRevisionMode}
+            textLabel="Mode de révision avancé (trois boutons)"
           />
         </View>
         <View style={styles.buttonLineContainer}>
