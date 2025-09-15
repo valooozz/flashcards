@@ -1,4 +1,4 @@
 export interface NbCardsToReviseType {
-  day: string;
+  daysFromToday: number;
   nbCards: number;
 }

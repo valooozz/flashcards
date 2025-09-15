@@ -239,12 +239,24 @@ export default function Tab() {
               text={t('daily.weekRevisions')}
               color={Colors.daily.dark.contrast}
             />
-            {nbCardsToReviseThisWeek.map((nbCardsToRevise) => (
-              <Text style={styles.text} key={nbCardsToRevise.day}>
-                {nbCardsToRevise.day} : {nbCardsToRevise.nbCards} carte
-                {nbCardsToRevise.nbCards > 1 ? 's' : ''}
-              </Text>
-            ))}
+            {nbCardsToReviseThisWeek.map((nbCardsToRevise) => {
+              const revisionDate = new Date();
+              revisionDate.setDate(revisionDate.getDate() + nbCardsToRevise.daysFromToday);
+
+              let dayLabel: string;
+              if (nbCardsToRevise.daysFromToday === 1) {
+                dayLabel = t('days.tomorrow');
+              } else {
+                const weekdayIndex = revisionDate.getDay();
+                dayLabel = t(`days.${weekdayIndex}`);
+              }
+
+              return (
+                <Text style={styles.text} key={nbCardsToRevise.daysFromToday}>
+                  {dayLabel} : {nbCardsToRevise.nbCards}
+                </Text>
+              );
+            })}
           </View>
         </>
       )}
