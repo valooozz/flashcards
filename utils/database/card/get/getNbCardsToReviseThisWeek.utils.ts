@@ -22,7 +22,5 @@ export const getNbCardsToReviseThisWeek = async (database: SQLiteDatabase) => {
     console.log(error);
   }
 
-  console.log(nbCardsToRevise);
-
   return nbCardsToRevise;
 };

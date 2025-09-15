@@ -6,11 +6,13 @@ import { useTranslation } from '../hooks/useTranslation';
 interface SettingsContextType {
   hardThrowback: boolean;
   stopLearning: boolean;
+  advancedRevisionMode: boolean;
   intervals: number[];
   setSettings: (
     newIntervals: number[],
     newHardThrowback: boolean,
     newStopLearning: boolean,
+    newAdvancedRevisionMode: boolean,
   ) => Promise<void>;
   switchLanguage: () => Promise<void>;
   resetSettings: () => Promise<void>;

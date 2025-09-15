@@ -77,6 +77,7 @@
         "revisionSettings": "Gestion des révisions",
         "hardThrowback": "Revenir à la première étape lors d'un oubli",
         "stopLearning": "Arrêter l'apprentissage après la dernière étape",
+        "advancedMode": "Mode de révision avancé",
         "resetSettings": "Réinitialiser les paramètres",
         "resettingSettings": "les paramètres et revenir aux paramètres par défaut",
         "updatedSettings": "Paramètres mis à jour"
