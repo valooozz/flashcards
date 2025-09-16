@@ -1,5 +1,5 @@
+import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
 import { Library } from '../Library';
 
 jest.mock('expo-router', () => ({
@@ -53,8 +53,8 @@ describe('Library', () => {
             <Library decks={decks as any} openDeck={openDeck} />
         );
 
-        expect(getByText('Bibliothèque')).toBeTruthy();
-        expect(getByText('Decks')).toBeTruthy();
+        expect(getByText('library.title')).toBeTruthy();
+        expect(getByText('library.decks')).toBeTruthy();
 
         // First column should contain deck 1 and 3 (even indices)
         expect(getByTestId('deck-card-1')).toBeTruthy();
@@ -72,7 +72,7 @@ describe('Library', () => {
             <Library decks={[]} openDeck={jest.fn()} />
         );
 
-        expect(getByText(/Il n'y a aucun deck/)).toBeTruthy();
+        expect(getByText('library.noDeck')).toBeTruthy();
         expect(queryByTestId('deck-card-1')).toBeNull();
     });
 

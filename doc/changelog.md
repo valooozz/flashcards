@@ -1,7 +1,14 @@
 
+### Version 1.5.0
+
 - Fix de l'affichage des statistiques d'une carte qui pouvait déborder sur une autre ligne
 - Fix du bouton retour du téléphone qui fait maintenant revenir au deck lorsqu'on était dans les paramètres d'une carte ou d'un deck
 - Fix sauvegarde des paramètres
+- Bouton pour changer de langue entre français et anglais
+- Bouton pour passer une carte comme pas à apprendre, depuis l'onglet Apprentissage
+- Fix du paramètre "carte à apprendre" non pris en compte lors de la création d'une carte
+- Les prochaines révisions sont indiquées avec les jours de la semaine, plutôt qu'avec le nombre de jours qui les séparents d'aujourd'hui
+- Mode de révision avancé pour plus de précision dans l'algorithme des cartes, activable depuis les paramètres
 
 ### Version 1.4.0
 

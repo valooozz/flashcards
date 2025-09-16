@@ -16,7 +16,7 @@
     ],
     "name": "Flashcards",
     "slug": "flashcards",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "android": {
       "package": "com.valooozz.flashcards"
     },

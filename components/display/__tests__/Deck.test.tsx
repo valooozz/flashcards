@@ -1,20 +1,10 @@
+import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
 import { Deck } from '../Deck';
-import { Text, Pressable, View } from 'react-native';
 
 jest.mock('expo-router', () => ({
     router: { push: jest.fn() },
 }));
-
-jest.mock('../../bar/Toolbar', () => {
-    const { Pressable } = require('react-native');
-    return {
-        Toolbar: ({ actionBackButton }: any) => (
-            <Pressable testID="toolbar-back" onPress={actionBackButton} />
-        ),
-    };
-});
 
 jest.mock('../../button/AddButton', () => {
     const { Pressable } = require('react-native');
@@ -72,17 +62,15 @@ describe('Deck', () => {
         );
 
         expect(getByText('My Deck')).toBeTruthy();
-        expect(getByText(`Cartes (${sampleCards.length})`)).toBeTruthy();
+        expect(getByText(`deck.cards (${sampleCards.length})`)).toBeTruthy();
         // List items rendered via mocks
         expect(getByTestId('list-card-1')).toBeTruthy();
         expect(getByTestId('list-card-2')).toBeTruthy();
         // Empty message should not be present
-        expect(
-            queryByText(/Ce deck ne contient aucune carte/)
-        ).toBeNull();
+        expect(queryByText('deck.noCards')).toBeNull();
 
         // Trigger back action
-        fireEvent.press(getByTestId('toolbar-back'));
+        fireEvent.press(getByTestId('back-button'));
         expect(closeDeck).toHaveBeenCalled();
 
         // Trigger reload via a card press
@@ -104,10 +92,8 @@ describe('Deck', () => {
         );
 
         expect(getByText('Empty')).toBeTruthy();
-        expect(getByText('Cartes ')).toBeTruthy();
-        expect(
-            getByText(/Ce deck ne contient aucune carte/)
-        ).toBeTruthy();
+        expect(getByText('deck.cards')).toBeTruthy();
+        expect(getByText('deck.noCards')).toBeTruthy();
         expect(queryByTestId('list-card-1')).toBeNull();
     });
 
