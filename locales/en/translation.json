@@ -98,6 +98,8 @@
         "title": "Revisions",
         "forgotten": "Forgotten",
         "known": "Known",
+        "difficult": "Difficile",
+        "almost": "Almost",
         "over": "All cards have been revised!",
         "cardsReviewed": "Cards reviewed",
         "cardsKnown": "Cards known",

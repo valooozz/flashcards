@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
     marginBottom: 8,
-    marginHorizontal: 8,
+    marginHorizontal: 10,
   },
 });

@@ -10,6 +10,7 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
+import { RevisionAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
 import { NbCardsToReviseType } from '../../types/NbCardsToReviseType';
 import { getCardsToRevise } from '../../utils/database/card/get/getCardsToRevise.utils';
@@ -18,6 +19,7 @@ import { cancelLastActionOnCard } from '../../utils/database/card/update/cancelL
 import { putCardToNextStep } from '../../utils/database/card/update/putCardToNextStep.utils';
 import { putCardToPreviousStep } from '../../utils/database/card/update/putCardToPreviousStep.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
+import { putCardToSameStep } from '../../utils/database/card/update/putCardToSameStep.utils';
 import { addForgottenCard } from '../../utils/database/forgotten/addForgottenCard.utils';
 import { getForgottenCards } from '../../utils/database/forgotten/getForgottenCards.utils';
 import { removeForgottenCard } from '../../utils/database/forgotten/removeForgottenCard.utils';
@@ -47,7 +49,7 @@ export default function Tab() {
   const [previousStatIncremented, setPreviousStatIncremented] =
     useState<string>(undefined);
 
-  const { hardThrowback, stopLearning, intervals } = useSettingsContext();
+  const { hardThrowback, stopLearning, advancedRevisionMode, intervals } = useSettingsContext();
 
   const { t } = useTranslation();
 
@@ -133,20 +135,20 @@ export default function Tab() {
     setPreviousStatIncremented(undefined);
   };
 
-  const handleNext = (known: boolean) => {
+  const handleNext = (revisionAction: RevisionAction) => {
     setPreviousCard(cardToShow);
 
     if (inSecondPhase) {
-      if (known) {
+      if (revisionAction === 'known') {
         removeForgottenCard(database, cardToShow.id);
         updateForgottenCards(forgottenCards.slice(1));
-      } else {
+      } else if (revisionAction === 'forgotten') {
         updateForgottenCards([...forgottenCards.slice(1), cardToShow]);
       }
       return;
     }
 
-    if (known) {
+    if (revisionAction === 'known') {
       incrementStatOfToday(database, 'nbKnown');
       setPreviousStatIncremented('nbKnown');
       putCardToNextStep(
@@ -158,11 +160,20 @@ export default function Tab() {
         cardToShow.changeSide,
         stopLearning,
       );
-    } else {
+    } else if (revisionAction === 'difficult') {
+      incrementStatOfToday(database, 'nbKnown');
+      setPreviousStatIncremented('nbKnown');
+      putCardToSameStep(database, intervals, cardToShow.id, cardToShow.step, cardToShow.rectoFirst, cardToShow.changeSide);
+    } else if (revisionAction === 'almost') {
       incrementStatOfToday(database, 'nbForgotten');
       setPreviousStatIncremented('nbForgotten');
       addForgottenCard(database, cardToShow.id);
-      if (hardThrowback) {
+      putCardToPreviousStep(database, intervals, cardToShow.id, cardToShow.step);
+    } else if (revisionAction === 'forgotten') {
+      incrementStatOfToday(database, 'nbForgotten');
+      setPreviousStatIncremented('nbForgotten');
+      addForgottenCard(database, cardToShow.id);
+      if (hardThrowback || advancedRevisionMode) {
         putCardToReviseTommorow(database, cardToShow.id);
       } else {
         putCardToPreviousStep(
@@ -201,13 +212,27 @@ export default function Tab() {
               text={t('daily.forgotten')}
               backgroundColor={Colors.daily.light.main}
               textColor={Colors.daily.light.contrast}
-              handleClick={() => handleNext(false)}
+              handleClick={() => handleNext('forgotten')}
             />
+            {(advancedRevisionMode && !inSecondPhase) && (
+              <>
+                <FlashButton
+                  text={t('daily.almost')}
+                  backgroundColor={Colors.daily.middleLight.main}
+                  textColor={Colors.daily.middleLight.contrast}
+                  handleClick={() => handleNext('almost')}
+                /><FlashButton
+                  text={t('daily.difficult')}
+                  backgroundColor={Colors.daily.middleDark.main}
+                  textColor={Colors.daily.middleDark.contrast}
+                  handleClick={() => handleNext('difficult')}
+                />
+              </>)}
             <FlashButton
               text={t('daily.known')}
               backgroundColor={Colors.daily.intermediate.main}
               textColor={Colors.daily.intermediate.contrast}
-              handleClick={() => handleNext(true)}
+              handleClick={() => handleNext('known')}
             />
           </View>
         </>

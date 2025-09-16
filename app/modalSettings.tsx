@@ -58,7 +58,6 @@ export default function Modal() {
 
   useFocusEffect(
     useCallback(() => {
-      console.log(advancedRevisionMode);
       setNewHardThrowback(hardThrowback);
       setNewStopLearning(stopLearning);
       setNewAdvancedRevisionMode(advancedRevisionMode)

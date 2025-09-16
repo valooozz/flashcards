@@ -98,6 +98,8 @@
         "title": "Révisions",
         "forgotten": "Oubliée",
         "known": "Connue",
+        "difficult": "Difficile",
+        "almost": "Presque",
         "over": "Toutes les cartes ont été révisées !",
         "cardsReviewed": "Cartes révisées",
         "cardsKnown": "Cartes connues",

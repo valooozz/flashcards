@@ -34,10 +34,8 @@ const useSettings = () => {
 
     AsyncStorage.getItem('advancedRevisionMode')
       .then((result) => {
-        console.log('GET');
         if (result) {
           setAdvancedRevisionMode(JSON.parse(result));
-          console.log('get advancedRevisionMode', result);
         }
       })
       .catch((error) => console.log(error));
@@ -55,8 +53,6 @@ const useSettings = () => {
     AsyncStorage.setItem('stopLearning', JSON.stringify(newStopLearning)).catch(
       (error) => console.log(error),
     );
-
-    console.log('set advancedRevisionMode', newAdvancedRevisionMode);
 
     AsyncStorage.setItem('advancedRevisionMode', JSON.stringify(newAdvancedRevisionMode)).catch(
       (error) => console.log(error),

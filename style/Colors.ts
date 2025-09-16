@@ -26,6 +26,14 @@ export const Colors = {
       main: '#D17471',
       contrast: '#FFFFFF',
     },
+    middleDark: {
+      main: '#E4A3A0',
+      contrast: '#FFFFFF',
+    },
+    middleLight: {
+      main: '#F7D1D5',
+      contrast: '#000000',
+    },
     light: {
       main: '#FFE4E9',
       contrast: '#000000',
