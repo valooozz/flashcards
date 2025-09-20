@@ -12,7 +12,8 @@
           "image": "./assets/images/flash-icon.png",
           "imageWidth": 200
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "name": "Flashcards",
     "slug": "flashcards",
