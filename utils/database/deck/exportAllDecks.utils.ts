@@ -1,7 +1,7 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 import { DeckDocument } from '../../../types/DeckDocument';
 import { DeckType } from '../../../types/DeckType';
-import { exportDocument } from '../../exportDocument.utils';
+import { exportDocument } from '../../export/exportDocument.utils';
 import { getCardsFromDeck } from '../card/get/getCardsFromDeck.utils';
 import { getAllDecks } from './get/getAllDecks.utils';
 

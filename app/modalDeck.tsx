@@ -29,6 +29,7 @@ import { renameDeck } from '../utils/database/deck/update/renameDeck.utils';
 import { resetDeck } from '../utils/database/deck/update/resetDeck.utils';
 import { importDocument } from '../utils/import/importDocument.utils';
 import { notify } from '../utils/notify.utils';
+import { ImportExportType } from '../types/ImportExportType';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -92,7 +93,7 @@ export default function Modal() {
     notify(deleteOk, t('notifications.errorOccured'), t('deck.deleted'));
   };
 
-  const handleImport = async (importType: 'json' | 'csv') => {
+  const handleImport = async (importType: ImportExportType) => {
     await importDocument(database, importType);
     router.back();
   };
@@ -161,8 +162,12 @@ export default function Modal() {
         {editMode && (
           <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
             <ButtonModal
-              text={t('deck.exportCards')}
-              onPress={() => exportDeck(database, idDeck, deckName, false)}
+              text={t('deck.exportCardsJson')}
+              onPress={() => exportDeck(database, idDeck, deckName, 'json', false)}
+            />
+            <ButtonModal
+              text={t('deck.exportCardsCsv')}
+              onPress={() => exportDeck(database, idDeck, deckName, 'csv', false)}
             />
           </View>
         )}
@@ -170,7 +175,7 @@ export default function Modal() {
           <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
             <ButtonModal
               text={t('deck.exportLearning')}
-              onPress={() => exportDeck(database, idDeck, deckName, true)}
+              onPress={() => exportDeck(database, idDeck, deckName, 'json', true)}
             />
           </View>
         )}

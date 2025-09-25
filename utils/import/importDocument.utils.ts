@@ -3,10 +3,11 @@ import { SQLiteDatabase } from 'expo-sqlite';
 import { importCsvDocument } from './importCsvDocument.utils';
 import { importJsonDocument } from './importJsonDocument.utils';
 import { pickDocument } from './pickDocument.utils';
+import { ImportExportType } from '../../types/ImportExportType';
 
 export const importDocument = async (
   database: SQLiteDatabase,
-  importType: 'json' | 'csv',
+  importType: ImportExportType,
 ) => {
   const file = await pickDocument(importType);
   if (file === null) {

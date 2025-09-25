@@ -1,0 +1,1 @@
+export type ImportExportType = 'json' | 'csv';
