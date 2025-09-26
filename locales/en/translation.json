@@ -99,7 +99,7 @@
         "title": "Revisions",
         "forgotten": "Forgotten",
         "known": "Known",
-        "difficult": "Difficile",
+        "difficult": "Difficult",
         "almost": "Almost",
         "over": "All cards have been revised!",
         "cardsReviewed": "Cards reviewed",
@@ -109,6 +109,11 @@
     },
     "notifications": {
         "errorOccurred": "An error occurred",
-        "confirm": "Are you sure you want to"
+        "confirm": "Are you sure you want to",
+        "leave": "Leave?",
+        "notSaved": "You haven't saved your changes.",
+        "saveAndQuit": "Save and close",
+        "quit": "Quit without saving",
+        "noQuit": "Don't quit"
     }
 }

@@ -40,6 +40,10 @@ export default function Modal() {
   const [editMode, setEditMode] = useState(false);
   const [checkedAlternate, setCheckedAlternate] = useState(true);
   const [checkedLearn, setCheckedLearn] = useState(true);
+  const [initialRecto, setInitialRecto] = useState('');
+  const [initialVerso, setInitialVerso] = useState('');
+  const [initialCheckedAlternate, setInitialCheckedAlternate] = useState(true);
+  const [initialCheckedLearn, setInitialCheckedLearn] = useState(true);
 
   const rectoInputRef = useRef(null);
   const { t } = useTranslation();
@@ -69,6 +73,10 @@ export default function Modal() {
           setDelay(getDelay(card.nextRevision));
           setCheckedAlternate(Boolean(card.changeSide));
           setCheckedLearn(Boolean(card.toLearn));
+          setInitialRecto(card.recto);
+          setInitialVerso(card.verso);
+          setInitialCheckedAlternate(Boolean(card.changeSide));
+          setInitialCheckedLearn(Boolean(card.toLearn));
         });
       }
     }, [idDeck, idCard]),
@@ -125,11 +133,20 @@ export default function Modal() {
     notify(deleteOk, t('notifications.errorOccurred'), t('card.deleted'));
   };
 
+  const hasChanged = (): boolean => {
+    return (
+      recto !== initialRecto ||
+      verso !== initialVerso ||
+      checkedAlternate !== initialCheckedAlternate ||
+      checkedLearn !== initialCheckedLearn
+    );
+  }
+
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: t('card.title'), headerShown: false }} />
       <Toolbar>
-        <BackButton color={Colors.library.light.contrast} />
+        <BackButton color={Colors.library.light.contrast} saveAction={hasChanged() ? () => handleValidate(false) : undefined} />
       </Toolbar>
       <Header level={1} text={deckName} color={Colors.library.light.contrast} />
       <View style={styles.container}>

@@ -1,16 +1,38 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
-import { TouchableOpacity } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
+import { useTranslation } from '../../hooks/useTranslation';
 
 interface BackButtonProps {
   color: string;
-  action?: () => void;
+  simpleAction?: () => void;
+  saveAction?: () => void;
 }
 
-export function BackButton({ color, action }: BackButtonProps) {
+export function BackButton({ color, simpleAction, saveAction }: BackButtonProps) {
+  
+  const { t } = useTranslation();
+
+  const confirmBack = () => {
+    Alert.alert(
+      t('notifications.leave'),
+      t('notifications.notSaved'),
+      [
+        { text: t('notifications.noQuit'), style: 'cancel' },
+        { text: t('notifications.quit'), style: 'destructive', onPress: () => router.back() },
+        { text: t('notifications.saveAndQuite'), style: 'default', onPress: saveAction }
+      ],
+      {
+        cancelable: true,
+      },
+    );
+  }
+
+  const onPressAction = saveAction !== undefined ? confirmBack : simpleAction !== undefined ? simpleAction : () => router.back();
+  
   return (
     <TouchableOpacity
-      onPress={action !== undefined ? action : () => router.back()}
+      onPress={onPressAction}
       testID="back-button"
     >
       <MaterialIcons name="arrow-back" size={40} color={color} />

@@ -109,6 +109,11 @@
     },
     "notifications": {
         "errorOccurred": "Une erreur est survenue",
-        "confirm": "Es-tu sûr·e de vouloir"
+        "confirm": "Es-tu sûr·e de vouloir",
+        "leave": "Quitter ?",
+        "notSaved": "Tu n'as pas enregistré les modifications.",
+        "saveAndQuit": "Enregistrer et fermer",
+        "quit": "Quitter sans enregistrer",
+        "noQuit": "Ne pas quitter"
     }
 }

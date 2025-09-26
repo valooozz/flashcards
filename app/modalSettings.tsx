@@ -30,6 +30,18 @@ export default function Modal() {
   const [step6, setStep6] = useState('30');
   const [step7, setStep7] = useState('30');
   const [step8, setStep8] = useState('60');
+  const [initialHardThrowback, setInitialHardThrowback] = useState(true);
+  const [initialStopLearning, setInitialStopLearning] = useState(false);
+  const [initialAdvancedRevisionMode, setInitialAdvancedRevisionMode] = useState(false);
+  const [initialStep0, setInitialStep0] = useState('1');
+  const [initialStep1, setInitialStep1] = useState('2');
+  const [initialStep2, setInitialStep2] = useState('4');
+  const [initialStep3, setInitialStep3] = useState('7');
+  const [initialStep4, setInitialStep4] = useState('14');
+  const [initialStep5, setInitialStep5] = useState('30');
+  const [initialStep6, setInitialStep6] = useState('30');
+  const [initialStep7, setInitialStep7] = useState('30');
+  const [initialStep8, setInitialStep8] = useState('60');
 
   const { hardThrowback, stopLearning, advancedRevisionMode, intervals, setSettings, switchLanguage, resetSettings } =
     useSettingsContext();
@@ -70,14 +82,43 @@ export default function Modal() {
       setStep6(String(intervals[6]));
       setStep7(String(intervals[7]));
       setStep8(String(intervals[8]));
+      setInitialHardThrowback(hardThrowback);
+      setInitialStopLearning(stopLearning);
+      setInitialAdvancedRevisionMode(advancedRevisionMode);
+      setInitialStep0(String(intervals[0]));
+      setInitialStep1(String(intervals[1]));
+      setInitialStep2(String(intervals[2]));
+      setInitialStep3(String(intervals[3]));
+      setInitialStep4(String(intervals[4]));
+      setInitialStep5(String(intervals[5]));
+      setInitialStep6(String(intervals[6]));
+      setInitialStep7(String(intervals[7]));
+      setInitialStep8(String(intervals[8]));
     }, [hardThrowback, stopLearning, advancedRevisionMode, intervals]),
   );
+
+  const hasChanged = (): boolean => {
+    return (
+      newHardThrowback !== initialHardThrowback ||
+      newStopLearning !== initialStopLearning ||
+      newAdvancedRevisionMode !== initialAdvancedRevisionMode ||
+      step0 !== initialStep0 ||
+      step1 !== initialStep1 ||
+      step2 !== initialStep2 ||
+      step3 !== initialStep3 ||
+      step4 !== initialStep4 ||
+      step5 !== initialStep5 ||
+      step6 !== initialStep6 ||
+      step7 !== initialStep7 ||
+      step8 !== initialStep8
+    );
+  };
 
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: t('settings.title'), headerShown: false }} />
       <Toolbar>
-        <BackButton color={Colors.library.light.contrast} />
+        <BackButton color={Colors.library.light.contrast} saveAction={hasChanged() ? handleValidate : undefined} />
         <LanguageButton color={Colors.library.light.contrast} switchLanguage={switchLanguage} />
         <ImportExportButton color={Colors.library.light.contrast} />
       </Toolbar>

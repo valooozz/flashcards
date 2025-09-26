@@ -35,6 +35,7 @@ export default function Modal() {
   const [deckName, setDeckName] = useState('');
   const [newDeckName, setNewDeckName] = useState('');
   const [editMode, setEditMode] = useState(false);
+  const [initialNewDeckName, setInitialNewDeckName] = useState('');
 
   const [nbCardsLearnt, setNbCardsLearnt] = useState(0);
   const [nbCardsToLearn, setNbCardsToLearn] = useState(0);
@@ -105,6 +106,7 @@ export default function Modal() {
         getNameDeckById(database, idDeck).then((name) => {
           setDeckName(name);
           setNewDeckName(name);
+          setInitialNewDeckName(name);
         });
         getNbCardsLearntInDeck(database, Number(idDeck)).then((nb) => {
           setNbCardsLearnt(nb);
@@ -119,11 +121,15 @@ export default function Modal() {
     }, [idDeck]),
   );
 
+  const hasChanged = (): boolean => {
+    return newDeckName !== initialNewDeckName;
+  };
+
   return (
     <SafeAreaView style={styles.screen}>
       <Stack.Screen options={{ title: t('deck.title'), headerShown: false }} />
       <Toolbar>
-        <BackButton color={Colors.library.light.contrast} />
+        <BackButton color={Colors.library.light.contrast} saveAction={hasChanged() ? handleValidate : undefined} />
       </Toolbar>
       <Header
         level={1}

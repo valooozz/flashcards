@@ -48,7 +48,7 @@ export function Deck({
   return (
     <View style={styles.container}>
       <Toolbar addMarginRight>
-        <BackButton color={Colors.library.dark.contrast} action={closeDeck} />
+        <BackButton color={Colors.library.dark.contrast} simpleAction={closeDeck} />
         <SettingsButton color={Colors.library.dark.contrast} route={`/modalDeck?idDeck=${idDeck}`} />
       </Toolbar>
       <Header
