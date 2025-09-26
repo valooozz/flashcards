@@ -107,6 +107,11 @@
         "cardsForgotten": "Cartes oubliées",
         "weekRevisions": "Révisions de la semaine"
     },
+    "revision": {
+        "again":"À revoir",
+        "done": "Révisée",
+        "over": "Toutes les cartes ont été révisées !"
+    },
     "notifications": {
         "errorOccurred": "Une erreur est survenue",
         "confirm": "Es-tu sûr·e de vouloir",

@@ -107,6 +107,11 @@
         "cardsForgotten": "Cards forgotten",
         "weekRevisions": "Weekly revisions"
     },
+    "revision": {
+        "again":"To review",
+        "done": "Revised",
+        "over": "All cards have been revised!"
+    },
     "notifications": {
         "errorOccurred": "An error occurred",
         "confirm": "Are you sure you want to",

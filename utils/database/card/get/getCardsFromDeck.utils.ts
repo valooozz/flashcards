@@ -4,7 +4,7 @@ import { CardType } from '../../../../types/CardType';
 export const getCardsFromDeck = async (
   database: SQLiteDatabase,
   idDeck: number,
-) => {
+): Promise<CardType[]> => {
   let cards: CardType[] = [];
   try {
     cards = await database.getAllAsync<CardType>(

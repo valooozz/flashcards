@@ -65,6 +65,28 @@ export const Colors = {
       contrast: '#000000',
     },
   },
+  revision: { // METTRE EN VIOLET
+    dark: {
+      main: '#3163AC',
+      contrast: '#ffffff',
+    },
+    intermediate: {
+      main: '#5C85BF',
+      contrast: '#FFFFFF',
+    },
+    middle: {
+      main: '#9DB9DB',
+      contrast: '#000000'
+    },
+    light: {
+      main: '#DFEDF8',
+      contrast: '#000000',
+    },
+    simple: {
+      main: '#FFFFFF',
+      contrast: '#000000',
+    },
+  },
   navigation: {
     main: '#586470',
     light: '#e7ecf0',

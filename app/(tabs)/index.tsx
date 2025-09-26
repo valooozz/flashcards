@@ -10,9 +10,13 @@ import { DeckType } from '../../types/DeckType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
+import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
+import { FlashCardType } from '../../types/FlashCardType';
+import { Revision } from '../../components/display/Revision';
 
 export default function Tab() {
   const [inDeck, setInDeck] = useState(false);
+  const [inRevision, setInRevision] = useState(false);
   const [decks, setDecks] = useState<DeckType[]>([]);
 
   const [idDeck, setIdDeck] = useState(-1);
@@ -21,6 +25,8 @@ export default function Tab() {
   const [cards, setCards] = useState<CardType[]>([]);
   const [nbCards, setNbCards] = useState(0);
   const [progressInDeck, setProgressInDeck] = useState(0);
+
+  const [flashCards, setFlashCards] = useState<FlashCardType[]>([]);
 
   const database = useSQLiteContext();
 
@@ -63,6 +69,12 @@ export default function Tab() {
     });
   };
 
+  const loadFlashCards = async (id: number) => {
+    await getFlashCardsFromDeck(database, id).then((falshCardsResult) => {
+      setFlashCards(falshCardsResult);
+    });
+  }
+
   useEffect(() => {
     saveState();
   }, [idDeck, deckName, inDeck]);
@@ -81,6 +93,16 @@ export default function Tab() {
     setInDeck(false);
   };
 
+  const openRevision = (id: number) => {
+    loadFlashCards(id).then(() => {
+      setInRevision(true);
+    });
+  }
+
+  const closeRevision = () => {
+    setInRevision(false);
+  }
+
   useFocusEffect(
     useCallback(() => {
       loadState();
@@ -93,6 +115,10 @@ export default function Tab() {
   useFocusEffect(
     useCallback(() => {
       const backAction = () => {
+        if (inRevision) {
+          closeRevision();
+          return true; // Empêche le comportement par défaut de retour
+        }
         if (inDeck) {
           closeDeck();
           return true; // Empêche le comportement par défaut de retour
@@ -109,7 +135,9 @@ export default function Tab() {
     }, [inDeck]),
   );
 
-  return inDeck ? (
+  return inDeck ? inRevision ? (
+    <Revision flashCards={flashCards} closeRevision={closeRevision} />
+  ) : (
     <Deck
       idDeck={idDeck}
       deckName={deckName}

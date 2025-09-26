@@ -10,7 +10,7 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
-import { RevisionAction } from '../../types/Actions';
+import { DailyAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
 import { NbCardsToReviseType } from '../../types/NbCardsToReviseType';
 import { getCardsToRevise } from '../../utils/database/card/get/getCardsToRevise.utils';
@@ -137,20 +137,20 @@ export default function Tab() {
     setPreviousStatIncremented(undefined);
   };
 
-  const handleNext = (revisionAction: RevisionAction) => {
+  const handleNext = (dailyAction: DailyAction) => {
     setPreviousCard(cardToShow);
 
     if (inSecondPhase) {
-      if (revisionAction === 'known') {
+      if (dailyAction === 'known') {
         removeForgottenCard(database, cardToShow.id);
         updateForgottenCards(forgottenCards.slice(1));
-      } else if (revisionAction === 'forgotten') {
+      } else if (dailyAction === 'forgotten') {
         updateForgottenCards([...forgottenCards.slice(1), cardToShow]);
       }
       return;
     }
 
-    if (revisionAction === 'known') {
+    if (dailyAction === 'known') {
       incrementStatOfToday(database, 'nbKnown');
       setPreviousStatIncremented('nbKnown');
       putCardToNextStep(
@@ -162,16 +162,16 @@ export default function Tab() {
         cardToShow.changeSide,
         stopLearning,
       );
-    } else if (revisionAction === 'difficult') {
+    } else if (dailyAction === 'difficult') {
       incrementStatOfToday(database, 'nbKnown');
       setPreviousStatIncremented('nbKnown');
       putCardToSameStep(database, intervals, cardToShow.id, cardToShow.step, cardToShow.rectoFirst, cardToShow.changeSide);
-    } else if (revisionAction === 'almost') {
+    } else if (dailyAction === 'almost') {
       incrementStatOfToday(database, 'nbForgotten');
       setPreviousStatIncremented('nbForgotten');
       addForgottenCard(database, cardToShow.id);
       putCardToPreviousStep(database, intervals, cardToShow.id, cardToShow.step);
-    } else if (revisionAction === 'forgotten') {
+    } else if (dailyAction === 'forgotten') {
       incrementStatOfToday(database, 'nbForgotten');
       setPreviousStatIncremented('nbForgotten');
       addForgottenCard(database, cardToShow.id);
