@@ -59,7 +59,7 @@ export default function Layout() {
                 options={{ presentation: 'modal' }}
               />
             </Stack>
-            <ToastManager />
+            <ToastManager useModal={false} />
           </SafeAreaView>
         </SettingsProvider>
       </SafeAreaProvider>
