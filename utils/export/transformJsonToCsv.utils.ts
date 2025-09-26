@@ -1,10 +1,6 @@
 import { DeckDocument } from '../../types/DeckDocument';
 
 export const transformJsonToCsv = (deckDocument: DeckDocument): string => {
-  const headers = [
-    'recto',
-    'verso',
-  ];
 
   const escapeCsvValue = (value: unknown): string => {
     if (value === null || value === undefined) return '';
@@ -16,7 +12,6 @@ export const transformJsonToCsv = (deckDocument: DeckDocument): string => {
   };
 
   const lines: string[] = [];
-  lines.push(headers.join(','));
 
   deckDocument.cards.forEach((card) => {
     const row = [
