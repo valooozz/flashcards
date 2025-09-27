@@ -10,7 +10,7 @@ interface BackButtonProps {
 }
 
 export function BackButton({ color, simpleAction, saveAction }: BackButtonProps) {
-  
+
   const { t } = useTranslation();
 
   const confirmBack = () => {
@@ -20,7 +20,7 @@ export function BackButton({ color, simpleAction, saveAction }: BackButtonProps)
       [
         { text: t('notifications.noQuit'), style: 'cancel' },
         { text: t('notifications.quit'), style: 'destructive', onPress: () => router.back() },
-        { text: t('notifications.saveAndQuite'), style: 'default', onPress: saveAction }
+        { text: t('notifications.saveAndQuit'), style: 'default', onPress: saveAction }
       ],
       {
         cancelable: true,
@@ -29,7 +29,7 @@ export function BackButton({ color, simpleAction, saveAction }: BackButtonProps)
   }
 
   const onPressAction = saveAction !== undefined ? confirmBack : simpleAction !== undefined ? simpleAction : () => router.back();
-  
+
   return (
     <TouchableOpacity
       onPress={onPressAction}
