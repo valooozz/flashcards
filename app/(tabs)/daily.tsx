@@ -29,8 +29,8 @@ import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOf
 import { getDate } from '../../utils/getDate.utils';
 import { getDelay } from '../../utils/getDelay.utils';
 import { isLastItem } from '../../utils/isLastItem.utils';
-import { shuffle } from '../../utils/shuffle.utils';
 import { preventCardToBeFirst } from '../../utils/preventCardToBeFirst.utils';
+import { shuffle } from '../../utils/shuffle.utils';
 
 export default function Tab() {
   const [cardsToRevise, setCardsToRevise] = useState<FlashCardType[]>([]);
@@ -97,7 +97,7 @@ export default function Tab() {
     } else {
       getForgottenCards(database).then((cardsResult) => {
         shuffle(cardsResult);
-        cardsResult = preventCardToBeFirst(previousCard, cardsResult)
+        cardsResult = preventCardToBeFirst(cardToShow, cardsResult);
         updateForgottenCards(cardsResult);
         setInSecondPhase(true);
       });
