@@ -12,6 +12,7 @@ import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { DeckProgressBar } from '../bar/DeckProgressBar';
 import { BackButton } from '../button/BackButton';
+import { FlashDeckButton } from '../button/FlashDeckButton';
 import { SettingsButton } from '../button/SettingsButton';
 
 interface DeckProps {
@@ -22,6 +23,7 @@ interface DeckProps {
   progress: number;
   reload: () => void;
   closeDeck: () => void;
+  openRevision: (id: number) => void;
 }
 
 export function Deck({
@@ -32,6 +34,7 @@ export function Deck({
   progress,
   reload,
   closeDeck,
+  openRevision
 }: DeckProps) {
   const [showCards, setShowCards] = useState(true);
 
@@ -49,6 +52,7 @@ export function Deck({
     <View style={styles.container}>
       <Toolbar addMarginRight>
         <BackButton color={Colors.library.dark.contrast} simpleAction={closeDeck} />
+        <FlashDeckButton color={Colors.library.dark.contrast} onPress={() => openRevision(idDeck)} />
         <SettingsButton color={Colors.library.dark.contrast} route={`/modalDeck?idDeck=${idDeck}`} />
       </Toolbar>
       <Header

@@ -1,11 +1,11 @@
-import { transformJsonToCsv } from '../export/transformJsonToCsv.utils';
 import { DeckDocument } from '../../types/DeckDocument';
+import { transformJsonToCsv } from '../export/transformJsonToCsv.utils';
 
 describe('transformJsonToCsv', () => {
-    it('outputs only headers when there are no cards', () => {
+    it('returns an empty string when there are no cards', () => {
         const doc: DeckDocument = { deckName: 'Empty', cards: [] };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe('recto,verso');
+        expect(csv).toBe('');
     });
 
     it('serializes a simple list of cards', () => {
@@ -17,7 +17,7 @@ describe('transformJsonToCsv', () => {
             ],
         };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe(['recto,verso', 'Hello,Bonjour', 'Yes,Oui'].join('\n'));
+        expect(csv).toBe(['Hello,Bonjour', 'Yes,Oui'].join('\n'));
     });
 
     it('escapes quotes by doubling them and wraps the field in quotes', () => {
@@ -28,7 +28,7 @@ describe('transformJsonToCsv', () => {
             ],
         };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe('recto,verso\n"He said ""Hi""",Test');
+        expect(csv).toBe('"He said ""Hi""",Test');
     });
 
     it('wraps fields containing commas or newlines in quotes', () => {
@@ -42,7 +42,6 @@ describe('transformJsonToCsv', () => {
         };
         const csv = transformJsonToCsv(doc);
         expect(csv).toBe([
-            'recto,verso',
             '"a,b",x',
             '"line1\nline2",y',
             '"carriage\rreturn",z',
@@ -57,7 +56,7 @@ describe('transformJsonToCsv', () => {
             ],
         };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe('recto,verso\n,');
+        expect(csv).toBe(',');
     });
 });
 

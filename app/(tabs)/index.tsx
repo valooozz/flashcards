@@ -5,14 +5,14 @@ import { useCallback, useEffect, useState } from 'react';
 import { BackHandler } from 'react-native';
 import { Deck } from '../../components/display/Deck';
 import { Library } from '../../components/display/Library';
+import { Revision } from '../../components/display/Revision';
 import { CardType } from '../../types/CardType';
 import { DeckType } from '../../types/DeckType';
+import { FlashCardType } from '../../types/FlashCardType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
+import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
-import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
-import { FlashCardType } from '../../types/FlashCardType';
-import { Revision } from '../../components/display/Revision';
 
 export default function Tab() {
   const [inDeck, setInDeck] = useState(false);
@@ -146,6 +146,7 @@ export default function Tab() {
       progress={progressInDeck}
       reload={() => loadCards(idDeck)}
       closeDeck={closeDeck}
+      openRevision={openRevision}
     />
   ) : (
     <Library decks={decks} openDeck={openDeck} />
