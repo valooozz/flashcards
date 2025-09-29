@@ -190,16 +190,19 @@ export default function Modal() {
             isChecked={newHardThrowback}
             setIsChecked={setNewHardThrowback}
             textLabel={t('settings.hardThrowback')}
+            textExplanation={t('settings.hardThrowbackExplanation')}
           />
           <CheckboxWithText
             isChecked={newStopLearning}
             setIsChecked={setNewStopLearning}
             textLabel={t('settings.stopLearning')}
+            textExplanation={t('settings.stopLearningExplanation')}
           />
           <CheckboxWithText
             isChecked={newAdvancedRevisionMode}
             setIsChecked={setNewAdvancedRevisionMode}
             textLabel={t('settings.advancedMode')}
+            textExplanation={t('settings.advancedModeExplanation')}
           />
         </View>
         <View style={styles.buttonLineContainer}>

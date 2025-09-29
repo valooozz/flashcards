@@ -2,11 +2,13 @@ import Checkbox from 'expo-checkbox';
 import { StyleSheet, Text, View } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
+import { InfoButton } from '../button/InfoButton';
 
 interface CheckboxWithTextProps {
   isChecked: boolean;
   setIsChecked: (value: boolean) => void;
   textLabel: string;
+  textExplanation?: string;
   spaceTop?: boolean;
 }
 
@@ -14,19 +16,23 @@ export function CheckboxWithText({
   isChecked,
   setIsChecked,
   textLabel,
+  textExplanation,
   spaceTop = false,
 }: CheckboxWithTextProps) {
   return (
-    <View style={styles.checkboxContainer}>
+    <View style={{ ...styles.checkboxContainer, marginTop: spaceTop ? 16 : 0 }}>
       <Checkbox
-        style={{ ...styles.checkbox, marginTop: spaceTop ? 16 : 0 }}
+        style={styles.checkbox}
         value={isChecked}
         onValueChange={setIsChecked}
         color={Colors.library.dark.main}
       />
-      <Text style={{ ...styles.text, marginTop: spaceTop ? 16 : 0 }}>
+      <Text style={styles.text}>
         {textLabel}
       </Text>
+      {textExplanation && (
+        <InfoButton color={Colors.library.dark.main} textLabel={textLabel} textExplanation={textExplanation} />
+      )}
     </View>
   );
 }
