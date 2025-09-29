@@ -17,6 +17,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
+import { ImportExportType } from '../types/ImportExportType';
 import { alertAction } from '../utils/alertAction.utils';
 import { getProgressInDeck } from '../utils/database/card/get/getProgressInDeck.utils';
 import { createDeck } from '../utils/database/deck/createDeck.utils';
@@ -29,7 +30,6 @@ import { renameDeck } from '../utils/database/deck/update/renameDeck.utils';
 import { resetDeck } from '../utils/database/deck/update/resetDeck.utils';
 import { importDocument } from '../utils/import/importDocument.utils';
 import { notify } from '../utils/notify.utils';
-import { ImportExportType } from '../types/ImportExportType';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -239,7 +239,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonBottom: {
-    marginTop: 'auto',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
