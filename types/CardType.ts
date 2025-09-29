@@ -7,5 +7,5 @@ export interface CardType {
   step: number;
   nextRevision: string;
   toLearn: number;
-  changeSide: number;
+  changeSide?: number;
 }

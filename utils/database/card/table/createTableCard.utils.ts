@@ -3,7 +3,19 @@ import { SQLiteDatabase } from 'expo-sqlite';
 export const createTableCard = async (database: SQLiteDatabase) => {
   try {
     await database.execAsync(
-      'CREATE TABLE IF NOT EXISTS Card (id INTEGER PRIMARY KEY AUTOINCREMENT, deck INTEGER, recto TEXT, verso TEXT, rectoFirst INTEGER, step INTEGER, nextRevision TEXT, toLearn INTEGER, changeSide INTEGER, FOREIGN KEY(deck) REFERENCES Deck(id));',
+      `CREATE TABLE IF NOT EXISTS Card (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        deck INTEGER NOT NULL,
+        recto TEXT NOT NULL,
+        verso TEXT NOT NULL,
+        rectoFirst INTEGER NOT NULL,
+        step INTEGER NOT NULL,
+        nextRevision TEXT,
+        toLearn INTEGER NOT NULL,
+        changeSide INTEGER,
+        FOREIGN KEY(deck)
+        REFERENCES Deck(id)
+      );`,
     );
   } catch (error) {
     console.error(error);

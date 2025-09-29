@@ -17,6 +17,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
+import { ImportExportType } from '../types/ImportExportType';
 import { alertAction } from '../utils/alertAction.utils';
 import { getProgressInDeck } from '../utils/database/card/get/getProgressInDeck.utils';
 import { createDeck } from '../utils/database/deck/createDeck.utils';
@@ -25,11 +26,10 @@ import { exportDeck } from '../utils/database/deck/exportDeck.utils';
 import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
 import { getNbCardsLearntInDeck } from '../utils/database/deck/get/getNbCardsLearntInDeck.utils';
 import { getNbCardsToLearnInDeck } from '../utils/database/deck/get/getNbCardsToLearnInDeck.utils';
-import { renameDeck } from '../utils/database/deck/update/renameDeck.utils';
 import { resetDeck } from '../utils/database/deck/update/resetDeck.utils';
+import { updateDeckInfo } from '../utils/database/deck/update/updateDeckInfo.utils';
 import { importDocument } from '../utils/import/importDocument.utils';
 import { notify } from '../utils/notify.utils';
-import { ImportExportType } from '../types/ImportExportType';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -56,7 +56,7 @@ export default function Modal() {
     }
 
     if (editMode) {
-      const renameOk = await renameDeck(database, idDeck, newDeckName);
+      const renameOk = await updateDeckInfo(database, idDeck, newDeckName);
       if (renameOk) {
         router.back();
       }

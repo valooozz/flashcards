@@ -17,7 +17,7 @@ export const getCardsToRevise = async (
         C.rectoFirst,
         C.step,
         C.nextRevision,
-        C.changeSide,
+        CASE WHEN C.changeSide IS NOT NULL THEN C.changeSide ELSE D.changeSide END as changeSide,
         D.name
       FROM Card C
       INNER JOIN Deck D ON C.deck=D.id
