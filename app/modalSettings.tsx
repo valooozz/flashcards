@@ -5,8 +5,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toolbar } from '../components/bar/Toolbar';
 import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
+import { DocButton } from '../components/button/DocButton';
 import { ImportExportButton } from '../components/button/ImportExportButton';
 import { LanguageButton } from '../components/button/LanguageButton';
+import { DocModal } from '../components/modal/DocModal';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
 import { SettingStep } from '../components/text/SettingStep';
@@ -18,6 +20,8 @@ import { alertAction } from '../utils/alertAction.utils';
 import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
+  const [isDocOpen, setIsDocOpen] = useState(false);
+
   const [newHardThrowback, setNewHardThrowback] = useState(true);
   const [newStopLearning, setNewStopLearning] = useState(false);
   const [newAdvancedRevisionMode, setNewAdvancedRevisionMode] = useState(false);
@@ -45,7 +49,7 @@ export default function Modal() {
 
   const { hardThrowback, stopLearning, advancedRevisionMode, intervals, setSettings, switchLanguage, resetSettings } =
     useSettingsContext();
-  const { t } = useTranslation();
+  const { t, getCurrentLanguage } = useTranslation();
 
   const handleValidate = async () => {
     setSettings(
@@ -120,6 +124,7 @@ export default function Modal() {
       <Toolbar>
         <BackButton color={Colors.library.light.contrast} saveAction={hasChanged() ? handleValidate : undefined} />
         <LanguageButton color={Colors.library.light.contrast} switchLanguage={switchLanguage} />
+        <DocButton color={Colors.library.light.contrast} openDoc={() => setIsDocOpen(true)} />
         <ImportExportButton color={Colors.library.light.contrast} />
       </Toolbar>
       <Header
@@ -221,6 +226,7 @@ export default function Modal() {
         <ButtonModal text={t('common.cancel')} onPress={() => router.back()} />
         <ButtonModal text={t('common.save')} onPress={handleValidate} />
       </View>
+      <DocModal visible={isDocOpen} onClose={() => setIsDocOpen(false)} language={getCurrentLanguage()} />
     </SafeAreaView>
   );
 }

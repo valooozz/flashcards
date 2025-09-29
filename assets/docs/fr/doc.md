@@ -1,4 +1,6 @@
-# Bibliothèque
+# Documentation
+
+## Bibliothèque
 
 L'onglet de gauche est la **Bibliothèque**. C'est là que tu peux créer des decks qui contiennent des cartes.
 
@@ -42,7 +44,7 @@ Le côté de la carte qui est souligné (recto ou verso) indique le côté qui s
 
 Depuis un deck, si tu appuies longtemps sur une carte pas encore apprise, cela la fera passer comme apprise et à réviser le lendemain. Si tu appuies longtemps sur une carte apprise, cela réinitialise son apprentissage. Un message de validation apparaîtra pour confirmer l'action.
 
-# Paramètres de l'application
+## Paramètres de l'application
 
 Depuis l'onglet **Bibliothèque**, clique sur la roue dentée pour accéder aux paramètres de l'application. Tu peux y changer le nombre de jours d'espacement à chaque étape de révision. Lorsqu'une carte passe la dernière étape, elle y reste.
 
@@ -55,7 +57,7 @@ Si tu cliques dessus, cela exportera l'ensemble de tes decks avec l'apprentissag
 
 Si tu appuies longtemps sur le bouton, tu pourras importer un fichier JSON qui contient un ou plusieurs decks (exportés par ce bouton ou depuis les paramètres d'un deck).
 
-# Apprentissage
+## Apprentissage
 
 Lorsqu'une carte est créée, elle apparaît dans l'onglet **Apprentissage**, à droite. Le nom du deck auquel elle appartient est affiché en haut à droite de la carte. Clique dessus pour la retourner.
 
@@ -65,7 +67,7 @@ Quand tu passes à une carte suivante, un bouton d'annulation apparaît en haut 
 
 Le nombre de cartes à apprendre est affiché entre parenthèses en haut de la page.
 
-# Révisions
+## Révisions
 
 Chaque jour, rends toi sur l'onglet **Révisions**, au centre. Tu y trouveras toutes les cartes que tu dois réviser ce jour-là. Le nom du deck auquel une carte appartient est affiché en haut à droite de cette dernière. Si une carte est révisée avec un ou plusieurs jours de retard, cela sera indiqué en-dessous du nom du deck.
 

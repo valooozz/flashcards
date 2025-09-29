@@ -8,7 +8,7 @@ L'application n'est pas encore déployée sur le Play Store. Son déploiement es
 
 Elle peut être construite avec l'outil EAS d'Expo. Pour plus d'informations, vous pouvez consulter le [site officiel](https://expo.dev/eas#build). L'application fonctionne sur les appareils Android, elle n'a pas encore jamais été testée sur des appareils iOS.
 
-Une [documentation utilisateur](https://github.com/valooozz/flashcards/blob/main/doc/Documentation%20Utilisateur.md) est également disponible sur le projet.
+Une [documentation utilisateur](assets/docs/fr/doc.md) est également disponible sur le projet.
 
 Voici quelques exemples de l'interface :
 
