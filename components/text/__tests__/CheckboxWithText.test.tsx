@@ -1,5 +1,6 @@
+import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { Alert } from 'react-native';
 import { CheckboxWithText } from '../CheckboxWithText';
 
 jest.mock('expo-checkbox', () => {
@@ -28,29 +29,58 @@ describe('CheckboxWithText', () => {
         expect(setIsChecked).toHaveBeenCalledWith(true);
     });
 
-    it('passes marginTop when spaceTop is true to checkbox and text', () => {
-        const { getByTestId, getByText } = render(
+    it('applies container marginTop 16 when spaceTop is true', () => {
+        const { toJSON } = render(
             <CheckboxWithText isChecked={false} setIsChecked={jest.fn()} textLabel="Top" spaceTop />
         );
-        const checkbox = getByTestId('checkbox');
-        const text = getByText('Top');
-        expect(checkbox.props.style).toEqual(expect.objectContaining({ marginTop: 16 }));
-        expect(text.props.style).toEqual(expect.objectContaining({ marginTop: 16 }));
+        const tree: any = toJSON();
+        expect(tree.props.style).toEqual(expect.objectContaining({ marginTop: 16 }));
     });
 
-    it('uses marginTop 0 when spaceTop is false or omitted', () => {
-        const { getByTestId, getByText, rerender } = render(
+    it('applies container marginTop 0 when spaceTop is false or omitted', () => {
+        const { toJSON, rerender } = render(
             <CheckboxWithText isChecked={false} setIsChecked={jest.fn()} textLabel="NoTop" spaceTop={false} />
         );
-        let checkbox = getByTestId('checkbox');
-        let text = getByText('NoTop');
-        expect(checkbox.props.style).toEqual(expect.objectContaining({ marginTop: 0 }));
-        expect(text.props.style).toEqual(expect.objectContaining({ marginTop: 0 }));
+        let tree: any = toJSON();
+        expect(tree.props.style).toEqual(expect.objectContaining({ marginTop: 0 }));
 
-        rerender(<CheckboxWithText isChecked={false} setIsChecked={jest.fn()} textLabel="NoTop" />);
-        checkbox = getByTestId('checkbox');
-        text = getByText('NoTop');
-        expect(checkbox.props.style).toEqual(expect.objectContaining({ marginTop: 0 }));
-        expect(text.props.style).toEqual(expect.objectContaining({ marginTop: 0 }));
+        rerender(
+            <CheckboxWithText isChecked={false} setIsChecked={jest.fn()} textLabel="NoTop" />
+        );
+        tree = toJSON();
+        expect(tree.props.style).toEqual(expect.objectContaining({ marginTop: 0 }));
+    });
+
+    it('renders info button when textExplanation is provided', () => {
+        const { getByTestId } = render(
+            <CheckboxWithText
+                isChecked={false}
+                setIsChecked={jest.fn()}
+                textLabel="HasInfo"
+                textExplanation="Some details"
+            />
+        );
+        expect(getByTestId('checkbox-info-button')).toBeTruthy();
+    });
+
+    it('does not render info button when textExplanation is not provided', () => {
+        const { queryByTestId } = render(
+            <CheckboxWithText isChecked={false} setIsChecked={jest.fn()} textLabel="NoInfo" />
+        );
+        expect(queryByTestId('checkbox-info-button')).toBeNull();
+    });
+
+    it('triggers alert when info button is pressed', () => {
+        jest.spyOn(Alert, 'alert').mockImplementation(jest.fn());
+        const { getByTestId } = render(
+            <CheckboxWithText
+                isChecked={false}
+                setIsChecked={jest.fn()}
+                textLabel="Info Title"
+                textExplanation="Info text"
+            />
+        );
+        fireEvent.press(getByTestId('checkbox-info-button'));
+        expect(Alert.alert).toHaveBeenCalledWith('Info Title', 'Info text');
     });
 });
