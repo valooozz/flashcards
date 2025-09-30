@@ -5,11 +5,12 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
-import { BackButton } from '../button/BackButton';
-import { FlashCardType } from '../../types/FlashCardType';
-import { FlashCard } from '../card/FlashCard';
 import { RevisionAction } from '../../types/Actions';
+import { FlashCardType } from '../../types/FlashCardType';
+import { shuffle } from '../../utils/shuffle.utils';
+import { BackButton } from '../button/BackButton';
 import { FlashButton } from '../button/FlashButton';
+import { FlashCard } from '../card/FlashCard';
 
 interface DeckProps {
   flashCards: FlashCardType[];
@@ -28,6 +29,7 @@ export function Revision({
   const { t } = useTranslation();
 
   useEffect(() => {
+    shuffle(flashCards);
     setCardsToRevise(flashCards);
     setCardToShow(flashCards[0]);
     setSizeOfDeck(flashCards.length);
@@ -43,12 +45,14 @@ export function Revision({
 
   const handleNext = (revisionAction: RevisionAction) => {
     setPreviousCard(cardToShow);
+    let newCardsToRevise: FlashCardType[];
     if (revisionAction === 'again') {
-      setCardsToRevise([...cardsToRevise.slice(1), cardToShow]);
+      newCardsToRevise = [...cardsToRevise.slice(1), cardToShow];
     } else if (revisionAction === 'done') {
-      setCardsToRevise(cardsToRevise.slice(1));
+      newCardsToRevise = cardsToRevise.slice(1);
     }
-    updateCardToShow(cardsToRevise[1]);
+    setCardsToRevise(newCardsToRevise);
+    updateCardToShow(newCardsToRevise[0]);
   }
 
   const handlePrevious = () => {
@@ -63,47 +67,47 @@ export function Revision({
         <BackButton color={Colors.library.dark.contrast} simpleAction={closeRevision} />
       </Toolbar>
 
-      <Text style={styles.text}>
-        {`${sizeOfDeck - cardsToRevise.length} / ${sizeOfDeck}`}
-      </Text>
-
-      {cardToShow ? (
-        <>
-          <FlashCard
-            recto={cardToShow.recto}
-            verso={cardToShow.verso}
-            deckName={cardToShow.name}
-            backgroundColor={Colors.revision.simple.main}
-            textColor={Colors.revision.simple.contrast}
-            textDeckColor={Colors.revision.dark.main}
-            previousPossible={previousCard !== undefined}
-            handlePrevious={handlePrevious}
-          />
-          <View style={styles.buttons}>
-            <FlashButton
-              text={t('revision.forgotten')}
-              backgroundColor={Colors.revision.light.main}
-              textColor={Colors.revision.light.contrast}
-              handleClick={() => handleNext('again')}
-            />
-            <FlashButton
-              text={t('revision.known')}
-              backgroundColor={Colors.revision.intermediate.main}
-              textColor={Colors.revision.intermediate.contrast}
-              handleClick={() => handleNext('done')}
-            />
-          </View>
-        </>
-      ) : (
-        <Text
-          style={{
-            ...styles.text,
-            
-          }}
-        >
-          {t('revision.over')}
+      <View style={styles.interface}>
+        <Text style={[styles.text, styles.progressText]}>
+          {`${sizeOfDeck - cardsToRevise.length} / ${sizeOfDeck}`}
         </Text>
-      )}
+
+        {cardToShow ? (
+          <View style={styles.cardContainer}>
+            <FlashCard
+              recto={cardToShow.recto}
+              verso={cardToShow.verso}
+              deckName={cardToShow.name}
+              backgroundColor={Colors.revision.simple.main}
+              textColor={Colors.revision.simple.contrast}
+              textDeckColor={Colors.revision.dark.main}
+              previousPossible={previousCard !== undefined}
+              handlePrevious={handlePrevious}
+            />
+            <View style={styles.buttons}>
+              <FlashButton
+                text={t('revision.again')}
+                backgroundColor={Colors.revision.light.main}
+                textColor={Colors.revision.light.contrast}
+                handleClick={() => handleNext('again')}
+              />
+              <FlashButton
+                text={t('revision.done')}
+                backgroundColor={Colors.revision.intermediate.main}
+                textColor={Colors.revision.intermediate.contrast}
+                handleClick={() => handleNext('done')}
+              />
+            </View>
+          </View>
+        ) : (
+          <Text
+            style={[styles.text, styles.overText]}
+          >
+            {t('revision.over')}
+          </Text>
+        )}
+      </View>
+
     </View>
   );
 }
@@ -111,9 +115,17 @@ export function Revision({
 const styles = StyleSheet.create({
   container: {
     ...globalStyles.page,
-    backgroundColor: Colors.library.dark.main,
-    paddingRight: 0,
-    paddingBottom: 0,
+    backgroundColor: Colors.revision.dark.main,
+  },
+  interface: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    rowGap: 16,
+  },
+  cardContainer: {
+    flex: 1,
   },
   buttons: {
     display: 'flex',
@@ -123,11 +135,14 @@ const styles = StyleSheet.create({
   text: {
     color: Colors.revision.dark.contrast,
     textAlign: 'center',
-    fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
-    marginTop: 80,
-    marginRight: 24,
-    marginVertical: '10%',
-    marginHorizontal: '20%',
+    marginHorizontal: 'auto',
   },
+  progressText: {
+    fontSize: Sizes.font.medium,
+  },
+  overText: {
+    fontSize: Sizes.font.small,
+    marginVertical: 'auto',
+  }
 });

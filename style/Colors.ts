@@ -65,21 +65,21 @@ export const Colors = {
       contrast: '#000000',
     },
   },
-  revision: { // METTRE EN VIOLET
+  revision: {
     dark: {
-      main: '#3163AC',
+      main: '#7C5294',
       contrast: '#ffffff',
     },
     intermediate: {
-      main: '#5C85BF',
+      main: '#9E5D9F',
       contrast: '#FFFFFF',
     },
     middle: {
-      main: '#9DB9DB',
+      main: '#C8A0C9',
       contrast: '#000000'
     },
     light: {
-      main: '#DFEDF8',
+      main: '#E0C9E3',
       contrast: '#000000',
     },
     simple: {
