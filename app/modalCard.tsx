@@ -5,8 +5,9 @@ import {
   useLocalSearchParams,
 } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { ButtonGroup } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toolbar } from '../components/bar/Toolbar';
 import { BackButton } from '../components/button/BackButton';
@@ -19,6 +20,7 @@ import { Colors } from '../style/Colors';
 import { Sizes } from '../style/Sizes';
 import { globalStyles } from '../style/Styles';
 import { alertAction } from '../utils/alertAction.utils';
+import { biToTri } from '../utils/biToTri.utils';
 import { createCard } from '../utils/database/card/createCard.utils';
 import { deleteCard } from '../utils/database/card/deleteCard.utils';
 import { getCardById } from '../utils/database/card/get/getCardById.utils';
@@ -28,6 +30,7 @@ import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.util
 import { formatDate } from '../utils/formatDate.utils';
 import { getDelay } from '../utils/getDelay.utils';
 import { notify } from '../utils/notify.utils';
+import { triToBi } from '../utils/triToBi.utils';
 
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
@@ -38,11 +41,12 @@ export default function Modal() {
   const [nextRevision, setNextRevision] = useState('');
   const [delay, setDelay] = useState(0);
   const [editMode, setEditMode] = useState(false);
-  const [checkedAlternate, setCheckedAlternate] = useState(true);
+  // const [checkedAlternate, setCheckedAlternate] = useState(true);
+  const [selectedChangeSide, setSelectedChangeSide] = useState(1);
   const [checkedLearn, setCheckedLearn] = useState(true);
   const [initialRecto, setInitialRecto] = useState('');
   const [initialVerso, setInitialVerso] = useState('');
-  const [initialCheckedAlternate, setInitialCheckedAlternate] = useState(true);
+  const [initialSelectedChangeSide, setInitialSelectedChangeSide] = useState(1);
   const [initialCheckedLearn, setInitialCheckedLearn] = useState(true);
 
   const rectoInputRef = useRef(null);
@@ -71,11 +75,11 @@ export default function Modal() {
           setStep(card.step);
           setNextRevision(card.nextRevision);
           setDelay(getDelay(card.nextRevision));
-          setCheckedAlternate(Boolean(card.changeSide));
+          setSelectedChangeSide(biToTri(card.changeSide));
           setCheckedLearn(Boolean(card.toLearn));
           setInitialRecto(card.recto);
           setInitialVerso(card.verso);
-          setInitialCheckedAlternate(Boolean(card.changeSide));
+          setInitialSelectedChangeSide(biToTri(card.changeSide));
           setInitialCheckedLearn(Boolean(card.toLearn));
         });
       }
@@ -99,12 +103,12 @@ export default function Modal() {
         idCard,
         recto,
         verso,
-        checkedAlternate,
+        triToBi(selectedChangeSide),
         checkedLearn,
       );
       notify(updateOk, t('notifications.errorOccurred'), t('card.updated'));
     } else {
-      await createCard(database, recto, verso, idDeck, checkedAlternate, checkedLearn);
+      await createCard(database, recto, verso, idDeck, triToBi(selectedChangeSide), checkedLearn);
     }
 
     if (continueCreating) {
@@ -137,7 +141,7 @@ export default function Modal() {
     return (
       recto !== initialRecto ||
       verso !== initialVerso ||
-      checkedAlternate !== initialCheckedAlternate ||
+      selectedChangeSide !== initialSelectedChangeSide ||
       checkedLearn !== initialCheckedLearn
     );
   }
@@ -164,11 +168,20 @@ export default function Modal() {
           setText={setVerso}
           underline={editMode && !rectoFirst}
         />
-        <CheckboxWithText
-          isChecked={checkedAlternate}
-          setIsChecked={setCheckedAlternate}
-          textLabel={t('card.alternateSides')}
-          spaceTop
+        <Header level={4} text={t('card.alternateSides')} color={Colors.library.light.contrast} />
+        <ButtonGroup
+          containerStyle={styles.selector}
+          selectedButtonStyle={{ backgroundColor: Colors.library.dark.main }}
+          buttonStyle={{ backgroundColor: Colors.library.simple.main }}
+          textStyle={{ color: Colors.library.dark.main }}
+          selectedTextStyle={{ color: Colors.library.dark.contrast }}
+          buttons={[
+            <Text style={styles.selectorText}>{t('common.no')}</Text>,
+            <Text style={styles.selectorText}>{t('card.followDeck')}</Text>,
+            <Text style={styles.selectorText}>{t('common.yes')}</Text>,
+          ]}
+          selectedIndex={selectedChangeSide}
+          onPress={setSelectedChangeSide}
         />
         <CheckboxWithText
           isChecked={checkedLearn}
@@ -252,6 +265,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
+  },
+  selector: {
+    width: '100%',
+    height: Sizes.component.small,
+    marginHorizontal: 'auto',
+    borderWidth: 0,
+    borderRadius: 0,
+  },
+  selectorText: {
+    fontSize: Sizes.font.small,
+    fontFamily: 'JosefinRegular',
   },
   text: {
     textAlign: 'left',

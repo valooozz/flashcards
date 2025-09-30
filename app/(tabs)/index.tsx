@@ -59,7 +59,6 @@ export default function Tab() {
   };
 
   const loadCards = async (id: number) => {
-    // setAllRevisionsToToday(database);
     await getCardsFromDeck(database, id).then((cardsResult) => {
       setCards(cardsResult);
       setNbCards(cardsResult.length);

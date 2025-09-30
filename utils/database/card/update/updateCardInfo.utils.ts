@@ -8,14 +8,14 @@ export const updateCardInfo = async (
   changeSide: boolean,
   toLearn: boolean,
 ): Promise<boolean> => {
-  if (changeSide === undefined) {
+  if (changeSide === null) {
     return database
       .runAsync(
-        `UPDATE Card C
+        `UPDATE Card
         SET 
           recto=?,
           verso=?,
-          rectoFirst = CASE WHEN (SELECT changeSide FROM Deck D WHERE D.id = C.deck) = 0 THEN 1 ELSE rectoFirst END
+          rectoFirst = CASE WHEN (SELECT changeSide FROM Deck WHERE Deck.id = Card.deck) = 0 THEN 1 ELSE rectoFirst END,
           changeSide=NULL,
           toLearn=?
         WHERE id=?`,

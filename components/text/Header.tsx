@@ -49,4 +49,10 @@ const styles = StyleSheet.create({
     fontFamily: 'JosefinSemiBold',
     marginBottom: 8,
   },
+  4: {
+    textAlign: 'center',
+    fontSize: Sizes.font.small,
+    fontFamily: 'JosefinSemiBold',
+    marginTop: 8
+  }
 });

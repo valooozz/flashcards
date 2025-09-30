@@ -11,8 +11,10 @@ export const updateDeckInfo = async (
     setRectoFirstOnDependantCardsFromDeck(database, id);
   }
 
+  const newChangeSide = changeSide === null ? null : Number(changeSide);
+
   return database
-    .runAsync('UPDATE Deck SET name=?, changeSide=? WHERE id=?', [name.trim(), Number(changeSide), id])
+    .runAsync('UPDATE Deck SET name=?, changeSide=? WHERE id=?', [name.trim(), newChangeSide, id])
     .then(() => true)
-    .catch(() => false);
+    .catch((err) => { console.log(err); return false; });
 };

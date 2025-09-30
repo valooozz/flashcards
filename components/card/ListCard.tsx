@@ -27,7 +27,7 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
 
   const handleForget = async () => {
     const resetOk = await resetCard(database, card.id.toString());
-    notify(resetOk, t('notifications.errorOccured'), t('card.forgotten'));
+    notify(resetOk, t('notifications.errorOccurred'), t('card.forgotten'));
     triggerReload();
   };
 

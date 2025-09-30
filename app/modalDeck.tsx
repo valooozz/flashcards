@@ -37,7 +37,7 @@ import { notify } from '../utils/notify.utils';
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
   const [newDeckName, setNewDeckName] = useState('');
-  const [changeSide, setChangeSide] = useState<boolean>(undefined);
+  const [changeSide, setChangeSide] = useState<boolean>(false);
   const [initialChangeSide, setInitialChangeSide] = useState<boolean>(undefined);
 
   const [editMode, setEditMode] = useState(false);
@@ -65,9 +65,9 @@ export default function Modal() {
       if (renameOk) {
         router.back();
       }
-      notify(renameOk, t('deck.existingNameError'), t('deck.renamed'));
+      notify(renameOk, t('deck.existingNameError'), t('deck.updated'));
     } else {
-      const idCreated = await createDeck(database, newDeckName);
+      const idCreated = await createDeck(database, newDeckName, changeSide);
       if (idCreated >= 0) {
         router.back();
       }
@@ -86,7 +86,7 @@ export default function Modal() {
     }
     notify(
       resetOk,
-      t('notifications.errorOccured'),
+      t('notifications.errorOccurred'),
       t('deck.learningResetted'),
     );
   };
@@ -95,7 +95,7 @@ export default function Modal() {
     const forceOk = await setNullChangeSideOnAllCardsFromDeck(database, idDeck);
     notify(
       forceOk,
-      t('notifications.errorOccured'),
+      t('notifications.errorOccurred'),
       t('common.settingUpdated')
     )
   }
@@ -105,7 +105,7 @@ export default function Modal() {
     if (deleteOk) {
       router.back();
     }
-    notify(deleteOk, t('notifications.errorOccured'), t('deck.deleted'));
+    notify(deleteOk, t('notifications.errorOccurred'), t('deck.deleted'));
   };
 
   const handleImport = async (importType: ImportExportType) => {
@@ -116,10 +116,7 @@ export default function Modal() {
   const showStats = () => {
     Alert.alert(
       t('common.stats'),
-      `${t('deck.cardsLearnt')} : ${nbCardsLearnt}\n
-        ${t('deck.cardsToLearn')} : ${nbCardsToLearn}
-        ${t('deck.progress')} : ${progress} %
-      `
+      `${t('deck.cardsLearnt')} : ${nbCardsLearnt}\n${t('deck.cardsToLearn')} : ${nbCardsToLearn}\n${t('deck.progress')} : ${progress} %`
     )
   }
 
@@ -186,7 +183,7 @@ export default function Modal() {
           />
         </View>
         {!editMode && (
-          <View style={styles.buttonBottom}>
+          <View style={{ ...styles.buttonBottom, height: Sizes.component.small * 2 + 16, }}>
             <ButtonModal
               text={t('deck.importJson')}
               onPress={() => handleImport('json')}
@@ -231,7 +228,7 @@ export default function Modal() {
           </View>
         )*/}
         {editMode && (
-          <View style={styles.buttonBottom}>
+          <View style={{ ...styles.buttonBottom, height: Sizes.component.small * 3 + 16, }}>
             <ButtonModal
               text={t('deck.forceAlternate')}
               onPress={() =>
@@ -244,24 +241,22 @@ export default function Modal() {
                 )
               }
             />
-            <View style={styles.buttonLineContainer}>
-              <ButtonModal
-                text={t('deck.reset')}
-                onPress={() =>
-                  alertAction(
-                    t('notifications.confirm'),
-                    t('common.reset'),
-                    t('deck.learning'),
-                    t('common.cancel'),
-                    handleReset,
-                  )
-                }
-              />
-              <ButtonModal
-                text={t('common.delete')}
-                onPress={() => alertAction(t('notifications.confirm'), t('common.delete'), t('deck.theDeck'), t('common.cancel'), handleDelete)}
-              />
-            </View>
+            <ButtonModal
+              text={t('deck.reset')}
+              onPress={() =>
+                alertAction(
+                  t('notifications.confirm'),
+                  t('common.reset'),
+                  t('deck.learning'),
+                  t('common.cancel'),
+                  handleReset,
+                )
+              }
+            />
+            <ButtonModal
+              text={t('common.delete')}
+              onPress={() => alertAction(t('notifications.confirm'), t('common.delete'), t('deck.theDeck'), t('common.cancel'), handleDelete)}
+            />
           </View>
         )}
       </View>
@@ -286,7 +281,10 @@ const styles = StyleSheet.create({
   },
   buttonBottom: {
     marginTop: 'auto',
-    // height: Sizes.component.small * 2 + 8,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    rowGap: 8
   },
   statContainer: {
     marginTop: 8,

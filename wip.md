@@ -10,7 +10,7 @@
 #### Interface
 
 + Dans les paramètres du deck, ajouter une checkbox pour le paramètre *changeSide*
-- Dans les paramètres de la carte, mettre un système pour suivre le paramètre du deck ou override la valeur
++ Dans les paramètres de la carte, mettre un système pour suivre le paramètre du deck ou override la valeur
 + Dans les paramètres du deck, ajouter un bouton pour forcer toutes les cartes à suivre le paramètre du deck (avec pop-up de confirmation)
 
 #### BDD
@@ -26,6 +26,7 @@
 + Ajouter colonne *changeSide* sur la table **deck**
 + Pouvoir mettre *changeSide* en null sur la table **card**
 - Gérer la migration correctement, en plaçant à 1 la valeur de *changeSide* sur les decks existants
+- Mettre des triggers plutôt que de gérer le placement de rectoFirst directement dans les requêtes
 
 ## Notes
 
