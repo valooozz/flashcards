@@ -239,10 +239,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   buttonBottom: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
+    marginTop: 'auto',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
