@@ -80,6 +80,9 @@
         "hardThrowback": "Go back to the first step when forgotten",
         "stopLearning": "Stop learning after the last step",
         "advancedMode": "Advanced revision mode",
+        "hardThrowbackExplanation": "If this setting is enabled, forgetting a card will reset it to the first learning step. If disabled, the card will only go back to the previous step. This setting has no effect when advanced review mode is enabled.",
+        "stopLearningExplanation": "If this setting is enabled, any card that passes the final learning step will no longer need to be learned. If disabled, a card that passes the final step will remain at that step.",
+        "advancedModeExplanation": "Advanced review mode displays four buttons instead of two during card revision, allowing for more precise feedback on your knowledge of the card.",
         "resetSettings": "Reset settings",
         "resettingSettings": "the settings and return to default",
         "updatedSettings": "Settings updated"
