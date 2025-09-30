@@ -48,6 +48,7 @@ describe('Deck', () => {
 
     it('renders headers, progress and list when there are cards', () => {
         const closeDeck = jest.fn();
+        const openRevision = jest.fn();
         const reload = jest.fn();
         const { getByText, getByTestId, queryByText } = render(
             <Deck
@@ -58,6 +59,7 @@ describe('Deck', () => {
                 progress={42}
                 reload={reload}
                 closeDeck={closeDeck}
+                openRevision={openRevision}
             />
         );
 
@@ -68,6 +70,10 @@ describe('Deck', () => {
         expect(getByTestId('list-card-2')).toBeTruthy();
         // Empty message should not be present
         expect(queryByText('deck.noCards')).toBeNull();
+        
+        // Trigger open revision
+        fireEvent.press(getByTestId('flash-deck-button'));
+        expect(openRevision).toHaveBeenCalled()
 
         // Trigger back action
         fireEvent.press(getByTestId('back-button'));
@@ -88,6 +94,7 @@ describe('Deck', () => {
                 progress={0}
                 reload={jest.fn()}
                 closeDeck={jest.fn()}
+                openRevision={jest.fn()}
             />
         );
 
@@ -110,6 +117,7 @@ describe('Deck', () => {
                 progress={10}
                 reload={jest.fn()}
                 closeDeck={jest.fn()}
+                openRevision={jest.fn()}
             />
         );
 
