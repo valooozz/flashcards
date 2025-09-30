@@ -79,7 +79,7 @@
         "hardThrowback": "Revenir à la première étape lors d'un oubli",
         "stopLearning": "Arrêter l'apprentissage après la dernière étape",
         "advancedMode": "Mode de révision avancé",
-        "hardThrowbackExplanation": "Si ca paramètre est activé, l'oubli d'une carte fera revenir la carte à la première étape d'apprentissage. S'il est désactivé, la carte revient seulement à l'étape précédente. Ce paramètre n'a aucun effet lorsque le mode de révision avancé est activé.",
+        "hardThrowbackExplanation": "Si ce paramètre est activé, l'oubli d'une carte fera revenir la carte à la première étape d'apprentissage. S'il est désactivé, la carte revient seulement à l'étape précédente. Ce paramètre n'a aucun effet lorsque le mode de révision avancé est activé.",
         "stopLearningExplanation": "Si ce paramètre est activé, toute carte passant la dernière étape d'apprentissage n'est plus à apprendre. S'il est désactivé, une carte passant la dernière étape d'apprentissage restera sur cette étape.",
         "advancedModeExplanation": "Le mode de révision avancé permet de faire apparaître quatre boutons au lieu de deux lors de la révision des cartes, permettant d'être plus précis dans son retour sur sa connaissance de la carte.",
         "resetSettings": "Réinitialiser les paramètres",
