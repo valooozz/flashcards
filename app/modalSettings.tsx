@@ -49,7 +49,7 @@ export default function Modal() {
 
   const { hardThrowback, stopLearning, advancedRevisionMode, intervals, setSettings, switchLanguage, resetSettings } =
     useSettingsContext();
-  const { t, getCurrentLanguage } = useTranslation();
+  const { t } = useTranslation();
 
   const handleValidate = async () => {
     setSettings(
@@ -226,7 +226,7 @@ export default function Modal() {
         <ButtonModal text={t('common.cancel')} onPress={() => router.back()} />
         <ButtonModal text={t('common.save')} onPress={handleValidate} />
       </View>
-      <DocModal visible={isDocOpen} onClose={() => setIsDocOpen(false)} language={getCurrentLanguage()} />
+      <DocModal visible={isDocOpen} onClose={() => setIsDocOpen(false)} />
     </SafeAreaView>
   );
 }
