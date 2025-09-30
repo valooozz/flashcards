@@ -6,11 +6,13 @@ import {
 } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toolbar } from '../components/bar/Toolbar';
 import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
+import { StatsButton } from '../components/button/StatsButton';
+import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
 import { useTranslation } from '../hooks/useTranslation';
@@ -20,10 +22,11 @@ import { globalStyles } from '../style/Styles';
 import { ImportExportType } from '../types/ImportExportType';
 import { alertAction } from '../utils/alertAction.utils';
 import { getProgressInDeck } from '../utils/database/card/get/getProgressInDeck.utils';
+import { setNullChangeSideOnAllCardsFromDeck } from '../utils/database/card/update/setNullChangeSideOnAllCardsFromDeck.utils';
 import { createDeck } from '../utils/database/deck/createDeck.utils';
 import { deleteDeck } from '../utils/database/deck/deleteDeck.utils';
 import { exportDeck } from '../utils/database/deck/exportDeck.utils';
-import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
+import { getDeckById } from '../utils/database/deck/get/getDeckById.utils';
 import { getNbCardsLearntInDeck } from '../utils/database/deck/get/getNbCardsLearntInDeck.utils';
 import { getNbCardsToLearnInDeck } from '../utils/database/deck/get/getNbCardsToLearnInDeck.utils';
 import { resetDeck } from '../utils/database/deck/update/resetDeck.utils';
@@ -34,8 +37,10 @@ import { notify } from '../utils/notify.utils';
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
   const [newDeckName, setNewDeckName] = useState('');
+  const [changeSide, setChangeSide] = useState<boolean>(undefined);
+  const [initialChangeSide, setInitialChangeSide] = useState<boolean>(undefined);
+
   const [editMode, setEditMode] = useState(false);
-  const [initialNewDeckName, setInitialNewDeckName] = useState('');
 
   const [nbCardsLearnt, setNbCardsLearnt] = useState(0);
   const [nbCardsToLearn, setNbCardsToLearn] = useState(0);
@@ -56,7 +61,7 @@ export default function Modal() {
     }
 
     if (editMode) {
-      const renameOk = await updateDeckInfo(database, idDeck, newDeckName);
+      const renameOk = await updateDeckInfo(database, idDeck, newDeckName, changeSide);
       if (renameOk) {
         router.back();
       }
@@ -86,6 +91,15 @@ export default function Modal() {
     );
   };
 
+  const handleForceAlternate = async () => {
+    const forceOk = await setNullChangeSideOnAllCardsFromDeck(database, idDeck);
+    notify(
+      forceOk,
+      t('notifications.errorOccured'),
+      t('common.settingUpdated')
+    )
+  }
+
   const handleDelete = async () => {
     const deleteOk = await deleteDeck(database, idDeck);
     if (deleteOk) {
@@ -99,14 +113,25 @@ export default function Modal() {
     router.back();
   };
 
+  const showStats = () => {
+    Alert.alert(
+      t('common.stats'),
+      `${t('deck.cardsLearnt')} : ${nbCardsLearnt}\n
+        ${t('deck.cardsToLearn')} : ${nbCardsToLearn}
+        ${t('deck.progress')} : ${progress} %
+      `
+    )
+  }
+
   useFocusEffect(
     useCallback(() => {
       if (idDeck) {
         setEditMode(true);
-        getNameDeckById(database, idDeck).then((name) => {
-          setDeckName(name);
-          setNewDeckName(name);
-          setInitialNewDeckName(name);
+        getDeckById(database, idDeck).then((deck) => {
+          setDeckName(deck.name);
+          setNewDeckName(deck.name);
+          setChangeSide(Boolean(deck.changeSide));
+          setInitialChangeSide(Boolean(deck.changeSide));
         });
         getNbCardsLearntInDeck(database, Number(idDeck)).then((nb) => {
           setNbCardsLearnt(nb);
@@ -122,7 +147,7 @@ export default function Modal() {
   );
 
   const hasChanged = (): boolean => {
-    return newDeckName !== initialNewDeckName;
+    return newDeckName !== deckName || changeSide !== initialChangeSide;
   };
 
   return (
@@ -130,6 +155,7 @@ export default function Modal() {
       <Stack.Screen options={{ title: t('deck.title'), headerShown: false }} />
       <Toolbar>
         <BackButton color={Colors.library.light.contrast} saveAction={hasChanged() ? handleValidate : undefined} />
+        <StatsButton color={Colors.library.light.contrast} onPress={showStats} />
       </Toolbar>
       <Header
         level={1}
@@ -143,13 +169,19 @@ export default function Modal() {
           color={Colors.library.light.contrast}
         />
         <Input text={newDeckName} setText={setNewDeckName} />
+        <CheckboxWithText
+          isChecked={changeSide}
+          setIsChecked={setChangeSide}
+          textLabel={t('card.alternateSides')}
+          spaceTop
+        />
         <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
           <ButtonModal
             text={editMode ? t('common.back') : t('common.cancel')}
             onPress={() => router.back()}
           />
           <ButtonModal
-            text={editMode ? t('common.rename') : t('common.add')}
+            text={editMode ? t('common.edit') : t('common.add')}
             onPress={handleValidate}
           />
         </View>
@@ -185,7 +217,7 @@ export default function Modal() {
             />
           </View>
         )}
-        {editMode && (
+        {/*editMode && (
           <View style={styles.statContainer}>
             <Text style={styles.textStat}>
               {t('deck.cardsLearnt')} : {nbCardsLearnt}
@@ -197,25 +229,39 @@ export default function Modal() {
               {t('deck.progress')} : {progress} %
             </Text>
           </View>
-        )}
+        )*/}
         {editMode && (
           <View style={styles.buttonBottom}>
             <ButtonModal
-              text={t('deck.reset')}
+              text={t('deck.forceAlternate')}
               onPress={() =>
                 alertAction(
                   t('notifications.confirm'),
-                  t('common.reset'),
-                  t('deck.learning'),
+                  t('deck.detailedForceAlternate'),
+                  t('deck.followDeckOnAlternate'),
                   t('common.cancel'),
-                  handleReset,
+                  handleForceAlternate
                 )
               }
             />
-            <ButtonModal
-              text={t('common.delete')}
-              onPress={() => alertAction(t('notifications.confirm'), t('common.delete'), t('deck.theDeck'), t('common.cancel'), handleDelete)}
-            />
+            <View style={styles.buttonLineContainer}>
+              <ButtonModal
+                text={t('deck.reset')}
+                onPress={() =>
+                  alertAction(
+                    t('notifications.confirm'),
+                    t('common.reset'),
+                    t('deck.learning'),
+                    t('common.cancel'),
+                    handleReset,
+                  )
+                }
+              />
+              <ButtonModal
+                text={t('common.delete')}
+                onPress={() => alertAction(t('notifications.confirm'), t('common.delete'), t('deck.theDeck'), t('common.cancel'), handleDelete)}
+              />
+            </View>
           </View>
         )}
       </View>
@@ -240,12 +286,7 @@ const styles = StyleSheet.create({
   },
   buttonBottom: {
     marginTop: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-end',
-    alignItems: 'stretch',
-    gap: 8,
-    height: Sizes.component.small * 2 + 8,
+    // height: Sizes.component.small * 2 + 8,
   },
   statContainer: {
     marginTop: 8,

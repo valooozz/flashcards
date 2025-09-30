@@ -12,7 +12,9 @@
         "daySingular": "day",
         "dayPlural": "days",
         "reset": "Reset",
-        "created": "created"
+        "created": "created",
+        "stats": "Statistics",
+        "settingUpdated": "Setting updated"
     },
     "days": {
         "today": "Today",
@@ -70,7 +72,10 @@
         "cardsToLearn": "Cards to learn",
         "progress": "Total progress",
         "learningResetted": "Learning reset for the entire deck",
-        "theDeck": "the deck"
+        "theDeck": "the deck",
+        "forceAlternate": "Force alternate setting",
+        "detailedForceAlternate": "Force all cards",
+        "followDeckOnAlternate": "to follow the deck's alternate setting"
     },
     "settings": {
         "title": "Settings",

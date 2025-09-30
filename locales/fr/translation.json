@@ -12,7 +12,9 @@
         "daySingular": "jour",
         "dayPlural": "jours",
         "reset": "Réinitialiser",
-        "created": "créé"
+        "created": "créé",
+        "stats": "Statistiques",
+        "settingUpdated": "Paramètre mis à jour"
     },
     "days": {
         "today": "Aujourd'hui",
@@ -70,7 +72,10 @@
         "cardsToLearn": "Cartes à apprendre",
         "progress": "Progression totale",
         "learningResetted": "Apprentissage réinitialisé sur l'ensemble du deck",
-        "theDeck": "le deck"
+        "theDeck": "le deck",
+        "forceAlternate": "Forcer paramètre d'alternance",
+        "detailedForceAlternate": "Forcer toutes les cartes",
+        "followDeckOnAlternate": "à suivre le deck sur le paramètre d'alternance"
     },
     "settings": {
         "title": "Paramètres",

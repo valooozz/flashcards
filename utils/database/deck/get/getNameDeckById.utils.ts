@@ -3,7 +3,7 @@ import { SQLiteDatabase } from 'expo-sqlite';
 export const getNameDeckById = async (
   database: SQLiteDatabase,
   idDeck: string,
-) => {
+): Promise<string> => {
   let deckNameResult: object = undefined;
   try {
     deckNameResult = await database.getFirstAsync<object>(

@@ -9,9 +9,9 @@
 
 #### Interface
 
-- Dans les paramètres du deck, ajouter une checkbox pour le paramètre *changeSide*
++ Dans les paramètres du deck, ajouter une checkbox pour le paramètre *changeSide*
 - Dans les paramètres de la carte, mettre un système pour suivre le paramètre du deck ou override la valeur
-- Dans les paramètres du deck, ajouter un bouton pour forcer toutes les cartes à suivre le paramètre du deck (avec pop-up de confirmation)
++ Dans les paramètres du deck, ajouter un bouton pour forcer toutes les cartes à suivre le paramètre du deck (avec pop-up de confirmation)
 
 #### BDD
 
