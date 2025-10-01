@@ -126,7 +126,12 @@
     "revision": {
         "again": "À revoir",
         "done": "Révisée",
-        "over": "Toutes les cartes ont été révisées !"
+        "over": "Toutes les cartes ont été révisées !",
+        "chooseSide": "Quel côté afficher en premier ?",
+        "recto": "Recto",
+        "verso": "Verso",
+        "random": "Aléatoire",
+        "current": "État actuel"
     },
     "notifications": {
         "errorOccurred": "Une erreur est survenue",

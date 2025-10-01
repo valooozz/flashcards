@@ -11,10 +11,10 @@ export const getFlashCardsFromDeck = async (
     flashcards = await database.getAllAsync<FlashCardType>(
       `SELECT
         C.id,
-        CASE WHEN C.rectoFirst=1 THEN C.recto ELSE C.verso END AS recto,
-        CASE WHEN C.rectoFirst=1 THEN C.verso ELSE C.recto END AS verso,
-        CASE WHEN C.rectoFirst=1 THEN C.rectoImage ELSE C.versoImage END AS rectoImage,
-        CASE WHEN C.rectoFirst=1 THEN C.versoImage ELSE C.rectoImage END AS versoImage,
+        C.recto,
+        C.verso,
+        C.rectoImage,
+        C.versoImage,
         C.rectoFirst,
         C.step,
         C.nextRevision,

@@ -1,0 +1,1 @@
+export type RevisionSide = 'recto' | 'verso' | 'current' | 'random';

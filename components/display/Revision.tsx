@@ -7,6 +7,7 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { RevisionAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
+import { RevisionSide } from '../../types/RevisionSide';
 import { shuffle } from '../../utils/shuffle.utils';
 import { BackButton } from '../button/BackButton';
 import { FlashButton } from '../button/FlashButton';
@@ -14,15 +15,21 @@ import { FlashCard } from '../card/FlashCard';
 
 interface DeckProps {
   flashCards: FlashCardType[];
+  revisionSide: RevisionSide;
   closeRevision: () => void;
 }
 
 export function Revision({
   flashCards,
+  revisionSide,
   closeRevision,
 }: DeckProps) {
   const [cardsToRevise, setCardsToRevise] = useState<FlashCardType[]>([]);
   const [cardToShow, setCardToShow] = useState<FlashCardType>(undefined);
+  const [rectoToShow, setRectoToShow] = useState<string>(undefined);
+  const [versoToShow, setVersoToShow] = useState<string>(undefined);
+  const [rectoImageToShow, setRectoImageToShow] = useState<string>(undefined);
+  const [versoImageToShow, setVersoImageToShow] = useState<string>(undefined);
   const [previousCard, setPreviousCard] = useState<FlashCardType>(undefined);
   const [sizeOfDeck, setSizeOfDeck] = useState(0);
 
@@ -31,15 +38,43 @@ export function Revision({
   useEffect(() => {
     shuffle(flashCards);
     setCardsToRevise(flashCards);
+    updateRectoVerso(flashCards[0]);
     setCardToShow(flashCards[0]);
     setSizeOfDeck(flashCards.length);
   }, [flashCards]);
+
+  const updateRectoVerso = (newCard: FlashCardType) => {
+    let showRectoFirst: boolean;
+
+    if (revisionSide === 'recto') {
+      showRectoFirst = true;
+    } else if (revisionSide === 'verso') {
+      showRectoFirst = false;
+    } else if (revisionSide === 'current') {
+      showRectoFirst = Boolean(newCard.rectoFirst);
+    } else if (revisionSide === 'random') {
+      showRectoFirst = Math.random() < 0.5;
+    }
+
+    if (showRectoFirst) {
+      setRectoToShow(newCard.recto);
+      setRectoImageToShow(newCard.rectoImage);
+      setVersoToShow(newCard.verso);
+      setVersoImageToShow(newCard.versoImage);
+    } else {
+      setRectoToShow(newCard.verso);
+      setRectoImageToShow(newCard.versoImage);
+      setVersoToShow(newCard.recto);
+      setVersoImageToShow(newCard.rectoImage);
+    }
+  }
 
   const updateCardToShow = (newCard: FlashCardType) => {
     if (newCard === undefined) {
       setCardToShow(undefined);
       return;
     }
+    updateRectoVerso(newCard);
     setCardToShow(newCard);
   }
 
@@ -75,10 +110,10 @@ export function Revision({
         {cardToShow ? (
           <View style={styles.cardContainer}>
             <FlashCard
-              recto={cardToShow.recto}
-              verso={cardToShow.verso}
-              rectoImage={cardToShow.rectoImage}
-              versoImage={cardToShow.versoImage}
+              recto={rectoToShow}
+              verso={versoToShow}
+              rectoImage={rectoImageToShow}
+              versoImage={versoImageToShow}
               deckName={cardToShow.name}
               backgroundColor={Colors.revision.simple.main}
               textColor={Colors.revision.simple.contrast}

@@ -3,7 +3,7 @@ import { transformJsonToCsv } from '../export/transformJsonToCsv.utils';
 
 describe('transformJsonToCsv', () => {
     it('returns an empty string when there are no cards', () => {
-        const doc: DeckDocument = { deckName: 'Empty', cards: [] };
+        const doc: DeckDocument = { deckName: 'Empty', cards: [], changeSide: true };
         const csv = transformJsonToCsv(doc);
         expect(csv).toBe('');
     });
@@ -15,9 +15,10 @@ describe('transformJsonToCsv', () => {
                 { recto: 'Hello', verso: 'Bonjour' },
                 { recto: 'Yes', verso: 'Oui' },
             ],
+            changeSide: true,
         };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe(['Hello,Bonjour', 'Yes,Oui'].join('\n'));
+        expect(csv).toBe(['Hello,Bonjour,,', 'Yes,Oui,,'].join('\n'));
     });
 
     it('escapes quotes by doubling them and wraps the field in quotes', () => {
@@ -26,9 +27,10 @@ describe('transformJsonToCsv', () => {
             cards: [
                 { recto: 'He said "Hi"', verso: 'Test' },
             ],
+            changeSide: false,
         };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe('"He said ""Hi""",Test');
+        expect(csv).toBe('"He said ""Hi""",Test,,');
     });
 
     it('wraps fields containing commas or newlines in quotes', () => {
@@ -39,12 +41,13 @@ describe('transformJsonToCsv', () => {
                 { recto: 'line1\nline2', verso: 'y' },
                 { recto: 'carriage\rreturn', verso: 'z' },
             ],
+            changeSide: false,
         };
         const csv = transformJsonToCsv(doc);
         expect(csv).toBe([
-            '"a,b",x',
-            '"line1\nline2",y',
-            '"carriage\rreturn",z',
+            '"a,b",x,,',
+            '"line1\nline2",y,,',
+            '"carriage\rreturn",z,,',
         ].join('\n'));
     });
 
@@ -54,9 +57,10 @@ describe('transformJsonToCsv', () => {
             cards: [
                 { recto: null, verso: undefined },
             ],
+            changeSide: true,
         };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe(',');
+        expect(csv).toBe(',,,');
     });
 });
 

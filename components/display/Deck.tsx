@@ -23,7 +23,7 @@ interface DeckProps {
   progress: number;
   reload: () => void;
   closeDeck: () => void;
-  openRevision: (id: number) => void;
+  chooseRevisionSide: (id: number) => void;
 }
 
 export function Deck({
@@ -34,7 +34,7 @@ export function Deck({
   progress,
   reload,
   closeDeck,
-  openRevision
+  chooseRevisionSide
 }: DeckProps) {
   const [showCards, setShowCards] = useState(true);
 
@@ -52,7 +52,7 @@ export function Deck({
     <View style={styles.container}>
       <Toolbar addMarginRight>
         <BackButton color={Colors.library.dark.contrast} simpleAction={closeDeck} />
-        <FlashDeckButton color={Colors.library.dark.contrast} onPress={() => openRevision(idDeck)} />
+        <FlashDeckButton color={Colors.library.dark.contrast} onPress={() => chooseRevisionSide(idDeck)} />
         <SettingsButton color={Colors.library.dark.contrast} route={`/modalDeck?idDeck=${idDeck}`} />
       </Toolbar>
       <Header

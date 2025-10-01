@@ -126,7 +126,12 @@
     "revision": {
         "again": "To review",
         "done": "Revised",
-        "over": "All cards have been revised!"
+        "over": "All cards have been revised!",
+        "chooseSide": "Which side to show first?",
+        "recto": "Front",
+        "verso": "Back",
+        "random": "Random",
+        "current": "Current state"
     },
     "notifications": {
         "errorOccurred": "An error occurred",

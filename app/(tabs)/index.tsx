@@ -6,9 +6,12 @@ import { BackHandler } from 'react-native';
 import { Deck } from '../../components/display/Deck';
 import { Library } from '../../components/display/Library';
 import { Revision } from '../../components/display/Revision';
+import { SelectionModal } from '../../components/modal/SelectionModal';
+import { useTranslation } from '../../hooks/useTranslation';
 import { CardType } from '../../types/CardType';
 import { DeckType } from '../../types/DeckType';
 import { FlashCardType } from '../../types/FlashCardType';
+import { RevisionSide } from '../../types/RevisionSide';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
@@ -27,8 +30,12 @@ export default function Tab() {
   const [progressInDeck, setProgressInDeck] = useState(0);
 
   const [flashCards, setFlashCards] = useState<FlashCardType[]>([]);
+  const [revisionSide, setRevisionSide] = useState<RevisionSide>(undefined);
+  const [showRevisionChoice, setShowRevisionChoice] = useState(false);
 
   const database = useSQLiteContext();
+
+  const { t } = useTranslation();
 
   const saveState = async () => {
     await AsyncStorage.setItem(
@@ -93,8 +100,14 @@ export default function Tab() {
     setInDeck(false);
   };
 
-  const openRevision = (id: number) => {
-    loadFlashCards(id).then(() => {
+  const chooseRevisionSide = () => {
+    setShowRevisionChoice(true);
+  }
+
+  const openRevision = (revisionSide: RevisionSide) => {
+    setShowRevisionChoice(false)
+    setRevisionSide(revisionSide);
+    loadFlashCards(idDeck).then(() => {
       setInRevision(true);
     });
   }
@@ -136,18 +149,31 @@ export default function Tab() {
   );
 
   return inDeck ? inRevision ? (
-    <Revision flashCards={flashCards} closeRevision={closeRevision} />
+    <Revision flashCards={flashCards} revisionSide={revisionSide} closeRevision={closeRevision} />
   ) : (
-    <Deck
-      idDeck={idDeck}
-      deckName={deckName}
-      cards={cards}
-      nbCards={nbCards}
-      progress={progressInDeck}
-      reload={() => loadCards(idDeck)}
-      closeDeck={closeDeck}
-      openRevision={openRevision}
-    />
+    <>
+      <Deck
+        idDeck={idDeck}
+        deckName={deckName}
+        cards={cards}
+        nbCards={nbCards}
+        progress={progressInDeck}
+        reload={() => loadCards(idDeck)}
+        closeDeck={closeDeck}
+        chooseRevisionSide={chooseRevisionSide}
+      />
+      <SelectionModal
+        visible={showRevisionChoice}
+        title={t('revision.chooseSide')}
+        onRequestClose={() => setShowRevisionChoice(false)}
+        options={[
+          { label: t('revision.recto'), onPress: () => openRevision('recto') },
+          { label: t('revision.verso'), onPress: () => openRevision('verso') },
+          { label: t('revision.current'), onPress: () => openRevision('current') },
+          { label: t('revision.random'), onPress: () => openRevision('random') },
+        ]}
+      />
+    </>
   ) : (
     <Library decks={decks} openDeck={openDeck} />
   );
