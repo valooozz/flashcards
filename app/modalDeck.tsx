@@ -152,7 +152,7 @@ export default function Modal() {
       <Stack.Screen options={{ title: t('deck.title'), headerShown: false }} />
       <Toolbar>
         <BackButton color={Colors.library.light.contrast} saveAction={hasChanged() ? handleValidate : undefined} />
-        <StatsButton color={Colors.library.light.contrast} onPress={showStats} />
+        {editMode && <StatsButton color={Colors.library.light.contrast} onPress={showStats} />}
       </Toolbar>
       <Header
         level={1}

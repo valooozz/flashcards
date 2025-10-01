@@ -3,6 +3,7 @@ import { createTableCard } from './card/table/createTableCard.utils';
 import { createTableDeck } from './deck/table/createTableDeck.utils';
 import { clearForToday } from './forgotten/clearForToday.util';
 import { createTableForgotten } from './forgotten/createTableForgotten.utils';
+import { migrateDatabase } from './migrateDatabase.utils';
 import { createStatsOfToday } from './stats/createStatsOfToday.utils';
 import { createTableStats } from './stats/createTableStats.utils';
 
@@ -15,4 +16,6 @@ export const initDatabase = async (database: SQLiteDatabase) => {
 
   await createTableForgotten(database);
   await clearForToday(database);
+
+  await migrateDatabase(database);
 };

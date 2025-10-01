@@ -25,7 +25,7 @@
 
 + Ajouter colonne *changeSide* sur la table **deck**
 + Pouvoir mettre *changeSide* en null sur la table **card**
-- Gérer la migration correctement, en plaçant à 1 la valeur de *changeSide* sur les decks existants
++ Gérer la migration correctement, en plaçant à 1 la valeur de *changeSide* sur les decks existants
 - Mettre des triggers plutôt que de gérer le placement de rectoFirst directement dans les requêtes
 
 ## Notes

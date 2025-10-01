@@ -1,3 +1,4 @@
+import { ButtonGroup } from '@rneui/themed';
 import {
   router,
   Stack,
@@ -7,7 +8,6 @@ import {
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { ButtonGroup } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toolbar } from '../components/bar/Toolbar';
 import { BackButton } from '../components/button/BackButton';

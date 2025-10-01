@@ -56,7 +56,7 @@ export function Revision({
   }
 
   const handlePrevious = () => {
-    setCardsToRevise([previousCard, ...cardsToRevise]);
+    setCardsToRevise([previousCard, ...cardsToRevise.slice(0, -1)]);
     updateCardToShow(previousCard);
     setPreviousCard(undefined);
   }
