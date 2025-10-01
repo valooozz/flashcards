@@ -6,8 +6,10 @@ import { createTableForgotten } from './forgotten/createTableForgotten.utils';
 import { migrateDatabase } from './migrateDatabase.utils';
 import { createStatsOfToday } from './stats/createStatsOfToday.utils';
 import { createTableStats } from './stats/createTableStats.utils';
+import { createAllTriggers } from './triggers/createAllTriggers.utils';
 
 export const initDatabase = async (database: SQLiteDatabase) => {
+
   await createTableDeck(database);
   await createTableCard(database);
 
@@ -17,5 +19,8 @@ export const initDatabase = async (database: SQLiteDatabase) => {
   await createTableForgotten(database);
   await clearForToday(database);
 
+  await createAllTriggers(database);
+
   await migrateDatabase(database);
+
 };

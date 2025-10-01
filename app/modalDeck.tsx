@@ -61,11 +61,11 @@ export default function Modal() {
     }
 
     if (editMode) {
-      const renameOk = await updateDeckInfo(database, idDeck, newDeckName, changeSide);
-      if (renameOk) {
+      const updateOk = await updateDeckInfo(database, idDeck, newDeckName, changeSide);
+      if (updateOk) {
         router.back();
       }
-      notify(renameOk, t('deck.existingNameError'), t('deck.updated'));
+      notify(updateOk, t('deck.existingNameError'), t('deck.updated'));
     } else {
       const idCreated = await createDeck(database, newDeckName, changeSide);
       if (idCreated >= 0) {

@@ -1,5 +1,4 @@
 import { SQLiteDatabase } from 'expo-sqlite';
-import { setRectoFirstOnDependantCardsFromDeck } from '../../card/update/setRectoFirstOnDependantCardsFromDeck.utils';
 
 export const updateDeckInfo = async (
   database: SQLiteDatabase,
@@ -7,14 +6,8 @@ export const updateDeckInfo = async (
   name: string,
   changeSide: boolean,
 ): Promise<boolean> => {
-  if (!changeSide) {
-    setRectoFirstOnDependantCardsFromDeck(database, id);
-  }
-
-  const newChangeSide = changeSide === null ? null : Number(changeSide);
-
   return database
-    .runAsync('UPDATE Deck SET name=?, changeSide=? WHERE id=?', [name.trim(), newChangeSide, id])
+    .runAsync('UPDATE Deck SET name=?, changeSide=? WHERE id=?', [name.trim(), Number(changeSide), id])
     .then(() => true)
     .catch((err) => { console.log(err); return false; });
 };
