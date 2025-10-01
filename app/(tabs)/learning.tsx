@@ -87,6 +87,8 @@ export default function Tab() {
           <FlashCard
             recto={cardToShow.recto}
             verso={cardToShow.verso}
+            rectoImage={cardToShow.rectoImage}
+            versoImage={cardToShow.versoImage}
             deckName={cardToShow.name}
             backgroundColor={Colors.learning.simple.main}
             textColor={Colors.learning.simple.contrast}

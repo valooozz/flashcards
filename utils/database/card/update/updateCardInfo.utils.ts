@@ -5,6 +5,8 @@ export const updateCardInfo = async (
   id: string,
   recto: string,
   verso: string,
+  rectoImage: string | null,
+  versoImage: string | null,
   changeSide: boolean,
   toLearn: boolean,
 ): Promise<boolean> => {
@@ -12,8 +14,8 @@ export const updateCardInfo = async (
 
   return database
     .runAsync(
-      'UPDATE Card SET recto=?, verso=?, changeSide=?, toLearn=? WHERE id=?',
-      [recto.trim(), verso.trim(), newChangeSide, Number(toLearn), id],
+      'UPDATE Card SET recto=?, verso=?, rectoImage=?, versoImage=?, changeSide=?, toLearn=? WHERE id=?',
+      [recto.trim(), verso.trim(), rectoImage ?? null, versoImage ?? null, newChangeSide, Number(toLearn), id],
     )
     .then(() => true)
     .catch(() => false);

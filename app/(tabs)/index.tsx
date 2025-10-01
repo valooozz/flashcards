@@ -12,7 +12,6 @@ import { FlashCardType } from '../../types/FlashCardType';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
-import { setAllRevisionsToToday } from '../../utils/database/card/table/setAllRevisionsToToday.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
 
 export default function Tab() {
@@ -60,7 +59,7 @@ export default function Tab() {
   };
 
   const loadCards = async (id: number) => {
-    setAllRevisionsToToday(database);
+    // setAllRevisionsToToday(database);
     await getCardsFromDeck(database, id).then((cardsResult) => {
       setCards(cardsResult);
       setNbCards(cardsResult.length);

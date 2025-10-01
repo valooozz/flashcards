@@ -12,6 +12,8 @@ export const getCardsFromDeck = async (
         C.id,
         C.recto,
         C.verso,
+        C.rectoImage,
+        C.versoImage,
         C.deck,
         C.rectoFirst,
         C.step,

@@ -14,6 +14,7 @@ import { getDelay } from '../../utils/getDelay.utils';
 import { getProgressBarLength } from '../../utils/getProgressBarLength';
 import { notify } from '../../utils/notify.utils';
 import { CardProgressBar } from '../bar/CardProgressBar';
+import { ListCardElement } from '../text/ListCardElement';
 
 interface ListCardProps {
   card: CardType;
@@ -54,21 +55,8 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
       onLongPress={handleLongPress}
     >
       <View style={styles.textContainer}>
-        <Text
-          numberOfLines={1}
-          style={{ ...styles.text, opacity: card.toLearn ? 1 : 0.3 }}
-        >
-          {card.recto}
-        </Text>
-        <Text
-          numberOfLines={1}
-          style={{
-            ...styles.text,
-            opacity: card.changeSide && card.toLearn ? 1 : 0.3,
-          }}
-        >
-          {card.verso}
-        </Text>
+        <ListCardElement text={card.recto} image={card.rectoImage} light={!card.toLearn} />
+        <ListCardElement text={card.verso} image={card.versoImage} light={!card.toLearn || !card.changeSide} />
         <Text
           numberOfLines={1}
           style={{
@@ -111,13 +99,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     columnGap: 8,
-  },
-  text: {
-    width: 120,
-    fontSize: Sizes.font.small,
-    color: Colors.library.simple.contrast,
-    textAlign: 'left',
-    fontFamily: 'JosefinRegular',
   },
   textDate: {
     marginLeft: 'auto',

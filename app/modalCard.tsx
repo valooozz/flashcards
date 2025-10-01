@@ -7,11 +7,13 @@ import {
 } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useRef, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Toolbar } from '../components/bar/Toolbar';
 import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
+import { ImagePickerButton } from '../components/button/ImagePickerButton';
+import { StatsButton } from '../components/button/StatsButton';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
@@ -36,16 +38,19 @@ export default function Modal() {
   const [deckName, setDeckName] = useState('');
   const [recto, setRecto] = useState('');
   const [verso, setVerso] = useState('');
+  const [rectoImage, setRectoImage] = useState<string | null>(null);
+  const [versoImage, setVersoImage] = useState<string | null>(null);
   const [rectoFirst, setRectoFirst] = useState(true);
   const [step, setStep] = useState(0);
   const [nextRevision, setNextRevision] = useState('');
   const [delay, setDelay] = useState(0);
   const [editMode, setEditMode] = useState(false);
-  // const [checkedAlternate, setCheckedAlternate] = useState(true);
   const [selectedChangeSide, setSelectedChangeSide] = useState(1);
   const [checkedLearn, setCheckedLearn] = useState(true);
   const [initialRecto, setInitialRecto] = useState('');
   const [initialVerso, setInitialVerso] = useState('');
+  const [initialRectoImage, setInitialRectoImage] = useState<string | null>(null);
+  const [initialVersoImage, setInitialVersoImage] = useState<string | null>(null);
   const [initialSelectedChangeSide, setInitialSelectedChangeSide] = useState(1);
   const [initialCheckedLearn, setInitialCheckedLearn] = useState(true);
 
@@ -71,6 +76,8 @@ export default function Modal() {
         getCardById(database, idCard).then((card) => {
           setRecto(card.recto);
           setVerso(card.verso);
+          setRectoImage(card.rectoImage ?? null);
+          setVersoImage(card.versoImage ?? null);
           setRectoFirst(Boolean(card.rectoFirst));
           setStep(card.step);
           setNextRevision(card.nextRevision);
@@ -79,6 +86,8 @@ export default function Modal() {
           setCheckedLearn(Boolean(card.toLearn));
           setInitialRecto(card.recto);
           setInitialVerso(card.verso);
+          setInitialRectoImage(card.rectoImage ?? null);
+          setInitialVersoImage(card.versoImage ?? null);
           setInitialSelectedChangeSide(biToTri(card.changeSide));
           setInitialCheckedLearn(Boolean(card.toLearn));
         });
@@ -87,12 +96,12 @@ export default function Modal() {
   );
 
   const handleValidate = async (continueCreating: boolean) => {
-    if (recto === '') {
+    if (recto === '' && !rectoImage) {
       notify(false, t('card.emptyFrontError'));
       return;
     }
 
-    if (verso === '') {
+    if (verso === '' && !versoImage) {
       notify(false, t('card.emptyBackError'));
       return;
     }
@@ -103,17 +112,21 @@ export default function Modal() {
         idCard,
         recto,
         verso,
+        rectoImage,
+        versoImage,
         triToBi(selectedChangeSide),
         checkedLearn,
       );
       notify(updateOk, t('notifications.errorOccurred'), t('card.updated'));
     } else {
-      await createCard(database, recto, verso, idDeck, triToBi(selectedChangeSide), checkedLearn);
+      await createCard(database, recto, verso, rectoImage, versoImage, idDeck, triToBi(selectedChangeSide), checkedLearn);
     }
 
     if (continueCreating) {
       setRecto('');
       setVerso('');
+      setRectoImage(null);
+      setVersoImage(null);
       return;
     }
 
@@ -141,9 +154,28 @@ export default function Modal() {
     return (
       recto !== initialRecto ||
       verso !== initialVerso ||
+      rectoImage !== initialRectoImage ||
+      versoImage !== initialVersoImage ||
       selectedChangeSide !== initialSelectedChangeSide ||
       checkedLearn !== initialCheckedLearn
     );
+  }
+
+  const getNextRevisionText = () => {
+    return nextRevision
+      ? delay < 0
+        ? `${t('card.nextRevision')} : ${formatDate(nextRevision)} (${-getDelay(nextRevision)} ${t('common.dayAbbreviation')})`
+        : delay > 0
+          ? `${delay} ${delay > 1 ? t('common.dayPlural') : t('common.daySingular')} ${t('card.delayInRevisions')}`
+          : t('card.reviseToday')
+      : t('card.notLearnt')
+  }
+
+  const showStats = () => {
+    Alert.alert(
+      t('common.info'),
+      `${t('card.learningStep')} : ${step}/8\n${getNextRevisionText()}`
+    )
   }
 
   return (
@@ -151,83 +183,70 @@ export default function Modal() {
       <Stack.Screen options={{ title: t('card.title'), headerShown: false }} />
       <Toolbar>
         <BackButton color={Colors.library.light.contrast} saveAction={hasChanged() ? () => handleValidate(false) : undefined} />
+        {editMode && <StatsButton color={Colors.library.light.contrast} onPress={showStats} />}
       </Toolbar>
-      <Header level={1} text={deckName} color={Colors.library.light.contrast} />
-      <View style={styles.container}>
-        <Header level={3} text={t('card.front')} color={Colors.library.light.contrast} />
-        <Input
-          text={recto}
-          setText={setRecto}
-          underline={editMode && rectoFirst}
-          autofocus={!editMode}
-          innerRef={rectoInputRef}
-        />
-        <Header level={3} text={t('card.back')} color={Colors.library.light.contrast} />
-        <Input
-          text={verso}
-          setText={setVerso}
-          underline={editMode && !rectoFirst}
-        />
-        <Header level={4} text={t('card.alternateSides')} color={Colors.library.light.contrast} />
-        <ButtonGroup
-          containerStyle={styles.selector}
-          selectedButtonStyle={{ backgroundColor: Colors.library.dark.main }}
-          buttonStyle={{ backgroundColor: Colors.library.simple.main }}
-          textStyle={{ color: Colors.library.dark.main }}
-          selectedTextStyle={{ color: Colors.library.dark.contrast }}
-          buttons={[
-            <Text style={styles.selectorText}>{t('common.no')}</Text>,
-            <Text style={styles.selectorText}>{t('card.followDeck')}</Text>,
-            <Text style={styles.selectorText}>{t('common.yes')}</Text>,
-          ]}
-          selectedIndex={selectedChangeSide}
-          onPress={setSelectedChangeSide}
-        />
-        <CheckboxWithText
-          isChecked={checkedLearn}
-          setIsChecked={setCheckedLearn}
-          textLabel={t('card.toLearn')}
-          spaceTop
-        />
-        {!editMode && (
-          <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
+      <ScrollView contentContainerStyle={styles.scrollableContainer} showsVerticalScrollIndicator={false}>
+        <Header level={1} text={deckName} color={Colors.library.light.contrast} />
+        <View style={styles.container}>
+          <Header level={3} text={t('card.front')} color={Colors.library.light.contrast} />
+          <Input
+            text={recto}
+            setText={setRecto}
+            underline={editMode && rectoFirst}
+            autofocus={!editMode}
+            innerRef={rectoInputRef}
+          />
+          <ImagePickerButton imageUri={rectoImage} setImageUri={setRectoImage} />
+          <Header level={3} text={t('card.back')} color={Colors.library.light.contrast} />
+          <Input
+            text={verso}
+            setText={setVerso}
+            underline={editMode && !rectoFirst}
+          />
+          <ImagePickerButton imageUri={versoImage} setImageUri={setVersoImage} />
+          <Header level={4} text={t('card.alternateSides')} color={Colors.library.light.contrast} />
+          <ButtonGroup
+            containerStyle={styles.selector}
+            selectedButtonStyle={{ backgroundColor: Colors.library.dark.main }}
+            buttonStyle={{ backgroundColor: Colors.library.simple.main }}
+            textStyle={{ color: Colors.library.dark.main }}
+            selectedTextStyle={{ color: Colors.library.dark.contrast }}
+            buttons={[
+              <Text style={styles.selectorText}>{t('common.no')}</Text>,
+              <Text style={styles.selectorText}>{t('card.followDeck')}</Text>,
+              <Text style={styles.selectorText}>{t('common.yes')}</Text>,
+            ]}
+            selectedIndex={selectedChangeSide}
+            onPress={setSelectedChangeSide}
+          />
+          <CheckboxWithText
+            isChecked={checkedLearn}
+            setIsChecked={setCheckedLearn}
+            textLabel={t('card.toLearn')}
+            spaceTop
+          />
+          {!editMode && (
+            <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
+              <ButtonModal
+                text={t('card.addAndContinue')}
+                onPress={() => {
+                  handleValidate(true);
+                  rectoInputRef.current.focus();
+                }}
+              />
+            </View>
+          )}
+          <View style={{ ...styles.buttonLineContainer, marginTop: 8, marginBottom: 16 }}>
             <ButtonModal
-              text={t('card.addAndContinue')}
-              onPress={() => {
-                handleValidate(true);
-                rectoInputRef.current.focus();
-              }}
+              text={editMode ? t('common.back') : t('common.cancel')}
+              onPress={() => router.back()}
+            />
+            <ButtonModal
+              text={editMode ? t('common.edit') : t('common.add')}
+              onPress={() => handleValidate(false)}
             />
           </View>
-        )}
-        <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
-          <ButtonModal
-            text={editMode ? t('common.back') : t('common.cancel')}
-            onPress={() => router.back()}
-          />
-          <ButtonModal
-            text={editMode ? t('common.edit') : t('common.add')}
-            onPress={() => handleValidate(false)}
-          />
-        </View>
-        {editMode && (
-          <>
-            <View style={styles.infoContainer}>
-              <Text
-                numberOfLines={1}
-                adjustsFontSizeToFit
-                style={styles.text}
-              >{`${t('card.learningStep')} : ${step}/8`}</Text>
-              <Text numberOfLines={1} adjustsFontSizeToFit style={styles.text}>
-                {nextRevision
-                  ? delay < 0
-                    ? `${t('card.nextRevision')} : ${formatDate(nextRevision)} (${-getDelay(nextRevision)} ${t('common.dayAbbreviation')})`
-                    : delay > 0
-                      ? `${delay} ${delay > 1 ? t('common.dayPlural') : t('common.daySingular')} ${t('card.delayInRevisions')}`
-                      : t('card.reviseToday')
-                  : t('card.notLearnt')}
-              </Text>
-            </View>
+          {editMode && (
             <View style={{ ...styles.buttonLineContainer, marginTop: 'auto' }}>
               <ButtonModal
                 text={t('common.reset')}
@@ -248,9 +267,9 @@ export default function Modal() {
                 }
               />
             </View>
-          </>
-        )}
-      </View>
+          )}
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -259,6 +278,9 @@ const styles = StyleSheet.create({
   screen: {
     ...globalStyles.page,
     backgroundColor: Colors.library.light.main,
+  },
+  scrollableContainer: {
+    flexGrow: 1,
   },
   container: {
     flex: 1,
@@ -287,12 +309,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
-  },
-  infoContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    marginTop: 8,
   },
 });

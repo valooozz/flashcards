@@ -8,6 +8,8 @@ export const createTableCard = async (database: SQLiteDatabase) => {
         deck INTEGER NOT NULL,
         recto TEXT NOT NULL,
         verso TEXT NOT NULL,
+        rectoImage TEXT,
+        versoImage TEXT,
         rectoFirst INTEGER NOT NULL,
         step INTEGER NOT NULL,
         nextRevision TEXT,

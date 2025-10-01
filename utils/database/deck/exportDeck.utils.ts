@@ -1,9 +1,9 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 import { DeckDocument } from '../../../types/DeckDocument';
-import { exportDocument } from '../../export/exportDocument.utils';
-import { getCardsFromDeck } from '../card/get/getCardsFromDeck.utils';
-import { transformJsonToCsv } from '../../export/transformJsonToCsv.utils';
 import { ImportExportType } from '../../../types/ImportExportType';
+import { exportDocument } from '../../export/exportDocument.utils';
+import { transformJsonToCsv } from '../../export/transformJsonToCsv.utils';
+import { getCardsFromDeck } from '../card/get/getCardsFromDeck.utils';
 
 export const exportDeck = async (
   database: SQLiteDatabase,
@@ -24,6 +24,8 @@ export const exportDeck = async (
       deckDocument.cards.push({
         recto: card.recto,
         verso: card.verso,
+        rectoImage: card.rectoImage ?? null,
+        versoImage: card.versoImage ?? null,
         rectoFirst: Boolean(card.rectoFirst),
         step: card.step,
         nextRevision: card.nextRevision,
@@ -34,6 +36,8 @@ export const exportDeck = async (
       deckDocument.cards.push({
         recto: card.recto,
         verso: card.verso,
+        rectoImage: card.rectoImage ?? null,
+        versoImage: card.versoImage ?? null,
         changeSide: Boolean(card.changeSide),
       });
     }

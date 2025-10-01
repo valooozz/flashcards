@@ -17,6 +17,8 @@ export const transformJsonToCsv = (deckDocument: DeckDocument): string => {
     const row = [
       escapeCsvValue(card.recto),
       escapeCsvValue(card.verso),
+      escapeCsvValue(card.rectoImage ?? ''),
+      escapeCsvValue(card.versoImage ?? ''),
     ];
     lines.push(row.join(','));
   });

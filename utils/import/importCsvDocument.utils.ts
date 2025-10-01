@@ -11,6 +11,7 @@ export const importCsvDocument = async (
   const pairs = readString(fileContent);
   const deckDocument: DeckDocument = {
     deckName: fileName,
+    changeSide: true,
     cards: [],
   };
 
@@ -18,6 +19,8 @@ export const importCsvDocument = async (
     deckDocument.cards.push({
       recto: pair[0],
       verso: pair[1],
+      rectoImage: pair[2] ?? null,
+      versoImage: pair[3] ?? null,
     });
   });
 

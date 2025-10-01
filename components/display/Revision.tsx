@@ -77,6 +77,8 @@ export function Revision({
             <FlashCard
               recto={cardToShow.recto}
               verso={cardToShow.verso}
+              rectoImage={cardToShow.rectoImage}
+              versoImage={cardToShow.versoImage}
               deckName={cardToShow.name}
               backgroundColor={Colors.revision.simple.main}
               textColor={Colors.revision.simple.contrast}

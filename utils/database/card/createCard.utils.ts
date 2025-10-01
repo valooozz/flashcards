@@ -4,6 +4,8 @@ export const createCard = async (
   database: SQLiteDatabase,
   recto: string,
   verso: string,
+  rectoImage: string | null,
+  versoImage: string | null,
   idDeck: string,
   changeSide: boolean = true,
   toLearn: boolean = true,
@@ -13,11 +15,13 @@ export const createCard = async (
 ): Promise<boolean> => {
   return database
     .runAsync(
-      'INSERT INTO Card (deck, recto, verso, rectoFirst, step, nextRevision, toLearn, changeSide) VALUES (?, ?, ?, ?, ?, ?, ?, ?);',
+      'INSERT INTO Card (deck, recto, verso, rectoImage, versoImage, rectoFirst, step, nextRevision, toLearn, changeSide) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);',
       [
         idDeck,
         recto.trim(),
         verso.trim(),
+        rectoImage ?? null,
+        versoImage ?? null,
         rectoFirst ? 1 : 0,
         step,
         nextRevision,

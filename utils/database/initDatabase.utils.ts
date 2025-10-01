@@ -3,7 +3,7 @@ import { createTableCard } from './card/table/createTableCard.utils';
 import { createTableDeck } from './deck/table/createTableDeck.utils';
 import { clearForToday } from './forgotten/clearForToday.util';
 import { createTableForgotten } from './forgotten/createTableForgotten.utils';
-import { migrateDatabase } from './migrateDatabase.utils';
+import { migrateDatabase } from './migration/migrateDatabase.utils';
 import { createStatsOfToday } from './stats/createStatsOfToday.utils';
 import { createTableStats } from './stats/createTableStats.utils';
 import { createAllTriggers } from './triggers/createAllTriggers.utils';

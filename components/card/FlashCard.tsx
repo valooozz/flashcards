@@ -6,10 +6,13 @@ import { Colors } from '../../style/Colors';
 import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 import { CancelButton } from '../button/CancelButton';
+import { FlashCardContent } from './FlashCardContent';
 
 interface FlashCardProps {
   recto: string;
   verso: string;
+  rectoImage?: string | null;
+  versoImage?: string | null;
   deckName: string;
   delay?: number;
   backgroundColor: string;
@@ -22,6 +25,8 @@ interface FlashCardProps {
 export function FlashCard({
   recto,
   verso,
+  rectoImage,
+  versoImage,
   deckName,
   delay = 0,
   backgroundColor,
@@ -39,7 +44,7 @@ export function FlashCard({
     } else {
       setFlippedAtFirst(false);
     }
-  }, [recto, verso]);
+  }, [recto, verso, rectoImage, versoImage]);
 
   useFocusEffect(
     useCallback(() => {
@@ -70,14 +75,14 @@ export function FlashCard({
         )}
         <Text
           numberOfLines={1}
-          style={{ ...styles.textDeck, color: textDeckColor }}
+          style={{ ...styles.text, color: textDeckColor }}
         >
           {deckName}
         </Text>
         {delay ? (
           <Text
             style={{
-              ...styles.textDeck,
+              ...styles.text,
               color: Colors.daily.intermediate.main,
             }}
           >
@@ -86,9 +91,7 @@ export function FlashCard({
               : 'Oubliée'}
           </Text>
         ) : null}
-        <Text adjustsFontSizeToFit style={{ ...styles.text, color: textColor }}>
-          {flippedAtFirst ? verso : recto}
-        </Text>
+        <FlashCardContent text={flippedAtFirst ? verso : recto} image={flippedAtFirst ? versoImage : rectoImage} textColor={textColor} />
       </TouchableOpacity>
       <TouchableOpacity
         style={{ ...styles.container, backgroundColor: backgroundColor }}
@@ -104,14 +107,14 @@ export function FlashCard({
         )}
         <Text
           numberOfLines={1}
-          style={{ ...styles.textDeck, color: textDeckColor }}
+          style={{ ...styles.text, color: textDeckColor }}
         >
           {deckName}
         </Text>
         {delay ? (
           <Text
             style={{
-              ...styles.textDeck,
+              ...styles.text,
               color: Colors.daily.intermediate.main,
             }}
           >
@@ -120,9 +123,7 @@ export function FlashCard({
               : 'Oubliée'}
           </Text>
         ) : null}
-        <Text adjustsFontSizeToFit style={{ ...styles.text, color: textColor }}>
-          {flippedAtFirst ? recto : verso}
-        </Text>
+        <FlashCardContent text={flippedAtFirst ? recto : verso} image={flippedAtFirst ? rectoImage : versoImage} textColor={textColor} />
       </TouchableOpacity>
     </FlipCard>
   );
@@ -141,12 +142,6 @@ const styles = StyleSheet.create({
     boxShadow: Shadows.flashCard,
   },
   text: {
-    textAlign: 'center',
-    fontSize: Sizes.font.large,
-    fontFamily: 'JosefinSemiBold',
-    marginVertical: 'auto',
-  },
-  textDeck: {
     textAlign: 'right',
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
