@@ -55,6 +55,24 @@ jest.mock('../../button/AddButton', () => {
     };
 });
 
+jest.mock('../../button/SearchButton', () => {
+    const { Pressable } = require('react-native');
+    return {
+        SearchButton: ({ onToggle, testID }: any) => (
+            <Pressable testID={testID} onPress={onToggle} />
+        ),
+    };
+});
+
+jest.mock('../../button/FilterButton', () => {
+    const { Pressable } = require('react-native');
+    return {
+        FilterButton: ({ onToggle, testID }: any) => (
+            <Pressable testID={testID} onPress={onToggle} />
+        ),
+    };
+});
+
 jest.mock('../../card/ListCard', () => {
     const { Pressable } = require('react-native');
     return {
@@ -97,8 +115,9 @@ jest.mock('../../bar/DeckProgressBar', () => {
 describe('Deck', () => {
     const sampleCards = [
         { id: 1, recto: 'Hello', verso: 'Bonjour', deck: 5, rectoFirst: 1, step: 0, nextRevision: '2023-01-01', toLearn: 1, changeSide: 0 },
-        { id: 2, recto: 'Goodbye', verso: 'Au revoir', deck: 5, rectoFirst: 1, step: 0, nextRevision: '2023-01-01', toLearn: 1, changeSide: 0 },
+        { id: 2, recto: 'Goodbye', verso: 'Au revoir', deck: 5, rectoFirst: 1, step: 0, nextRevision: '2023-01-01', toLearn: 0, changeSide: 0 },
         { id: 3, recto: 'Thank you', verso: 'Merci', deck: 5, rectoFirst: 1, step: 0, nextRevision: '2023-01-01', toLearn: 1, changeSide: 0 },
+        { id: 4, recto: 'Please', verso: 'S\'il vous plaît', deck: 5, rectoFirst: 1, step: 0, nextRevision: '2023-01-01', toLearn: 0, changeSide: 0 },
     ];
 
     const defaultProps = {
@@ -578,6 +597,88 @@ describe('Deck', () => {
 
             // The component should handle the null/undefined gracefully
             expect(searchInput).toBeTruthy();
+        });
+    });
+
+    describe('Filter functionality', () => {
+        it('renders filter button', () => {
+            const { getByTestId } = render(<Deck {...defaultProps} />);
+            expect(getByTestId('filter-learned-button')).toBeTruthy();
+        });
+
+        it('filters cards to show only learned cards (toLearn=0) when filter is active', () => {
+            const { getByTestId, queryByTestId } = render(<Deck {...defaultProps} />);
+
+            // Initially all cards should be visible
+            expect(getByTestId('list-card-1')).toBeTruthy(); // toLearn: 1
+            expect(getByTestId('list-card-2')).toBeTruthy(); // toLearn: 0
+            expect(getByTestId('list-card-3')).toBeTruthy(); // toLearn: 1
+            expect(getByTestId('list-card-4')).toBeTruthy(); // toLearn: 0
+
+            // Press filter button to show only learned cards
+            fireEvent.press(getByTestId('filter-learned-button'));
+
+            // Only cards with toLearn: 0 should be visible
+            expect(queryByTestId('list-card-1')).toBeNull(); // toLearn: 1 - hidden
+            expect(getByTestId('list-card-2')).toBeTruthy(); // toLearn: 0 - visible
+            expect(queryByTestId('list-card-3')).toBeNull(); // toLearn: 1 - hidden
+            expect(getByTestId('list-card-4')).toBeTruthy(); // toLearn: 0 - visible
+        });
+
+        it('shows all cards when filter is toggled off', () => {
+            const { getByTestId } = render(<Deck {...defaultProps} />);
+
+            // Activate filter
+            fireEvent.press(getByTestId('filter-learned-button'));
+
+            // Deactivate filter
+            fireEvent.press(getByTestId('filter-learned-button'));
+
+            // All cards should be visible again
+            expect(getByTestId('list-card-1')).toBeTruthy();
+            expect(getByTestId('list-card-2')).toBeTruthy();
+            expect(getByTestId('list-card-3')).toBeTruthy();
+            expect(getByTestId('list-card-4')).toBeTruthy();
+        });
+
+        it('combines filter and search functionality', () => {
+            const { getByTestId, queryByTestId } = render(<Deck {...defaultProps} />);
+
+            // Activate filter to show only learned cards
+            fireEvent.press(getByTestId('filter-learned-button'));
+
+            // Activate search
+            fireEvent.press(getByTestId('search-toggle-button'));
+            const searchInput = getByTestId('search-input');
+
+            // Search for "Goodbye" which has toLearn: 0
+            fireEvent.changeText(searchInput, 'Goodbye');
+
+            // Only card 2 should be visible (matches search and filter)
+            expect(queryByTestId('list-card-1')).toBeNull(); // doesn't match filter
+            expect(getByTestId('list-card-2')).toBeTruthy(); // matches both
+            expect(queryByTestId('list-card-3')).toBeNull(); // doesn't match filter
+            expect(queryByTestId('list-card-4')).toBeNull(); // doesn't match search
+        });
+
+        it('shows no cards when filter is active but no learned cards match search', () => {
+            const { getByTestId, queryByTestId } = render(<Deck {...defaultProps} />);
+
+            // Activate filter to show only learned cards
+            fireEvent.press(getByTestId('filter-learned-button'));
+
+            // Activate search
+            fireEvent.press(getByTestId('search-toggle-button'));
+            const searchInput = getByTestId('search-input');
+
+            // Search for "Hello" which has toLearn: 1 (not learned)
+            fireEvent.changeText(searchInput, 'Hello');
+
+            // No cards should be visible
+            expect(queryByTestId('list-card-1')).toBeNull();
+            expect(queryByTestId('list-card-2')).toBeNull();
+            expect(queryByTestId('list-card-3')).toBeNull();
+            expect(queryByTestId('list-card-4')).toBeNull();
         });
     });
 });

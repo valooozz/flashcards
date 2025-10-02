@@ -1,7 +1,6 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Toolbar } from '../../components/bar/Toolbar';
 import { AddButton } from '../../components/button/AddButton';
 import { ListCard } from '../../components/card/ListCard';
@@ -15,7 +14,9 @@ import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 import { DeckProgressBar } from '../bar/DeckProgressBar';
 import { BackButton } from '../button/BackButton';
+import { FilterButton } from '../button/FilterButton';
 import { FlashDeckButton } from '../button/FlashDeckButton';
+import { SearchButton } from '../button/SearchButton';
 import { SettingsButton } from '../button/SettingsButton';
 
 interface DeckProps {
@@ -43,6 +44,7 @@ export function Deck({
   const [searchMode, setSearchMode] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [filteredCards, setFilteredCards] = useState<CardType[]>(cards);
+  const [filterLearnedCards, setFilterLearnedCards] = useState(false);
 
   const { t } = useTranslation();
 
@@ -54,28 +56,30 @@ export function Deck({
     }
   }, [nbCards]);
 
-  // Update filtered cards when cards prop changes
   useEffect(() => {
     setFilteredCards(cards);
   }, [cards]);
 
-  // Filter cards based on search text
   useEffect(() => {
-    if (searchText.trim() === '') {
-      setFilteredCards(cards);
-    } else {
-      const filtered = cards.filter(card =>
+    let filtered = cards;
+
+    if (filterLearnedCards) {
+      filtered = filtered.filter(card => card.toLearn === 0);
+    }
+
+    if (searchText.trim() !== '') {
+      filtered = filtered.filter(card =>
         card.recto?.toLowerCase()?.includes(searchText.toLowerCase()) ||
         card.verso?.toLowerCase()?.includes(searchText.toLowerCase())
       );
-      setFilteredCards(filtered);
     }
-  }, [searchText, cards]);
+
+    setFilteredCards(filtered);
+  }, [searchText, cards, filterLearnedCards]);
 
   const toggleSearchMode = () => {
     setSearchMode(!searchMode);
     if (searchMode) {
-      // Closing search mode - clear search text
       setSearchText('');
     }
   };
@@ -104,17 +108,21 @@ export function Deck({
           color={Colors.library.dark.contrast}
           rightMargin={false}
         />
-        <TouchableOpacity
-          onPress={toggleSearchMode}
-          style={styles.searchButton}
-          testID="search-toggle-button"
-        >
-          <MaterialIcons
-            name={searchMode ? "close" : "search"}
-            size={32}
-            color={Colors.library.dark.contrast}
+        <View style={styles.buttonContainer}>
+          <FilterButton
+            isActive={filterLearnedCards}
+            onToggle={() => setFilterLearnedCards(!filterLearnedCards)}
+            activeColor={Colors.library.light.main}
+            inactiveColor={Colors.library.dark.contrast}
+            testID="filter-learned-button"
           />
-        </TouchableOpacity>
+          <SearchButton
+            searchMode={searchMode}
+            onToggle={toggleSearchMode}
+            color={Colors.library.dark.contrast}
+            testID="search-toggle-button"
+          />
+        </View>
       </View>
       {searchMode && (
         <View style={styles.inputContainer}>
@@ -163,9 +171,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginRight: 24,
   },
-  searchButton: {
-    padding: 8,
-    marginLeft: 16,
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   inputContainer: {
     marginRight: 24,
