@@ -10,7 +10,7 @@ import { FlashRevisionSettingsModal } from '../../components/modal/FlashRevision
 import { CardType } from '../../types/CardType';
 import { DeckType } from '../../types/DeckType';
 import { FlashCardType } from '../../types/FlashCardType';
-import { CardsToRevise, RevisionSide } from '../../types/FlashRevisionSettings';
+import { CardsToRevise, RevisionSide, StepDelimiter } from '../../types/FlashRevisionSettings';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
@@ -31,7 +31,7 @@ export default function Tab() {
   const [flashCards, setFlashCards] = useState<FlashCardType[]>([]);
   const [cardsToRevise, setCardsToRevise] = useState<CardsToRevise>(undefined);
   const [numberOfCards, setNumberOfCards] = useState<number>(undefined);
-  const [step, setStep] = useState<number>(undefined);
+  const [stepDelimiter, setStepDelimiter] = useState<StepDelimiter>(undefined);
   const [revisionSide, setRevisionSide] = useState<RevisionSide>(undefined);
   const [showRevisionChoice, setShowRevisionChoice] = useState(false);
 
@@ -104,11 +104,11 @@ export default function Tab() {
     setShowRevisionChoice(true);
   }
 
-  const openRevision = (cardsToRevise: CardsToRevise, revisionSide: RevisionSide, numberOfCards?: number, step?: number) => {
+  const openRevision = (cardsToRevise: CardsToRevise, revisionSide: RevisionSide, numberOfCards?: number, stepDelimiter?: StepDelimiter) => {
     setShowRevisionChoice(false);
     setCardsToRevise(cardsToRevise);
     setNumberOfCards(numberOfCards);
-    setStep(step);
+    setStepDelimiter(stepDelimiter);
     setRevisionSide(revisionSide);
     loadFlashCards(idDeck).then(() => {
       setInRevision(true);
@@ -155,8 +155,8 @@ export default function Tab() {
     <Revision
       flashCards={flashCards}
       cardsToReviseType={cardsToRevise}
-      numberOfCards={3}
-      step={1}
+      numberOfCards={numberOfCards}
+      stepDelimiter={stepDelimiter}
       revisionSide={revisionSide}
       closeRevision={closeRevision}
     />

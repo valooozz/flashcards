@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
-import { SelectionOption } from '../../types/SelectionOption';
-import { ButtonModal } from '../button/ButtonModal';
 
 interface SelectionModalProps {
     visible: boolean;
     title: string;
-    options: SelectionOption[];
     onRequestClose: () => void;
+    children: ReactNode;
 }
 
-export const SelectionModal = ({ visible, title, options, onRequestClose }: SelectionModalProps) => {
+export const SelectionModal = ({ visible, title, onRequestClose, children }: SelectionModalProps) => {
     return (
         <Modal visible={visible} onRequestClose={onRequestClose} transparent>
             <TouchableOpacity style={styles.backdrop} onPress={onRequestClose} activeOpacity={1}>
@@ -20,11 +18,7 @@ export const SelectionModal = ({ visible, title, options, onRequestClose }: Sele
                     <Text style={styles.text}>
                         {title}
                     </Text>
-                    {options.map((option) => (
-                        <View style={styles.buttonLineContainer} key={option.label}>
-                            <ButtonModal text={option.label} onPress={option.onPress} />
-                        </View>
-                    ))}
+                    {children}
                 </View>
             </TouchableOpacity>
         </Modal>
