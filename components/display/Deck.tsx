@@ -1,12 +1,15 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Toolbar } from '../../components/bar/Toolbar';
 import { AddButton } from '../../components/button/AddButton';
 import { ListCard } from '../../components/card/ListCard';
 import { Header } from '../../components/text/Header';
+import { Input } from '../../components/text/Input';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
+import { Radius } from '../../style/Radius';
 import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
@@ -37,6 +40,9 @@ export function Deck({
   chooseRevisionSide
 }: DeckProps) {
   const [showCards, setShowCards] = useState(true);
+  const [searchMode, setSearchMode] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [filteredCards, setFilteredCards] = useState<CardType[]>(cards);
 
   const { t } = useTranslation();
 
@@ -47,6 +53,32 @@ export function Deck({
       setShowCards(false);
     }
   }, [nbCards]);
+
+  // Update filtered cards when cards prop changes
+  useEffect(() => {
+    setFilteredCards(cards);
+  }, [cards]);
+
+  // Filter cards based on search text
+  useEffect(() => {
+    if (searchText.trim() === '') {
+      setFilteredCards(cards);
+    } else {
+      const filtered = cards.filter(card =>
+        card.recto?.toLowerCase()?.includes(searchText.toLowerCase()) ||
+        card.verso?.toLowerCase()?.includes(searchText.toLowerCase())
+      );
+      setFilteredCards(filtered);
+    }
+  }, [searchText, cards]);
+
+  const toggleSearchMode = () => {
+    setSearchMode(!searchMode);
+    if (searchMode) {
+      // Closing search mode - clear search text
+      setSearchText('');
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -65,15 +97,39 @@ export function Deck({
         progress={progress}
         color={Colors.library.intermediate.main}
       />
-      <Header
-        level={2}
-        text={`${t('deck.cards')} ${nbCards > 0 ? `(${nbCards})` : ''}`}
-        color={Colors.library.dark.contrast}
-        rightMargin
-      />
+      <View style={styles.headerWithSearch}>
+        <Header
+          level={2}
+          text={`${t('deck.cards')} ${nbCards > 0 ? `(${nbCards})` : ''}`}
+          color={Colors.library.dark.contrast}
+          rightMargin={false}
+        />
+        <TouchableOpacity
+          onPress={toggleSearchMode}
+          style={styles.searchButton}
+          testID="search-toggle-button"
+        >
+          <MaterialIcons
+            name={searchMode ? "close" : "search"}
+            size={32}
+            color={Colors.library.dark.contrast}
+          />
+        </TouchableOpacity>
+      </View>
+      {searchMode && (
+        <View style={styles.inputContainer}>
+          <Input
+            text={searchText}
+            setText={setSearchText}
+            autofocus={true}
+            backgroundColor={Colors.library.light.main}
+            color={Colors.library.light.contrast}
+          />
+        </View>
+      )}
       {showCards ? (
         <FlatList
-          data={cards}
+          data={filteredCards}
           renderItem={({ item }) => (
             <ListCard card={item} triggerReload={reload} />
           )}
@@ -100,6 +156,22 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.library.dark.main,
     paddingRight: 0,
     paddingBottom: 0,
+  },
+  headerWithSearch: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginRight: 24,
+  },
+  searchButton: {
+    padding: 8,
+    marginLeft: 16,
+  },
+  inputContainer: {
+    marginRight: 24,
+    marginBottom: 16,
+    borderRadius: Radius.small,
+    overflow: 'hidden',
   },
   cardsDisplay: {
     flexDirection: 'column',

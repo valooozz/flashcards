@@ -10,6 +10,8 @@ interface InputProps {
   underline?: boolean;
   autofocus?: boolean;
   innerRef?: MutableRefObject<TextInput>;
+  backgroundColor?: string;
+  color?: string;
 }
 
 export function Input({
@@ -19,12 +21,16 @@ export function Input({
   underline = false,
   autofocus = false,
   innerRef,
+  backgroundColor = Colors.library.dark.main,
+  color = Colors.library.dark.contrast
 }: InputProps) {
   return (
     <TextInput
       style={{
         ...styles.input,
         textDecorationLine: underline ? 'underline' : 'none',
+        backgroundColor,
+        color
       }}
       value={text}
       onChangeText={setText}
@@ -38,8 +44,6 @@ export function Input({
 const styles = StyleSheet.create({
   input: {
     height: Sizes.component.small,
-    backgroundColor: Colors.library.dark.main,
-    color: Colors.library.dark.contrast,
     padding: 10,
     fontFamily: 'JosefinRegular',
     fontSize: Sizes.font.small,

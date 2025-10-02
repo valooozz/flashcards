@@ -1,7 +1,8 @@
+import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
-import { Input } from '../Input';
 import { TextInput } from 'react-native';
+import { Colors } from '../../../style/Colors';
+import { Input } from '../Input';
 
 describe('Input', () => {
     it('renders with provided text value', () => {
@@ -88,5 +89,91 @@ describe('Input', () => {
         rerender(<Input text="a" setText={jest.fn()} autofocus={false} />);
         input = getByDisplayValue('a');
         expect(input.props.autoFocus).toBe(false);
+    });
+
+    it('applies default backgroundColor and color when not provided', () => {
+        const { getByDisplayValue } = render(
+            <Input text="default" setText={jest.fn()} />
+        );
+        const input = getByDisplayValue('default');
+        expect(input.props.style).toEqual(
+            expect.objectContaining({
+                backgroundColor: Colors.library.dark.main,
+                color: Colors.library.dark.contrast
+            })
+        );
+    });
+
+    it('applies custom backgroundColor when provided', () => {
+        const customBackgroundColor = '#ff0000';
+        const { getByDisplayValue } = render(
+            <Input text="custom" setText={jest.fn()} backgroundColor={customBackgroundColor} />
+        );
+        const input = getByDisplayValue('custom');
+        expect(input.props.style).toEqual(
+            expect.objectContaining({
+                backgroundColor: customBackgroundColor
+            })
+        );
+    });
+
+    it('applies custom color when provided', () => {
+        const customColor = '#00ff00';
+        const { getByDisplayValue } = render(
+            <Input text="custom" setText={jest.fn()} color={customColor} />
+        );
+        const input = getByDisplayValue('custom');
+        expect(input.props.style).toEqual(
+            expect.objectContaining({
+                color: customColor
+            })
+        );
+    });
+
+    it('applies both custom backgroundColor and color when provided', () => {
+        const customBackgroundColor = '#ff0000';
+        const customColor = '#00ff00';
+        const { getByDisplayValue } = render(
+            <Input
+                text="custom"
+                setText={jest.fn()}
+                backgroundColor={customBackgroundColor}
+                color={customColor}
+            />
+        );
+        const input = getByDisplayValue('custom');
+        expect(input.props.style).toEqual(
+            expect.objectContaining({
+                backgroundColor: customBackgroundColor,
+                color: customColor
+            })
+        );
+    });
+
+    it('applies all style combinations correctly', () => {
+        const customBackgroundColor = '#ff0000';
+        const customColor = '#00ff00';
+        const { getByDisplayValue } = render(
+            <Input
+                text="all-props"
+                setText={jest.fn()}
+                numeric
+                underline
+                autofocus
+                backgroundColor={customBackgroundColor}
+                color={customColor}
+            />
+        );
+        const input = getByDisplayValue('all-props');
+
+        expect(input.props.keyboardType).toBe('numeric');
+        expect(input.props.autoFocus).toBe(true);
+        expect(input.props.style).toEqual(
+            expect.objectContaining({
+                textDecorationLine: 'underline',
+                backgroundColor: customBackgroundColor,
+                color: customColor
+            })
+        );
     });
 });
