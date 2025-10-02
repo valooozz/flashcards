@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "../../hooks/useTranslation";
-import { CardsToRevise, RevisionSide, StepDelimiter } from "../../types/FlashRevisionSettings";
+import { CardsToRevise, FlashRevisionSettingsType, StepDelimiter } from "../../types/FlashRevisionSettings";
 import { SelectionOption } from "../../types/SelectionOption";
 import { ButtonSelectionModal } from "./ButtonSelectionModal";
 import { NumberSelectionModal } from "./NumberSelectionModal";
 
 interface FlashRevisionSettingsModalProps {
     visible: boolean;
-    openRevision: (cardsToRevise: CardsToRevise, revisionSide: RevisionSide, numberOfCards?: number, stepDelimiter?: StepDelimiter) => void;
+    openRevision: (flashRevisionSettings: FlashRevisionSettingsType) => void;
     closeModal: () => void;
 }
 
@@ -45,24 +45,24 @@ export const FlashRevisionSettingsModal = ({ visible, openRevision, closeModal }
         setShowNumberSelectionModal(false);
     }, [visible]);
 
-    const handleCardsToReviseChoice = (newSelectedCardsToRevise: CardsToRevise) => {
-        if (newSelectedCardsToRevise === 'all' || newSelectedCardsToRevise === 'notLearnt') {
+    const handleCardsToReviseChoice = (selectedCardsToRevise: CardsToRevise) => {
+        if (selectedCardsToRevise === 'all' || selectedCardsToRevise === 'notLearnt') {
             const revisionSideOptions: SelectionOption[] = [
-                { label: t('revision.recto'), onPress: () => handleRevisionSideChoice(newSelectedCardsToRevise, 'recto', undefined, undefined) },
-                { label: t('revision.verso'), onPress: () => handleRevisionSideChoice(newSelectedCardsToRevise, 'verso', undefined, undefined) },
-                { label: t('revision.current'), onPress: () => handleRevisionSideChoice(newSelectedCardsToRevise, 'current', undefined, undefined) },
-                { label: t('revision.random'), onPress: () => handleRevisionSideChoice(newSelectedCardsToRevise, 'random', undefined, undefined) },
+                { label: t('revision.recto'), onPress: () => handleRevisionSideChoice({ cardsToRevise: selectedCardsToRevise, revisionSide: 'recto' }) },
+                { label: t('revision.verso'), onPress: () => handleRevisionSideChoice({ cardsToRevise: selectedCardsToRevise, revisionSide: 'verso' }) },
+                { label: t('revision.current'), onPress: () => handleRevisionSideChoice({ cardsToRevise: selectedCardsToRevise, revisionSide: 'current' }) },
+                { label: t('revision.random'), onPress: () => handleRevisionSideChoice({ cardsToRevise: selectedCardsToRevise, revisionSide: 'random' }) },
             ];
             setSelectionModalOptions(revisionSideOptions);
             setSelectionModalTitle(revisionSideTitle);
             return;
         }
 
-        setSelectedCardsToRevise(newSelectedCardsToRevise);
-        if (newSelectedCardsToRevise === 'number') {
+        setSelectedCardsToRevise(selectedCardsToRevise);
+        if (selectedCardsToRevise === 'number') {
             setSelectionModalTitle(numberOfCardsTitle);
             setShowSelector(false);
-        } else if (newSelectedCardsToRevise === 'step') {
+        } else if (selectedCardsToRevise === 'step') {
             setSelectionModalTitle(stepDelimiterTitle);
             setShowSelector(true);
         }
@@ -84,11 +84,18 @@ export const FlashRevisionSettingsModal = ({ visible, openRevision, closeModal }
             };
         }
 
+        const flashRevisionSettings: FlashRevisionSettingsType = {
+            cardsToRevise: selectedCardsToRevise,
+            revisionSide: 'recto',
+            numberOfCards: selectedNumberOfCards,
+            stepDelimiter: selectedStepDelimiter,
+        }
+
         const revisionSideOptions: SelectionOption[] = [
-            { label: t('revision.recto'), onPress: () => handleRevisionSideChoice(selectedCardsToRevise, 'recto', selectedNumberOfCards, selectedStepDelimiter) },
-            { label: t('revision.verso'), onPress: () => handleRevisionSideChoice(selectedCardsToRevise, 'verso', selectedNumberOfCards, selectedStepDelimiter) },
-            { label: t('revision.current'), onPress: () => handleRevisionSideChoice(selectedCardsToRevise, 'current', selectedNumberOfCards, selectedStepDelimiter) },
-            { label: t('revision.random'), onPress: () => handleRevisionSideChoice(selectedCardsToRevise, 'random', selectedNumberOfCards, selectedStepDelimiter) },
+            { label: t('revision.recto'), onPress: () => handleRevisionSideChoice(flashRevisionSettings) },
+            { label: t('revision.verso'), onPress: () => handleRevisionSideChoice({ ...flashRevisionSettings, revisionSide: 'verso' }) },
+            { label: t('revision.current'), onPress: () => handleRevisionSideChoice({ ...flashRevisionSettings, revisionSide: 'current' }) },
+            { label: t('revision.random'), onPress: () => handleRevisionSideChoice({ ...flashRevisionSettings, revisionSide: 'random' }) },
         ];
         setSelectionModalOptions(revisionSideOptions);
         setSelectionModalTitle(revisionSideTitle);
@@ -97,8 +104,8 @@ export const FlashRevisionSettingsModal = ({ visible, openRevision, closeModal }
         setShowButtonSelectionModal(true);
     }
 
-    const handleRevisionSideChoice = (selectedCardsToRevise: CardsToRevise, selectedRevisionSide: RevisionSide, selectedNumberOfCards?: number, selectedStepDelimiter?: StepDelimiter) => {
-        openRevision(selectedCardsToRevise, selectedRevisionSide, selectedNumberOfCards, selectedStepDelimiter);
+    const handleRevisionSideChoice = (flashRevisionSettings: FlashRevisionSettingsType) => {
+        openRevision(flashRevisionSettings);
     }
 
     return (

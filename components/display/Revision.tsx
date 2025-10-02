@@ -7,7 +7,7 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { RevisionAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
-import { CardsToRevise, RevisionSide, StepDelimiter } from '../../types/FlashRevisionSettings';
+import { RevisionSide } from '../../types/FlashRevisionSettings';
 import { shuffle } from '../../utils/shuffle.utils';
 import { BackButton } from '../button/BackButton';
 import { FlashButton } from '../button/FlashButton';
@@ -15,18 +15,14 @@ import { FlashCard } from '../card/FlashCard';
 
 interface DeckProps {
   flashCards: FlashCardType[];
-  cardsToReviseType: CardsToRevise;
   numberOfCards?: number;
-  stepDelimiter?: StepDelimiter;
   revisionSide: RevisionSide;
   closeRevision: () => void;
 }
 
 export function Revision({
   flashCards,
-  cardsToReviseType,
   numberOfCards,
-  stepDelimiter,
   revisionSide,
   closeRevision,
 }: DeckProps) {
@@ -43,30 +39,12 @@ export function Revision({
 
   useEffect(() => {
     shuffle(flashCards);
-    const flashCardsToRevise = getFlashCardsToRevise(flashCards);
+    const flashCardsToRevise = numberOfCards === undefined ? flashCards : flashCards.slice(0, Math.min(numberOfCards, flashCards.length));
     setCardsToRevise(flashCardsToRevise);
     updateRectoVerso(flashCardsToRevise[0]);
     setCardToShow(flashCardsToRevise[0]);
     setSizeOfDeck(flashCardsToRevise.length);
   }, [flashCards]);
-
-  const getFlashCardsToRevise = (flashCards: FlashCardType[]): FlashCardType[] => {
-    if (cardsToReviseType === 'all') {
-      return flashCards;
-    }
-    if (cardsToReviseType === 'number') {
-      return flashCards.slice(0, Math.min(numberOfCards, flashCards.length));
-    }
-    if (cardsToReviseType === 'notLearnt') {
-      return flashCards.filter((flashCards) => flashCards.nextRevision === null);
-    }
-    if (cardsToReviseType === 'step') {
-      if (stepDelimiter.above) {
-        return flashCards.filter((flashCard) => flashCard.step >= stepDelimiter.step);
-      }
-      return flashCards.filter((flashCard) => flashCard.step <= stepDelimiter.step);
-    }
-  }
 
   const updateRectoVerso = (newCard: FlashCardType) => {
     if (newCard === undefined) {

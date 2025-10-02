@@ -10,7 +10,7 @@ import { FlashRevisionSettingsModal } from '../../components/modal/FlashRevision
 import { CardType } from '../../types/CardType';
 import { DeckType } from '../../types/DeckType';
 import { FlashCardType } from '../../types/FlashCardType';
-import { CardsToRevise, RevisionSide, StepDelimiter } from '../../types/FlashRevisionSettings';
+import { CardsToRevise, FlashRevisionSettingsType, RevisionSide, StepDelimiter } from '../../types/FlashRevisionSettings';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
@@ -29,9 +29,7 @@ export default function Tab() {
   const [progressInDeck, setProgressInDeck] = useState(0);
 
   const [flashCards, setFlashCards] = useState<FlashCardType[]>([]);
-  const [cardsToRevise, setCardsToRevise] = useState<CardsToRevise>(undefined);
   const [numberOfCards, setNumberOfCards] = useState<number>(undefined);
-  const [stepDelimiter, setStepDelimiter] = useState<StepDelimiter>(undefined);
   const [revisionSide, setRevisionSide] = useState<RevisionSide>(undefined);
   const [showRevisionChoice, setShowRevisionChoice] = useState(false);
 
@@ -76,9 +74,14 @@ export default function Tab() {
     });
   };
 
-  const loadFlashCards = async (id: number) => {
-    await getFlashCardsFromDeck(database, id).then((falshCardsResult) => {
-      setFlashCards(falshCardsResult);
+  const loadFlashCards = async (id: number, cardsToRevise: CardsToRevise, stepDelimiter: StepDelimiter) => {
+    await getFlashCardsFromDeck(
+      database,
+      id,
+      cardsToRevise === 'notLearnt',
+      stepDelimiter
+    ).then((flashCardsResult) => {
+      setFlashCards(flashCardsResult);
     });
   }
 
@@ -104,13 +107,11 @@ export default function Tab() {
     setShowRevisionChoice(true);
   }
 
-  const openRevision = (cardsToRevise: CardsToRevise, revisionSide: RevisionSide, numberOfCards?: number, stepDelimiter?: StepDelimiter) => {
+  const openRevision = (flashRevisionSettings: FlashRevisionSettingsType) => {
     setShowRevisionChoice(false);
-    setCardsToRevise(cardsToRevise);
-    setNumberOfCards(numberOfCards);
-    setStepDelimiter(stepDelimiter);
-    setRevisionSide(revisionSide);
-    loadFlashCards(idDeck).then(() => {
+    setNumberOfCards(flashRevisionSettings.numberOfCards);
+    setRevisionSide(flashRevisionSettings.revisionSide);
+    loadFlashCards(idDeck, flashRevisionSettings.cardsToRevise, flashRevisionSettings.stepDelimiter).then(() => {
       setInRevision(true);
     });
   }
@@ -154,9 +155,7 @@ export default function Tab() {
   return inDeck ? inRevision ? (
     <Revision
       flashCards={flashCards}
-      cardsToReviseType={cardsToRevise}
       numberOfCards={numberOfCards}
-      stepDelimiter={stepDelimiter}
       revisionSide={revisionSide}
       closeRevision={closeRevision}
     />

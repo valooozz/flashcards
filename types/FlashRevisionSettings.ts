@@ -6,3 +6,10 @@ export type StepDelimiter = {
 }
 
 export type RevisionSide = 'recto' | 'verso' | 'current' | 'random';
+
+export type FlashRevisionSettingsType = {
+    cardsToRevise: CardsToRevise;
+    revisionSide: RevisionSide;
+    numberOfCards?: number;
+    stepDelimiter?: StepDelimiter;
+}
