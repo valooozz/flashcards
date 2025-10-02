@@ -73,12 +73,13 @@ export function FlashCard({
             handleClick={handlePrevious}
           />
         )}
-        <Text
-          numberOfLines={1}
-          style={{ ...styles.text, color: textDeckColor }}
-        >
-          {deckName}
-        </Text>
+        {deckName &&
+          <Text
+            numberOfLines={1}
+            style={{ ...styles.text, color: textDeckColor }}
+          >
+            {deckName}
+          </Text>}
         {delay ? (
           <Text
             style={{

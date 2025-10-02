@@ -84,7 +84,8 @@
         "theDeck": "the deck",
         "forceAlternate": "Force alternate setting",
         "detailedForceAlternate": "Force all cards",
-        "followDeckOnAlternate": "to follow the deck's alternate setting"
+        "followDeckOnAlternate": "to follow the deck's alternate setting",
+        "showName": "Show deck name during reviews"
     },
     "settings": {
         "title": "Settings",

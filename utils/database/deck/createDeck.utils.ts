@@ -4,9 +4,13 @@ export const createDeck = async (
   database: SQLiteDatabase,
   deckName: string,
   changeSide: boolean,
+  showName: boolean,
 ): Promise<number> => {
   return database
-    .runAsync('INSERT INTO Deck (name, changeSide) VALUES (?, ?);', [deckName.trim(), Number(changeSide)])
+    .runAsync(
+      'INSERT INTO Deck (name, changeSide, showName) VALUES (?, ?, ?);',
+      [deckName.trim(), Number(changeSide), Number(showName)]
+    )
     .then((result) => result['lastInsertRowId'])
     .catch(() => -1);
 };

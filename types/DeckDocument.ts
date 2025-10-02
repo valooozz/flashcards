@@ -14,4 +14,5 @@ export interface DeckDocument {
   deckName: string;
   cards: CardDocument[];
   changeSide: boolean;
+  showName: boolean;
 }

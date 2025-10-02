@@ -37,7 +37,9 @@ import { notify } from '../utils/notify.utils';
 export default function Modal() {
   const [deckName, setDeckName] = useState('');
   const [newDeckName, setNewDeckName] = useState('');
-  const [changeSide, setChangeSide] = useState<boolean>(false);
+  const [changeSide, setChangeSide] = useState<boolean>(true);
+  const [showName, setShowName] = useState<boolean>(true);
+  const [initialShowName, setInitialShowName] = useState<boolean>(undefined);
   const [initialChangeSide, setInitialChangeSide] = useState<boolean>(undefined);
 
   const [editMode, setEditMode] = useState(false);
@@ -61,13 +63,13 @@ export default function Modal() {
     }
 
     if (editMode) {
-      const updateOk = await updateDeckInfo(database, idDeck, newDeckName, changeSide);
+      const updateOk = await updateDeckInfo(database, idDeck, newDeckName, changeSide, showName);
       if (updateOk) {
         router.back();
       }
       notify(updateOk, t('deck.existingNameError'), t('deck.updated'));
     } else {
-      const idCreated = await createDeck(database, newDeckName, changeSide);
+      const idCreated = await createDeck(database, newDeckName, changeSide, showName);
       if (idCreated >= 0) {
         router.back();
       }
@@ -128,7 +130,9 @@ export default function Modal() {
           setDeckName(deck.name);
           setNewDeckName(deck.name);
           setChangeSide(Boolean(deck.changeSide));
+          setShowName(Boolean(deck.showName));
           setInitialChangeSide(Boolean(deck.changeSide));
+          setInitialShowName(Boolean(deck.showName));
         });
         getNbCardsLearntInDeck(database, Number(idDeck)).then((nb) => {
           setNbCardsLearnt(nb);
@@ -144,7 +148,7 @@ export default function Modal() {
   );
 
   const hasChanged = (): boolean => {
-    return newDeckName !== deckName || changeSide !== initialChangeSide;
+    return newDeckName !== deckName || changeSide !== initialChangeSide || showName !== initialShowName;
   };
 
   return (
@@ -170,6 +174,12 @@ export default function Modal() {
           isChecked={changeSide}
           setIsChecked={setChangeSide}
           textLabel={t('card.alternateSides')}
+          spaceTop
+        />
+        <CheckboxWithText
+          isChecked={showName}
+          setIsChecked={setShowName}
+          textLabel={t('deck.showName')}
           spaceTop
         />
         <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>

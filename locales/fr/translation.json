@@ -84,7 +84,8 @@
         "theDeck": "le deck",
         "forceAlternate": "Forcer paramètre d'alternance",
         "detailedForceAlternate": "Forcer toutes les cartes",
-        "followDeckOnAlternate": "à suivre le deck sur le paramètre d'alternance"
+        "followDeckOnAlternate": "à suivre le deck sur le paramètre d'alternance",
+        "showName": "Afficher le nom du deck pendant les révisions"
     },
     "settings": {
         "title": "Paramètres",

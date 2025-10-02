@@ -20,7 +20,7 @@ export const getForgottenCards = async (
         C.step,
         C.nextRevision,
         C.changeSide,
-        D.name
+        CASE WHEN D.showName = 1 THEN D.name ELSE '' END as name
       FROM Forgotten F
       INNER JOIN Card C ON F.idCard=C.id
       INNER JOIN Deck D ON C.deck=D.id

@@ -9,7 +9,7 @@ export const importDecks = async (
 ): Promise<boolean> => {
   let allDecksAdded = true;
   for (const deckDocument of decksDocument) {
-    const idDeck = await createDeck(database, deckDocument.deckName, deckDocument.changeSide);
+    const idDeck = await createDeck(database, deckDocument.deckName, deckDocument.changeSide, deckDocument.showName);
     if (idDeck === -1) {
       allDecksAdded = false;
       continue;

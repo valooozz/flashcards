@@ -21,8 +21,7 @@ export const getFlashCardsFromDeck = async (
         C.rectoFirst,
         C.step,
         C.nextRevision,
-        C.changeSide,
-        D.name
+        C.changeSide
       FROM Card C
       INNER JOIN Deck D ON C.deck=D.id
       WHERE D.id=? AND C.toLearn=1

@@ -313,6 +313,5 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    // marginVertical: 'auto',
   },
 });

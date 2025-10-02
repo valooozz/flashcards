@@ -14,6 +14,7 @@ export const exportAllDecks = async (database: SQLiteDatabase) => {
     const deckDocument: DeckDocument = {
       deckName: deck.name,
       changeSide: Boolean(deck.changeSide),
+      showName: Boolean(deck.showName),
       cards: [],
     };
 
