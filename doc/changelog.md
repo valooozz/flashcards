@@ -1,4 +1,24 @@
 
+### Version 1.6.0
+
+- La dernière carte révisée ne peut pas apparaître en premier dans les cartes oubliées, s'il y en a d'autres
+- Export CSV
+- Alerte quand on quitte une page sans sauvegarder ses modifications
+- Notifications non bloquantes
+- Alternance recto/verso gérée au niveau du Deck, avec une possibilité de surcharge au niveau de la carte
+- Documentation interne à l'application, accessible depuis les paramètres
+- Boutons d'information à côté des cases à cocher des paramètres pour ouvrir une fenêtre qui explique ce qu'ils font
+- Révision flash pour réviser un deck sans impacter les dates de révision des cartes
+- Choix des paramètres de la révision flash
+- Possibilité de mettre une image avec ou à la place du texte, sur le recto ou le verso d'une carte
+- Recherche de carte à l'intérieur d'un deck
+- Filtre à l'intérieur d'un deck pour n'afficher que les cartes qui ne sont pas à apprendre
+- Possibilité de ne pas afficher le nom d'un deck sur ses cartes lors de l'apprentissage et des révisions
+
+### Version 1.5.1
+
+- MAJ des dépendances
+
 ### Version 1.5.0
 
 - Fix de l'affichage des statistiques d'une carte qui pouvait déborder sur une autre ligne
