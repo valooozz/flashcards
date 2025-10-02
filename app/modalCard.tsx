@@ -14,6 +14,7 @@ import { BackButton } from '../components/button/BackButton';
 import { ButtonModal } from '../components/button/ButtonModal';
 import { ImagePickerButton } from '../components/button/ImagePickerButton';
 import { StatsButton } from '../components/button/StatsButton';
+import { ImagePicked } from '../components/image/ImagePicked';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { Header } from '../components/text/Header';
 import { Input } from '../components/text/Input';
@@ -189,21 +190,31 @@ export default function Modal() {
         <Header level={1} text={deckName} color={Colors.library.light.contrast} />
         <View style={styles.container}>
           <Header level={3} text={t('card.front')} color={Colors.library.light.contrast} />
-          <Input
-            text={recto}
-            setText={setRecto}
-            underline={editMode && rectoFirst}
-            autofocus={!editMode}
-            innerRef={rectoInputRef}
-          />
-          <ImagePickerButton imageUri={rectoImage} setImageUri={setRectoImage} />
+          <View style={styles.inputImage}>
+            <View style={{ flex: 1 }}>
+              <Input
+                text={recto}
+                setText={setRecto}
+                underline={editMode && rectoFirst}
+                autofocus={!editMode}
+                innerRef={rectoInputRef}
+              />
+            </View>
+            <ImagePickerButton imageUri={rectoImage} setImageUri={setRectoImage} />
+          </View>
+          <ImagePicked imageUri={rectoImage} />
           <Header level={3} text={t('card.back')} color={Colors.library.light.contrast} />
-          <Input
-            text={verso}
-            setText={setVerso}
-            underline={editMode && !rectoFirst}
-          />
-          <ImagePickerButton imageUri={versoImage} setImageUri={setVersoImage} />
+          <View style={styles.inputImage}>
+            <View style={{ flex: 1 }}>
+              <Input
+                text={verso}
+                setText={setVerso}
+                underline={editMode && !rectoFirst}
+              />
+            </View>
+            <ImagePickerButton imageUri={versoImage} setImageUri={setVersoImage} />
+          </View>
+          <ImagePicked imageUri={versoImage} />
           <Header level={4} text={t('card.alternateSides')} color={Colors.library.light.contrast} />
           <ButtonGroup
             containerStyle={styles.selector}
@@ -308,6 +319,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
+    alignItems: 'stretch',
+  },
+  inputImage: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'stretch',
   },
 });

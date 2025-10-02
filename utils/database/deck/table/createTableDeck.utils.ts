@@ -7,7 +7,7 @@ export const createTableDeck = async (database: SQLiteDatabase) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT UNIQUE NOT NULL,
         changeSide INTEGER NOT NULL,
-        showName INTEGER NOT NULL,
+        showName INTEGER NOT NULL
       );`,
     );
   } catch (error) {

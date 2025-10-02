@@ -1,19 +1,21 @@
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import * as DocumentPicker from 'expo-document-picker';
-import { Image, View } from "react-native";
-import { Colors } from "react-native/Libraries/NewAppScreen";
-import { useTranslation } from "../../hooks/useTranslation";
-import { Header } from "../text/Header";
-import { ButtonModal } from "./ButtonModal";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { Colors } from '../../style/Colors';
 
 interface ImagePickerButtonProps {
-    label?: string;
     imageUri: string | null;
     setImageUri: (uri: string | null) => void;
+    backgroundColor?: string;
+    color?: string;
 }
 
-export function ImagePickerButton({ label, imageUri, setImageUri }: ImagePickerButtonProps) {
-    const { t } = useTranslation();
-
+export function ImagePickerButton({
+    imageUri,
+    setImageUri,
+    backgroundColor = Colors.library.dark.main,
+    color = Colors.library.dark.contrast
+}: ImagePickerButtonProps) {
     const pickImage = async () => {
         const result = await DocumentPicker.getDocumentAsync({ type: ['image/*'], multiple: false, copyToCacheDirectory: true });
         if (result.canceled) return;
@@ -24,17 +26,18 @@ export function ImagePickerButton({ label, imageUri, setImageUri }: ImagePickerB
     };
 
     return (
-        <View style={{ marginTop: 8, rowGap: 8 }}>
-            {label && <Header level={4} text={label} color={Colors.library.light.contrast} />}
-            <View style={{ display: 'flex', flexDirection: 'row', columnGap: 8, alignItems: 'center' }}>
-                <ButtonModal text={imageUri ? t('card.changeImage') : t('card.addImage')} onPress={pickImage} />
-                {imageUri ? <ButtonModal text={t('card.removeImage')} onPress={() => setImageUri(null)} /> : null}
-            </View>
-            {imageUri ? (
-                <View style={{ height: 160 }}>
-                    <Image source={{ uri: imageUri }} style={{ width: '100%', height: '100%' }} resizeMode="contain" />
-                </View>
-            ) : null}
-        </View>
+        <TouchableOpacity style={{ ...styles.button, backgroundColor }} onPress={imageUri ? () => setImageUri(null) : pickImage}>
+            <MaterialIcons name={imageUri ? 'hide-image' : 'image'} size={40} color={color} style={styles.icon} />
+        </TouchableOpacity>
     );
 }
+
+const styles = StyleSheet.create({
+    button: {
+        backgroundColor: 'red',
+        paddingHorizontal: 8,
+    },
+    icon: {
+        marginVertical: 'auto',
+    }
+});
