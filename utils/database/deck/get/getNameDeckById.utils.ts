@@ -11,7 +11,7 @@ export const getNameDeckById = async (
       idDeck,
     );
   } catch (error) {
-    console.error(error);
+    console.error('getNameDeckById:', error);
   }
 
   return deckNameResult['name'];

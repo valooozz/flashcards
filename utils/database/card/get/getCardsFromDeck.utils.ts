@@ -26,7 +26,7 @@ export const getCardsFromDeck = async (
       [idDeck],
     );
   } catch (error) {
-    console.error(error);
+    console.error('getCardsFromDeck:', error);
   }
 
   return cards;

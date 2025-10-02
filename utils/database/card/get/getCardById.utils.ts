@@ -9,7 +9,7 @@ export const getCardById = async (database: SQLiteDatabase, id: string) => {
       id,
     );
   } catch (error) {
-    console.error(error);
+    console.error('getCardById:', error);
   }
 
   return card;

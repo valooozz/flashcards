@@ -4,6 +4,6 @@ export const emptyTableCard = async (database: SQLiteDatabase) => {
   try {
     await database.execAsync('DELETE FROM Card;');
   } catch (error) {
-    console.error(error);
+    console.error('emptyTableCard:', error);
   }
 };

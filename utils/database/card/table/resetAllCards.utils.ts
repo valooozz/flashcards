@@ -4,6 +4,6 @@ export const resetAllCards = (database: SQLiteDatabase) => {
   try {
     database.runAsync('UPDATE Card SET nextRevision=NULL');
   } catch (error) {
-    console.error(error);
+    console.error('resetAllCards:', error);
   }
 };

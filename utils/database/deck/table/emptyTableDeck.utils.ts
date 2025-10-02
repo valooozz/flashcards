@@ -4,6 +4,6 @@ export const emptyTableDeck = async (database: SQLiteDatabase) => {
   try {
     await database.execAsync('DELETE FROM Deck;');
   } catch (error) {
-    console.error(error);
+    console.error('emptyTableDeck:', error);
   }
 };

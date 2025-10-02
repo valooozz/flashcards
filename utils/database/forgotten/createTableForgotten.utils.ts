@@ -6,6 +6,6 @@ export const createTableForgotten = async (database: SQLiteDatabase) => {
       'CREATE TABLE IF NOT EXISTS Forgotten (idCard INTEGER, date TEXT, PRIMARY KEY (idCard, date), FOREIGN KEY (idCard) REFERENCES Card(id));',
     );
   } catch (error) {
-    console.error(error);
+    console.error('createTableForgotten:', error);
   }
 };

@@ -11,7 +11,7 @@ export const getNbCardsLearntInDeck = async (
       [idDeck],
     );
   } catch (error) {
-    console.error(error);
+    console.error('getNbCardsLearntInDeck:', error);
   }
 
   return nbCardsResult['COUNT(*)'];

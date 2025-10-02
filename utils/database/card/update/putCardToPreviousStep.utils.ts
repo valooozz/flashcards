@@ -18,6 +18,6 @@ export const putCardToPreviousStep = async (
       id,
     ]);
   } catch (error) {
-    console.error(error);
+    console.error('putCardToPreviousStep:', error);
   }
 };

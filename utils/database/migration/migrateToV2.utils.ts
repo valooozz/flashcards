@@ -11,7 +11,7 @@ export const migrateToV2 = async (database: SQLiteDatabase) => {
         await setUserVersion(database, 2);
         await database.execAsync('COMMIT;');
     } catch (error) {
-        console.error(error);
+        console.error('migrateToV2:', error);
         try { await database.execAsync('ROLLBACK;'); } catch { }
         throw error;
     }

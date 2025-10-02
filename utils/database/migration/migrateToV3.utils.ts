@@ -10,7 +10,7 @@ export const migrateToV3 = async (database: SQLiteDatabase) => {
         await setUserVersion(database, 3);
         await database.execAsync('COMMIT;');
     } catch (error) {
-        console.error(error);
+        console.error('migrateToV3:', error);
         try { await database.execAsync('ROLLBACK;'); } catch { }
         throw error;
     }

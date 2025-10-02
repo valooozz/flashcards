@@ -6,6 +6,6 @@ export const createTableStats = async (database: SQLiteDatabase) => {
       'CREATE TABLE IF NOT EXISTS Stats (date TEXT PRIMARY KEY, nbKnown INTEGER, nbForgotten INTEGER, nbLearnt INTEGER);',
     );
   } catch (error) {
-    console.error(error);
+    console.error('createTableStats:', error);
   }
 };

@@ -5,7 +5,7 @@ export const doesColumnExist = async (database: SQLiteDatabase, table: string, c
         const rows = await database.getAllAsync<{ name: string }>(`PRAGMA table_info(${table});`);
         return rows.some((row) => row.name === column);
     } catch (error) {
-        console.error(error);
+        console.error('doesColumnExist:', error);
         return false;
     }
 };

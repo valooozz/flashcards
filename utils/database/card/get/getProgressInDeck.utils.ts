@@ -11,7 +11,7 @@ export const getProgressInDeck = async (
       [idDeck],
     );
   } catch (error) {
-    console.error(error);
+    console.error('getProgressInDeck:', error);
   }
 
   return (result['SUM(step)'] / (result['COUNT(*)'] * 8)) * 100;

@@ -20,6 +20,6 @@ export const createTableCard = async (database: SQLiteDatabase) => {
       );`,
     );
   } catch (error) {
-    console.error(error);
+    console.error('createTableCard:', error);
   }
 };

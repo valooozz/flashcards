@@ -8,7 +8,7 @@ export const getStatsOfDay = async (database: SQLiteDatabase, date: string) => {
       [date],
     );
   } catch (error) {
-    console.error(error);
+    console.error('getStatsOfDay:', error);
   }
 
   return {

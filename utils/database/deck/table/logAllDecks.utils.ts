@@ -10,6 +10,6 @@ export const logAllDecks = async (database: SQLiteDatabase) => {
             console.log('-', deck);
         });
     } catch (error) {
-        console.error(error);
+        console.error('logAllDecks:', error);
     }
 };

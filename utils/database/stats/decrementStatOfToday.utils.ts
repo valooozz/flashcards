@@ -12,6 +12,6 @@ export const decrementStatOfToday = async (
       [today],
     );
   } catch (error) {
-    console.error(error);
+    console.error('decrementStatOfToday:', error);
   }
 };

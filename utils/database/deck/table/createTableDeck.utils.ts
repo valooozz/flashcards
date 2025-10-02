@@ -11,6 +11,6 @@ export const createTableDeck = async (database: SQLiteDatabase) => {
       );`,
     );
   } catch (error) {
-    console.error(error);
+    console.error('createTableDeck:', error);
   }
 };

@@ -23,6 +23,6 @@ export const putCardToNextStep = async (
       [nextStep, nextRevision, nextSide, toLearn, id],
     );
   } catch (error) {
-    console.error(error);
+    console.error('putCardToNextStep:', error);
   }
 };

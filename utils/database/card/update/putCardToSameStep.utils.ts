@@ -19,6 +19,6 @@ export const putCardToSameStep = async (
             [nextRevision, nextSide, id],
         );
     } catch (error) {
-        console.error(error);
+        console.error('putCardToSameStep:', error);
     }
 };

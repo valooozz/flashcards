@@ -12,7 +12,7 @@ export const getDeckById = async (
             idDeck,
         );
     } catch (error) {
-        console.error(error);
+        console.error('getDeckById:', error);
     }
 
     return deckResult;

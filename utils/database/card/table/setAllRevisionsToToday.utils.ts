@@ -6,6 +6,6 @@ export const setAllRevisionsToToday = (database: SQLiteDatabase) => {
   try {
     database.runAsync('UPDATE Card SET nextRevision=?', [today]);
   } catch (error) {
-    console.error(error);
+    console.error('setAllRevisionsToToday:', error);
   }
 };

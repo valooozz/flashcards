@@ -40,7 +40,7 @@ export const migrateToV1 = async (database: SQLiteDatabase) => {
         await setUserVersion(database, 1);
         await database.execAsync('COMMIT;');
     } catch (error) {
-        console.error(error);
+        console.error('migrateToV1:', error);
         try { await database.execAsync('ROLLBACK;'); } catch { }
         throw error;
     }

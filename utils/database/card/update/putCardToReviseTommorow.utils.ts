@@ -14,6 +14,6 @@ export const putCardToReviseTommorow = async (
       id,
     ]);
   } catch (error) {
-    console.error(error);
+    console.error('putCardToReviseTommorow:', error);
   }
 };

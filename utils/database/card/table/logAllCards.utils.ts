@@ -10,6 +10,6 @@ export const logAllCards = async (database: SQLiteDatabase) => {
       console.log('-', card);
     });
   } catch (error) {
-    console.error(error);
+    console.error('logAllCards:', error);
   }
 };
