@@ -2,12 +2,8 @@ import React from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
+import { SelectionOption } from '../../types/SelectionOption';
 import { ButtonModal } from '../button/ButtonModal';
-
-interface SelectionOption {
-    label: string;
-    onPress: () => void;
-}
 
 interface SelectionModalProps {
     visible: boolean;

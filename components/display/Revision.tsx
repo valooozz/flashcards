@@ -7,7 +7,7 @@ import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { RevisionAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
-import { RevisionSide } from '../../types/RevisionSide';
+import { CardsToRevise, RevisionSide } from '../../types/FlashRevisionSettings';
 import { shuffle } from '../../utils/shuffle.utils';
 import { BackButton } from '../button/BackButton';
 import { FlashButton } from '../button/FlashButton';
@@ -15,12 +15,18 @@ import { FlashCard } from '../card/FlashCard';
 
 interface DeckProps {
   flashCards: FlashCardType[];
+  cardsToReviseType: CardsToRevise;
+  numberOfCards?: number;
+  step?: number;
   revisionSide: RevisionSide;
   closeRevision: () => void;
 }
 
 export function Revision({
   flashCards,
+  cardsToReviseType,
+  numberOfCards,
+  step,
   revisionSide,
   closeRevision,
 }: DeckProps) {
@@ -37,11 +43,24 @@ export function Revision({
 
   useEffect(() => {
     shuffle(flashCards);
-    setCardsToRevise(flashCards);
-    updateRectoVerso(flashCards[0]);
-    setCardToShow(flashCards[0]);
-    setSizeOfDeck(flashCards.length);
+    const flashCardsToRevise = getFlashCardsToRevise(flashCards);
+    setCardsToRevise(flashCardsToRevise);
+    updateRectoVerso(flashCardsToRevise[0]);
+    setCardToShow(flashCardsToRevise[0]);
+    setSizeOfDeck(flashCardsToRevise.length);
   }, [flashCards]);
+
+  const getFlashCardsToRevise = (flashCards: FlashCardType[]): FlashCardType[] => {
+    if (cardsToReviseType === 'all') {
+      return flashCards;
+    }
+    if (cardsToReviseType === 'number') {
+      return flashCards.slice(0, numberOfCards);
+    }
+    if (cardsToReviseType === 'step') {
+      return flashCards.filter((flashCard) => flashCard.step <= step);
+    }
+  }
 
   const updateRectoVerso = (newCard: FlashCardType) => {
     let showRectoFirst: boolean;
