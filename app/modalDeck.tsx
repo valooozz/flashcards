@@ -5,20 +5,13 @@ import {
   useLocalSearchParams,
 } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
+import { Appbar, FAB, Menu, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Toolbar } from '../components/bar/Toolbar';
-import { BackButton } from '../components/button/BackButton';
-import { ButtonModal } from '../components/button/ButtonModal';
-import { StatsButton } from '../components/button/StatsButton';
+import { ModalButton } from '../components/button/ModalButton';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
-import { Header } from '../components/text/Header';
-import { Input } from '../components/text/Input';
 import { useTranslation } from '../hooks/useTranslation';
-import { Colors } from '../style/Colors';
-import { Sizes } from '../style/Sizes';
-import { globalStyles } from '../style/Styles';
 import { ImportExportType } from '../types/ImportExportType';
 import { alertAction } from '../utils/alertAction.utils';
 import { getProgressInDeck } from '../utils/database/card/get/getProgressInDeck.utils';
@@ -47,6 +40,8 @@ export default function Modal() {
   const [nbCardsLearnt, setNbCardsLearnt] = useState(0);
   const [nbCardsToLearn, setNbCardsToLearn] = useState(0);
   const [progress, setProgress] = useState(0);
+
+  const [showExportMenu, setShowExportMenu] = useState(false);
 
   const { t } = useTranslation();
 
@@ -152,95 +147,65 @@ export default function Modal() {
   };
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView>
       <Stack.Screen options={{ title: t('deck.title'), headerShown: false }} />
-      <Toolbar>
-        <BackButton color={Colors.library.light.contrast} saveAction={hasChanged() ? handleValidate : undefined} />
-        {editMode && <StatsButton color={Colors.library.light.contrast} onPress={showStats} />}
-      </Toolbar>
-      <Header
-        level={1}
-        text={editMode ? deckName : t('deck.new')}
-        color={Colors.library.light.contrast}
-      />
-      <View style={styles.container}>
-        <Header
-          level={3}
-          text={t('deck.name')}
-          color={Colors.library.light.contrast}
-        />
-        <Input text={newDeckName} setText={setNewDeckName} />
-        <CheckboxWithText
-          isChecked={changeSide}
-          setIsChecked={setChangeSide}
-          textLabel={t('card.alternateSides')}
-          spaceTop
-        />
-        <CheckboxWithText
-          isChecked={showName}
-          setIsChecked={setShowName}
-          textLabel={t('deck.showName')}
-          spaceTop
-        />
-        <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
-          <ButtonModal
-            text={editMode ? t('common.back') : t('common.cancel')}
-            onPress={() => router.back()}
-          />
-          <ButtonModal
-            text={editMode ? t('common.edit') : t('common.add')}
-            onPress={handleValidate}
-          />
-        </View>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={hasChanged() ? handleValidate : () => router.back()} />
+        <Appbar.Content title={editMode ? deckName : t('deck.new')} />
+        {editMode && (
+          <>
+            <Appbar.Action icon="poll" onPress={showStats} />
+            <Menu
+              visible={showExportMenu}
+              onDismiss={() => setShowExportMenu(false)}
+              anchor={<Appbar.Action icon="export-variant" onPress={() => setShowExportMenu(true)} />}
+            >
+              <Menu.Item title={t('deck.exportCardsJson')} onPress={() => exportDeck(database, idDeck, deckName, 'json', false)} />
+              <Menu.Item title={t('deck.exportCardsCsv')} onPress={() => exportDeck(database, idDeck, deckName, 'csv', false)} />
+              <Menu.Item title={t('deck.exportLearning')} onPress={() => exportDeck(database, idDeck, deckName, 'json', true)} />
+            </Menu>
+            <Appbar.Action icon="restore" onPress={() =>
+              alertAction(
+                t('notifications.confirm'),
+                t('common.reset'),
+                t('deck.learning'),
+                t('common.cancel'),
+                handleReset,
+              )} />
+            <Appbar.Action icon="delete" onPress={() =>
+              alertAction(
+                t('notifications.confirm'),
+                t('common.delete'),
+                t('deck.theDeck'),
+                t('common.cancel'),
+                handleDelete,
+              )} />
+          </>
+        )}
         {!editMode && (
-          <View style={{ ...styles.buttonBottom, height: Sizes.component.small * 2 + 16, }}>
-            <ButtonModal
-              text={t('deck.importJson')}
-              onPress={() => handleImport('json')}
-            />
-            <ButtonModal
-              text={t('deck.importCsv')}
-              onPress={() => handleImport('csv')}
-            />
-          </View>
+          <Menu
+            visible={showExportMenu}
+            onDismiss={() => setShowExportMenu(false)}
+            anchor={<Appbar.Action icon="import" onPress={() => setShowExportMenu(true)} />}
+          >
+            <Menu.Item title={t('deck.importJson')} onPress={() => handleImport('json')} />
+            <Menu.Item title={t('deck.importCsv')} onPress={() => handleImport('csv')} />
+          </Menu>
         )}
-        {editMode && (
-          <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>
-            <ButtonModal
-              text={t('deck.exportCardsJson')}
-              onPress={() => exportDeck(database, idDeck, deckName, 'json', false)}
-            />
-            <ButtonModal
-              text={t('deck.exportCardsCsv')}
-              onPress={() => exportDeck(database, idDeck, deckName, 'csv', false)}
-            />
-          </View>
-        )}
-        {editMode && (
-          <View style={{ ...styles.buttonLineContainer, marginTop: 8 }}>
-            <ButtonModal
-              text={t('deck.exportLearning')}
-              onPress={() => exportDeck(database, idDeck, deckName, 'json', true)}
-            />
-          </View>
-        )}
-        {/*editMode && (
-          <View style={styles.statContainer}>
-            <Text style={styles.textStat}>
-              {t('deck.cardsLearnt')} : {nbCardsLearnt}
-            </Text>
-            <Text style={styles.textStat}>
-              {t('deck.cardsToLearn')} : {nbCardsToLearn}
-            </Text>
-            <Text style={styles.textStat}>
-              {t('deck.progress')} : {progress} %
-            </Text>
-          </View>
-        )*/}
-        {editMode && (
-          <View style={{ ...styles.buttonBottom, height: Sizes.component.small * 3 + 16, }}>
-            <ButtonModal
-              text={t('deck.forceAlternate')}
+      </Appbar.Header>
+
+      <View style={styles.container}>
+        <TextInput label={t('deck.name')} value={newDeckName} onChangeText={setNewDeckName} />
+        <View style={styles.checkboxAction}>
+          <CheckboxWithText
+            isChecked={changeSide}
+            setIsChecked={setChangeSide}
+            textLabel={t('card.alternateSides')}
+          />
+          {editMode && (
+            <FAB
+              icon="sync"
+              size="small"
               onPress={() =>
                 alertAction(
                   t('notifications.confirm'),
@@ -251,58 +216,41 @@ export default function Modal() {
                 )
               }
             />
-            <ButtonModal
-              text={t('deck.reset')}
-              onPress={() =>
-                alertAction(
-                  t('notifications.confirm'),
-                  t('common.reset'),
-                  t('deck.learning'),
-                  t('common.cancel'),
-                  handleReset,
-                )
-              }
-            />
-            <ButtonModal
-              text={t('common.delete')}
-              onPress={() => alertAction(t('notifications.confirm'), t('common.delete'), t('deck.theDeck'), t('common.cancel'), handleDelete)}
-            />
-          </View>
-        )}
+          )}
+        </View>
+        <CheckboxWithText
+          isChecked={showName}
+          setIsChecked={setShowName}
+          textLabel={t('deck.showName')}
+        />
+        <View style={styles.buttonLineContainer}>
+          <ModalButton variant='tertiary' text={editMode ? t('common.back') : t('common.cancel')} onPress={() => router.back()} />
+          <ModalButton variant='primary' text={editMode ? t('common.edit') : t('common.add')} onPress={handleValidate} />
+        </View>
       </View>
     </SafeAreaView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    ...globalStyles.page,
-    backgroundColor: Colors.library.light.main,
-  },
   container: {
-    flex: 1,
+    flexGrow: 1,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'stretch',
+    marginTop: 16,
+    paddingHorizontal: 8,
+    rowGap: 8,
   },
   buttonLineContainer: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
-  buttonBottom: {
-    marginTop: 'auto',
+  checkboxAction: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'flex-start',
-    rowGap: 8
-  },
-  statContainer: {
-    marginTop: 8,
-  },
-  textStat: {
-    color: Colors.library.light.contrast,
-    fontSize: Sizes.font.small,
-    textAlign: 'left',
-    fontFamily: 'JosefinRegular',
-  },
+    alignItems: 'center',
+    columnGap: 16,
+  }
 });

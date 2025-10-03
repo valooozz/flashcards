@@ -1,19 +1,15 @@
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet } from 'react-native';
+import { Card, Text, useTheme } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
-import { Colors } from '../../style/Colors';
-import { Radius } from '../../style/Radius';
-import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 import { CardType } from '../../types/CardType';
 import { alertAction } from '../../utils/alertAction.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { resetCard } from '../../utils/database/card/update/resetCard.utils';
 import { getDelay } from '../../utils/getDelay.utils';
-import { getProgressBarLength } from '../../utils/getProgressBarLength';
 import { notify } from '../../utils/notify.utils';
-import { CardProgressBar } from '../bar/CardProgressBar';
 import { ListCardElement } from '../text/ListCardElement';
 
 interface ListCardProps {
@@ -23,6 +19,7 @@ interface ListCardProps {
 
 export function ListCard({ card, triggerReload }: ListCardProps) {
   const { t } = useTranslation();
+  const { colors } = useTheme();
 
   const database = useSQLiteContext();
 
@@ -47,14 +44,13 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
   };
 
   return (
-    <TouchableOpacity
-      style={styles.container}
+    <Card
       onPress={() =>
         router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
       }
       onLongPress={handleLongPress}
     >
-      <View style={styles.textContainer}>
+      <Card.Content style={styles.content}>
         <ListCardElement text={card.recto} image={card.rectoImage} light={!card.toLearn} />
         <ListCardElement text={card.verso} image={card.versoImage} light={!card.toLearn || !card.changeSide} />
         <Text
@@ -63,35 +59,21 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
             ...styles.textDate,
             color:
               getDelay(card.nextRevision) >= 0
-                ? Colors.daily.dark.main
-                : Colors.library.dark.main,
+                ? colors.secondary
+                : colors.primary,
           }}
         >
           {card.nextRevision && card.toLearn
             ? card.nextRevision.slice(8) + '/' + card.nextRevision.slice(5, 7)
             : null}
         </Text>
-      </View>
-      <CardProgressBar
-        width={`${getProgressBarLength(card.step)}%`}
-        color={Colors.library.intermediate.main}
-      />
-    </TouchableOpacity>
-  );
+      </Card.Content>
+    </Card>
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    height: Sizes.component.medium,
-    backgroundColor: Colors.library.simple.main,
-    boxShadow: Shadows.listCard,
-    borderRadius: Radius.small,
-    display: 'flex',
-    flexDirection: 'column',
-    overflow: 'hidden',
-  },
-  textContainer: {
+  content: {
     flexGrow: 1,
     paddingHorizontal: 16,
     display: 'flex',

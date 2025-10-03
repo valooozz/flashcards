@@ -234,7 +234,6 @@ export default function Modal() {
             isChecked={checkedLearn}
             setIsChecked={setCheckedLearn}
             textLabel={t('card.toLearn')}
-            spaceTop
           />
           {!editMode && (
             <View style={{ ...styles.buttonLineContainer, marginTop: 16 }}>

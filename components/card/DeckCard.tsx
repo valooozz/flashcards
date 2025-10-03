@@ -1,11 +1,7 @@
 import { router, useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Colors } from '../../style/Colors';
-import { Radius } from '../../style/Radius';
-import { Shadows } from '../../style/Shadows';
-import { Sizes } from '../../style/Sizes';
+import { Card, Text, useTheme } from 'react-native-paper';
 import { DeckType } from '../../types/DeckType';
 import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 
@@ -18,6 +14,7 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
   const database = useSQLiteContext();
   const [nbCards, setNbCards] = useState(0);
   const [word, setWord] = useState('');
+  const { colors } = useTheme();
 
   useFocusEffect(
     useCallback(() => {
@@ -33,42 +30,11 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
   );
 
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => openDeck(deck.id, deck.name)}
-      onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}
-    >
-      <Text numberOfLines={2} adjustsFontSizeToFit style={styles.title}>
-        {deck.name}
-      </Text>
-      <Text style={styles.nbCards}>{nbCards + word}</Text>
-    </TouchableOpacity>
-  );
+    <Card onPress={() => openDeck(deck.id, deck.name)} onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}>
+      <Card.Title title={deck.name} />
+      <Card.Content>
+        <Text adjustsFontSizeToFit variant="bodyMedium" style={{ color: colors.secondary }}>{nbCards + word}</Text>
+      </Card.Content>
+    </Card>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    backgroundColor: Colors.library.simple.main,
-    height: Sizes.component.huge,
-    paddingHorizontal: 16,
-    paddingVertical: 16,
-    boxShadow: Shadows.deckCard,
-    borderRadius: Radius.big,
-  },
-  title: {
-    fontSize: Sizes.font.small,
-    fontFamily: 'JosefinRegular',
-    color: Colors.library.simple.contrast,
-    textAlign: 'left',
-  },
-  nbCards: {
-    fontSize: Sizes.font.tiny,
-    fontFamily: 'JosefinRegular',
-    color: Colors.library.dark.main,
-    textAlign: 'left',
-  },
-});

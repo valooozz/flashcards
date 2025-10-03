@@ -1,23 +1,10 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Toolbar } from '../../components/bar/Toolbar';
-import { AddButton } from '../../components/button/AddButton';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { Appbar, FAB, ProgressBar, Searchbar, Text } from 'react-native-paper';
 import { ListCard } from '../../components/card/ListCard';
-import { Header } from '../../components/text/Header';
-import { Input } from '../../components/text/Input';
 import { useTranslation } from '../../hooks/useTranslation';
-import { Colors } from '../../style/Colors';
-import { Radius } from '../../style/Radius';
-import { Sizes } from '../../style/Sizes';
-import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
-import { DeckProgressBar } from '../bar/DeckProgressBar';
-import { BackButton } from '../button/BackButton';
-import { FilterButton } from '../button/FilterButton';
-import { FlashDeckButton } from '../button/FlashDeckButton';
-import { SearchButton } from '../button/SearchButton';
-import { SettingsButton } from '../button/SettingsButton';
 
 interface DeckProps {
   idDeck: number;
@@ -86,54 +73,22 @@ export function Deck({
 
   return (
     <View style={styles.container}>
-      <Toolbar addMarginRight>
-        <BackButton color={Colors.library.dark.contrast} simpleAction={closeDeck} />
-        <FlashDeckButton color={Colors.library.dark.contrast} onPress={() => chooseRevisionSide(idDeck)} />
-        <SettingsButton color={Colors.library.dark.contrast} route={`/modalDeck?idDeck=${idDeck}`} />
-      </Toolbar>
-      <Header
-        level={1}
-        text={deckName}
-        color={Colors.library.dark.contrast}
-        rightMargin
-      />
-      <DeckProgressBar
-        progress={progress}
-        color={Colors.library.intermediate.main}
-      />
-      <View style={styles.headerWithSearch}>
-        <Header
-          level={2}
-          text={`${t('deck.cards')} ${nbCards > 0 ? `(${nbCards})` : ''}`}
-          color={Colors.library.dark.contrast}
-          rightMargin={false}
-        />
-        <View style={styles.buttonContainer}>
-          <FilterButton
-            isActive={filterLearnedCards}
-            onToggle={() => setFilterLearnedCards(!filterLearnedCards)}
-            activeColor={Colors.library.light.main}
-            inactiveColor={Colors.library.dark.contrast}
-            testID="filter-learned-button"
-          />
-          <SearchButton
-            searchMode={searchMode}
-            onToggle={toggleSearchMode}
-            color={Colors.library.dark.contrast}
-            testID="search-toggle-button"
-          />
-        </View>
-      </View>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={closeDeck} />
+        <Appbar.Content title={deckName} />
+        <Appbar.Action icon="flash" onPress={() => chooseRevisionSide(idDeck)} />
+        <Appbar.Action icon={filterLearnedCards ? 'filter-off' : 'filter'} onPress={() => setFilterLearnedCards(!filterLearnedCards)} />
+        <Appbar.Action icon={searchMode ? 'magnify-close' : 'magnify'} onPress={toggleSearchMode} />
+        <Appbar.Action icon="cog" onPress={() => router.push(`/modalDeck?idDeck=${idDeck}`)} />
+      </Appbar.Header>
+      <ProgressBar progress={progress || 0} />
       {searchMode && (
-        <View style={styles.inputContainer}>
-          <Input
-            text={searchText}
-            setText={setSearchText}
-            autofocus={true}
-            backgroundColor={Colors.library.light.main}
-            color={Colors.library.light.contrast}
-          />
-        </View>
+        <Searchbar
+          placeholder='Search'
+          value={searchText}
+          onChangeText={setSearchText}
+          style={styles.searchBar}
+        />
       )}
       {showCards ? (
         <FlatList
@@ -146,55 +101,40 @@ export function Deck({
           showsVerticalScrollIndicator={false}
         />
       ) : (
-        <Text style={styles.text}>{t('deck.noCards')}</Text>
+        <Text variant="bodyLarge" style={styles.text}>{t('deck.noCards')}</Text>
       )}
-      <AddButton
-        icon="pluscircle"
-        size={70}
-        color={Colors.library.light.main}
+      <FAB
+        icon="plus"
+        style={styles.fab}
         onPress={() => router.push(`/modalCard?idDeck=${idDeck}`)}
       />
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
-    ...globalStyles.page,
-    backgroundColor: Colors.library.dark.main,
-    paddingRight: 0,
-    paddingBottom: 0,
+    flex: 1,
   },
-  headerWithSearch: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginRight: 24,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  inputContainer: {
-    marginRight: 24,
-    marginBottom: 16,
-    borderRadius: Radius.small,
-    overflow: 'hidden',
+  searchBar: {
+    marginTop: 8,
+    marginHorizontal: 8,
   },
   cardsDisplay: {
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    rowGap: 8,
+    rowGap: 4,
     flexGrow: 1,
-    marginRight: 24,
-    paddingBottom: 104,
+    padding: 8,
   },
   text: {
-    color: Colors.learning.dark.contrast,
     textAlign: 'center',
-    fontSize: Sizes.font.small,
-    fontFamily: 'JosefinRegular',
-    marginTop: 80,
-    marginRight: 24,
+    marginHorizontal: 8,
+    marginVertical: 'auto',
+  },
+  fab: {
+    position: 'absolute',
+    right: 16,
+    bottom: 16,
   },
 });

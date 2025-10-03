@@ -1,6 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { Colors } from '../../style/Colors';
-import { Sizes } from '../../style/Sizes';
+import { Image, StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 
 interface ListCardElementProps {
     text: string;
@@ -14,6 +13,7 @@ export function ListCardElement({ text, image, light }: ListCardElementProps) {
         text?.trim().length ? (
             <Text
                 numberOfLines={1}
+                variant='bodyLarge'
                 style={{ ...styles.text, opacity: light ? 0.3 : 1 }}
             >
                 {text}
@@ -35,8 +35,6 @@ export function ListCardElement({ text, image, light }: ListCardElementProps) {
 const styles = StyleSheet.create({
     text: {
         width: 120,
-        fontSize: Sizes.font.small,
-        color: Colors.library.simple.contrast,
         textAlign: 'left',
         fontFamily: 'JosefinRegular',
     },
@@ -46,8 +44,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     avatar: {
-        width: 40,
-        height: 40,
+        width: 29,
+        height: 29,
         borderRadius: 20,
         overflow: 'hidden',
     },
