@@ -1,10 +1,12 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import { SplashScreen } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SQLiteProvider } from 'expo-sqlite';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ToastManager from 'toastify-react-native';
+import { TutorialModal } from '../components/modal/TutorialModal';
 import { SettingsProvider } from '../context/SettingsContext';
 import { i18nReady } from '../i18n';
 import { initDatabase } from '../utils/database/initDatabase.utils';
@@ -16,6 +18,7 @@ export default function Layout() {
     JosefinSemiBold: require('../assets/fonts/JosefinSans-SemiBold.ttf'),
   });
   const [i18nLoaded, setI18nLoaded] = useState(false);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   useEffect(() => {
     // Wait for i18n initialization to complete
@@ -34,6 +37,31 @@ export default function Layout() {
       SplashScreen.hideAsync();
     }
   }, [fontsLoaded, i18nLoaded]);
+
+  useEffect(() => {
+    const checkFirstOpen = async () => {
+      try {
+        const flag = await AsyncStorage.getItem('hasSeenTutorial');
+        if (!flag) {
+          setShowTutorial(true);
+        }
+      } catch (e) {
+        setShowTutorial(true);
+      }
+    };
+    checkFirstOpen();
+  }, []);
+
+  const tutoSlides = useMemo(
+    () => [
+      {
+        key: 'welcome',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+    ],
+    [],
+  );
 
   if (!fontsLoaded || !i18nLoaded) {
     return null;
@@ -60,6 +88,22 @@ export default function Layout() {
               />
             </Stack>
             <ToastManager useModal={false} />
+            <TutorialModal
+              visible={showTutorial}
+              slides={tutoSlides}
+              onSkip={async () => {
+                setShowTutorial(false);
+                try {
+                  await AsyncStorage.setItem('hasSeenTutorial', 'true');
+                } catch { }
+              }}
+              onDone={async () => {
+                setShowTutorial(false);
+                try {
+                  await AsyncStorage.setItem('hasSeenTutorial', 'true');
+                } catch { }
+              }}
+            />
           </SafeAreaView>
         </SettingsProvider>
       </SafeAreaProvider>

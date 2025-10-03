@@ -152,5 +152,11 @@
         "saveAndQuit": "Enregistrer et fermer",
         "quit": "Quitter sans enregistrer",
         "noQuit": "Ne pas quitter"
+    },
+    "tuto": {
+        "welcome": {
+            "title": "Bienvenue sur Flipo !",
+            "text": "Crée des flashcards et laisse Flipo te dire quand les réviser !"
+        }
     }
 }
