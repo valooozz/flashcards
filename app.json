@@ -9,7 +9,7 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#FFFFFF",
-          "image": "./assets/images/flash-icon.png",
+          "image": "./assets/images/splash.png",
           "imageWidth": 200
         }
       ],
@@ -22,7 +22,7 @@
       "package": "com.valooozz.flashcards",
       "windowSoftInputMode": "adjustPan"
     },
-    "icon": "./assets/images/flash-icon.png",
+    "icon": "./assets/images/logo.png",
     "extra": {
       "router": {
         "origin": false
