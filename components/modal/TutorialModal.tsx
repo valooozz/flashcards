@@ -60,6 +60,12 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
                         showsHorizontalScrollIndicator={false}
                         onScroll={handleScroll}
                         scrollEventThrottle={16}
+                        getItemLayout={(_, i) => ({ length: width, offset: width * i, index: i })}
+                        onScrollToIndexFailed={(info) => {
+                            requestAnimationFrame(() => {
+                                flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
+                            });
+                        }}
                         renderItem={({ item }) => (
                             <View style={[styles.slide, { width }]}>
                                 {item.hasTitle && (
@@ -79,18 +85,18 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
 
                     <View style={styles.buttonsContainer}>
                         {index > 0 ? (
-                            <TouchableOpacity onPress={goPrev} style={[styles.button, styles.secondaryButton]}>
+                            <TouchableOpacity onPress={goPrev} style={[styles.button, styles.secondaryButton]} testID='tuto-previous-button'>
                                 <MaterialIcons name="navigate-before" size={40} color={Colors.logo.tertiary} />
                             </TouchableOpacity>
                         ) : (
                             <View style={{ width: '25%' }} />
                         )}
 
-                        <TouchableOpacity onPress={onSkip} style={styles.button}>
+                        <TouchableOpacity onPress={onSkip} style={styles.button} testID='tuto-close-button'>
                             <MaterialIcons name={'close'} size={40} color={Colors.logo.tertiary} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={goNext} style={[styles.button, styles.primaryButton]}>
+                        <TouchableOpacity onPress={goNext} style={[styles.button, styles.primaryButton]} testID='tuto-next-button'>
                             <MaterialIcons name={isLast ? 'done' : 'navigate-next'} size={40} color={Colors.logo.tertiary} />
                         </TouchableOpacity>
                     </View>
