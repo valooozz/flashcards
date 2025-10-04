@@ -117,7 +117,7 @@
         "over": "All cards have been learnt!"
     },
     "daily": {
-        "title": "Revisions",
+        "title": "Today's review",
         "forgotten": "Forgotten",
         "known": "Known",
         "difficult": "Difficult",

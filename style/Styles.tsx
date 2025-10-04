@@ -1,4 +1,6 @@
 import { StyleSheet } from 'react-native';
+import { Shadows } from './Shadows';
+import { Sizes } from './Sizes';
 
 export const globalStyles = StyleSheet.create({
   page: {
@@ -24,8 +26,24 @@ export const globalStyles = StyleSheet.create({
   titleCenter: {
     textAlign: 'center'
   },
+  centerText: {
+    textAlign: 'center',
+    marginVertical: 'auto',
+    marginHorizontal: '20%',
+  },
   buttonLineContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  flashButtonContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    height: Sizes.component.large,
+    margin: 24,
+    marginTop: 0,
+    borderBottomRightRadius: 8,
+    borderBottomLeftRadius: 8,
+    overflow: 'hidden',
+    boxShadow: Shadows.flashCard,
   },
 });

@@ -1,7 +1,8 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { Appbar, Text } from 'react-native-paper';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { Header } from '../../components/text/Header';
@@ -190,12 +191,19 @@ export default function Tab() {
   };
 
   return (
-    <View style={styles.container}>
-      <Header
-        level={1}
-        text={`${t('daily.title')} ${cardsToRevise.length + forgottenCards.length > 0 ? `(${cardsToRevise.length + forgottenCards.length})` : ''}`}
-        color={Colors.daily.dark.contrast}
-      />
+    <View style={globalStyles.container}>
+      <Appbar.Header>
+        <Appbar.Content title={t('daily.title')} />
+        <Appbar.Action
+          icon={() => (
+            <Text variant='titleLarge'>
+              {cardsToRevise.length + forgottenCards.length > 0 ? cardsToRevise.length + forgottenCards.length : ''}
+            </Text>
+          )}
+          style={{ marginLeft: 'auto' }}
+          disabled
+        />
+      </Appbar.Header>
       {cardToShow ? (
         <>
           <FlashCard
@@ -211,7 +219,7 @@ export default function Tab() {
             previousPossible={previousCard !== undefined}
             handlePrevious={handlePrevious}
           />
-          <View style={styles.buttons}>
+          <View style={globalStyles.flashButtonContainer}>
             <FlashButton
               text={t('daily.forgotten')}
               backgroundColor={Colors.daily.light.main}
@@ -294,10 +302,6 @@ export default function Tab() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    ...globalStyles.page,
-    backgroundColor: Colors.daily.dark.main,
-  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',

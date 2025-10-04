@@ -1,5 +1,4 @@
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Shadows } from '../../style/Shadows';
 import { Sizes } from '../../style/Sizes';
 
 interface FlashButtonProps {
@@ -33,7 +32,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'stretch',
-    boxShadow: Shadows.flashCard,
   },
   text: {
     textAlign: 'center',

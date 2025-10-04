@@ -141,6 +141,10 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 36,
     boxShadow: Shadows.flashCard,
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    margin: 24,
+    marginBottom: 0,
   },
   text: {
     textAlign: 'right',

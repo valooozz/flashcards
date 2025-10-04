@@ -1,13 +1,12 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
+import { Appbar, Text } from 'react-native-paper';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
-import { Header } from '../../components/text/Header';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
-import { Sizes } from '../../style/Sizes';
 import { globalStyles } from '../../style/Styles';
 import { LearningAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
@@ -76,12 +75,19 @@ export default function Tab() {
   };
 
   return (
-    <View style={styles.container}>
-      <Header
-        level={1}
-        text={`${t('learning.title')} ${cardsToLearn.length > 0 ? `(${cardsToLearn.length})` : ''}`}
-        color={Colors.learning.dark.contrast}
-      />
+    <View style={globalStyles.container}>
+      <Appbar.Header>
+        <Appbar.Content title={t('learning.title')} />
+        <Appbar.Action
+          icon={() => (
+            <Text variant='titleLarge'>
+              {cardsToLearn.length > 0 ? cardsToLearn.length : ''}
+            </Text>
+          )}
+          style={{ marginLeft: 'auto' }}
+          disabled
+        />
+      </Appbar.Header>
       {cardToShow ? (
         <>
           <FlashCard
@@ -96,7 +102,7 @@ export default function Tab() {
             previousPossible={previousCard !== undefined}
             handlePrevious={handlePrevious}
           />
-          <View style={styles.buttons}>
+          <View style={globalStyles.flashButtonContainer}>
             <FlashButton
               text={t('learning.ignore')}
               backgroundColor={Colors.learning.light.main}
@@ -118,28 +124,8 @@ export default function Tab() {
           </View>
         </>
       ) : (
-        <Text style={styles.text}>{t('learning.over')}</Text>
+        <Text variant='titleMedium' style={globalStyles.centerText}>{t('learning.over')}</Text>
       )}
     </View>
   );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    ...globalStyles.page,
-    backgroundColor: Colors.learning.dark.main,
-  },
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    height: Sizes.component.large,
-  },
-  text: {
-    color: Colors.learning.dark.contrast,
-    textAlign: 'center',
-    fontSize: Sizes.font.small,
-    fontFamily: 'JosefinRegular',
-    marginVertical: 'auto',
-    marginHorizontal: '20%',
-  },
-});
+};

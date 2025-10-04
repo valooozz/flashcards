@@ -154,6 +154,7 @@ export default function Tab() {
 
   return inDeck ? inRevision ? (
     <Revision
+      deckName={deckName}
       flashCards={flashCards}
       numberOfCards={numberOfCards}
       revisionSide={revisionSide}

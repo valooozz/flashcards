@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Toolbar } from '../../components/bar/Toolbar';
+import { StyleSheet, View } from 'react-native';
+import { Appbar, ProgressBar, Text } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Sizes } from '../../style/Sizes';
@@ -9,11 +9,11 @@ import { RevisionAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
 import { RevisionSide } from '../../types/FlashRevisionSettings';
 import { shuffle } from '../../utils/shuffle.utils';
-import { BackButton } from '../button/BackButton';
 import { FlashButton } from '../button/FlashButton';
 import { FlashCard } from '../card/FlashCard';
 
 interface DeckProps {
+  deckName: string;
   flashCards: FlashCardType[];
   numberOfCards?: number;
   revisionSide: RevisionSide;
@@ -21,6 +21,7 @@ interface DeckProps {
 }
 
 export function Revision({
+  deckName,
   flashCards,
   numberOfCards,
   revisionSide,
@@ -104,54 +105,45 @@ export function Revision({
   }
 
   return (
-    <View style={styles.container}>
-      <Toolbar addMarginRight>
-        <BackButton color={Colors.library.dark.contrast} simpleAction={closeRevision} />
-      </Toolbar>
-
-      <View style={styles.interface}>
-        <Text style={[styles.text, styles.progressText]}>
-          {`${sizeOfDeck - cardsToRevise.length} / ${sizeOfDeck}`}
-        </Text>
-
-        {cardToShow ? (
-          <View style={styles.cardContainer}>
-            <FlashCard
-              recto={rectoToShow}
-              verso={versoToShow}
-              rectoImage={rectoImageToShow}
-              versoImage={versoImageToShow}
-              deckName={cardToShow.name}
-              backgroundColor={Colors.revision.simple.main}
-              textColor={Colors.revision.simple.contrast}
-              textDeckColor={Colors.revision.dark.main}
-              previousPossible={previousCard !== undefined}
-              handlePrevious={handlePrevious}
+    <View style={globalStyles.container}>
+      <Appbar.Header>
+        <Appbar.BackAction onPress={closeRevision} />
+        <Appbar.Content title={deckName} />
+        <Appbar.Content title={`${sizeOfDeck - cardsToRevise.length} / ${sizeOfDeck}`} />
+      </Appbar.Header>
+      <ProgressBar progress={(sizeOfDeck - cardsToRevise.length) / sizeOfDeck} />
+      {cardToShow ? (
+        <>
+          <FlashCard
+            recto={rectoToShow}
+            verso={versoToShow}
+            rectoImage={rectoImageToShow}
+            versoImage={versoImageToShow}
+            deckName={cardToShow.name}
+            backgroundColor={Colors.revision.simple.main}
+            textColor={Colors.revision.simple.contrast}
+            textDeckColor={Colors.revision.dark.main}
+            previousPossible={previousCard !== undefined}
+            handlePrevious={handlePrevious}
+          />
+          <View style={globalStyles.flashButtonContainer}>
+            <FlashButton
+              text={t('revision.again')}
+              backgroundColor={Colors.revision.light.main}
+              textColor={Colors.revision.light.contrast}
+              handleClick={() => handleNext('again')}
             />
-            <View style={styles.buttons}>
-              <FlashButton
-                text={t('revision.again')}
-                backgroundColor={Colors.revision.light.main}
-                textColor={Colors.revision.light.contrast}
-                handleClick={() => handleNext('again')}
-              />
-              <FlashButton
-                text={t('revision.done')}
-                backgroundColor={Colors.revision.intermediate.main}
-                textColor={Colors.revision.intermediate.contrast}
-                handleClick={() => handleNext('done')}
-              />
-            </View>
+            <FlashButton
+              text={t('revision.done')}
+              backgroundColor={Colors.revision.intermediate.main}
+              textColor={Colors.revision.intermediate.contrast}
+              handleClick={() => handleNext('done')}
+            />
           </View>
-        ) : (
-          <Text
-            style={[styles.text, styles.overText]}
-          >
-            {t('revision.over')}
-          </Text>
-        )}
-      </View>
-
+        </>
+      ) : (
+        <Text variant='titleMedium' style={globalStyles.centerText}>{t('revision.over')}</Text>
+      )}
     </View>
   );
 }
