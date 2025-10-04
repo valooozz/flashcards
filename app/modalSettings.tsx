@@ -1,20 +1,14 @@
 import { router, Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import { Appbar, Menu, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Toolbar } from '../components/bar/Toolbar';
-import { BackButton } from '../components/button/BackButton';
-import { ButtonModal } from '../components/button/ButtonModal';
-import { DocButton } from '../components/button/DocButton';
-import { ImportExportButton } from '../components/button/ImportExportButton';
-import { LanguageButton } from '../components/button/LanguageButton';
-import { DocModal } from '../components/modal/DocModal';
+import { ModalButton } from '../components/button/ModalButton';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
-import { Header } from '../components/text/Header';
 import { SettingStep } from '../components/text/SettingStep';
 import { useSettingsContext } from '../context/SettingsContext';
+import { useTutorialContext } from '../context/TutorialContext';
 import { useTranslation } from '../hooks/useTranslation';
-import { Colors } from '../style/Colors';
 import { globalStyles } from '../style/Styles';
 import { alertAction } from '../utils/alertAction.utils';
 import { notify } from '../utils/notify.utils';
@@ -25,30 +19,33 @@ export default function Modal() {
   const [newHardThrowback, setNewHardThrowback] = useState(true);
   const [newStopLearning, setNewStopLearning] = useState(false);
   const [newAdvancedRevisionMode, setNewAdvancedRevisionMode] = useState(false);
-  const [step0, setStep0] = useState('1');
-  const [step1, setStep1] = useState('2');
-  const [step2, setStep2] = useState('4');
-  const [step3, setStep3] = useState('7');
-  const [step4, setStep4] = useState('14');
-  const [step5, setStep5] = useState('30');
-  const [step6, setStep6] = useState('30');
-  const [step7, setStep7] = useState('30');
-  const [step8, setStep8] = useState('60');
+  const [step0, setStep0] = useState(1);
+  const [step1, setStep1] = useState(2);
+  const [step2, setStep2] = useState(4);
+  const [step3, setStep3] = useState(7);
+  const [step4, setStep4] = useState(14);
+  const [step5, setStep5] = useState(30);
+  const [step6, setStep6] = useState(30);
+  const [step7, setStep7] = useState(30);
+  const [step8, setStep8] = useState(60);
   const [initialHardThrowback, setInitialHardThrowback] = useState(true);
   const [initialStopLearning, setInitialStopLearning] = useState(false);
   const [initialAdvancedRevisionMode, setInitialAdvancedRevisionMode] = useState(false);
-  const [initialStep0, setInitialStep0] = useState('1');
-  const [initialStep1, setInitialStep1] = useState('2');
-  const [initialStep2, setInitialStep2] = useState('4');
-  const [initialStep3, setInitialStep3] = useState('7');
-  const [initialStep4, setInitialStep4] = useState('14');
-  const [initialStep5, setInitialStep5] = useState('30');
-  const [initialStep6, setInitialStep6] = useState('30');
-  const [initialStep7, setInitialStep7] = useState('30');
-  const [initialStep8, setInitialStep8] = useState('60');
+  const [initialStep0, setInitialStep0] = useState(1);
+  const [initialStep1, setInitialStep1] = useState(2);
+  const [initialStep2, setInitialStep2] = useState(4);
+  const [initialStep3, setInitialStep3] = useState(7);
+  const [initialStep4, setInitialStep4] = useState(14);
+  const [initialStep5, setInitialStep5] = useState(30);
+  const [initialStep6, setInitialStep6] = useState(30);
+  const [initialStep7, setInitialStep7] = useState(30);
+  const [initialStep8, setInitialStep8] = useState(60);
 
-  const { hardThrowback, stopLearning, advancedRevisionMode, intervals, setSettings, switchLanguage, resetSettings } =
+  const [showLanguageMenu, setShowLanguageMenu] = useState(false);
+
+  const { hardThrowback, stopLearning, advancedRevisionMode, intervals, setSettings, setLanguage, resetSettings } =
     useSettingsContext();
+  const { setShowTutorial } = useTutorialContext();
   const { t } = useTranslation();
 
   const handleValidate = async () => {
@@ -77,27 +74,27 @@ export default function Modal() {
       setNewHardThrowback(hardThrowback);
       setNewStopLearning(stopLearning);
       setNewAdvancedRevisionMode(advancedRevisionMode)
-      setStep0(String(intervals[0]));
-      setStep1(String(intervals[1]));
-      setStep2(String(intervals[2]));
-      setStep3(String(intervals[3]));
-      setStep4(String(intervals[4]));
-      setStep5(String(intervals[5]));
-      setStep6(String(intervals[6]));
-      setStep7(String(intervals[7]));
-      setStep8(String(intervals[8]));
+      setStep0(intervals[0]);
+      setStep1(intervals[1]);
+      setStep2(intervals[2]);
+      setStep3(intervals[3]);
+      setStep4(intervals[4]);
+      setStep5(intervals[5]);
+      setStep6(intervals[6]);
+      setStep7(intervals[7]);
+      setStep8(intervals[8]);
       setInitialHardThrowback(hardThrowback);
       setInitialStopLearning(stopLearning);
       setInitialAdvancedRevisionMode(advancedRevisionMode);
-      setInitialStep0(String(intervals[0]));
-      setInitialStep1(String(intervals[1]));
-      setInitialStep2(String(intervals[2]));
-      setInitialStep3(String(intervals[3]));
-      setInitialStep4(String(intervals[4]));
-      setInitialStep5(String(intervals[5]));
-      setInitialStep6(String(intervals[6]));
-      setInitialStep7(String(intervals[7]));
-      setInitialStep8(String(intervals[8]));
+      setInitialStep0(intervals[0]);
+      setInitialStep1(intervals[1]);
+      setInitialStep2(intervals[2]);
+      setInitialStep3(intervals[3]);
+      setInitialStep4(intervals[4]);
+      setInitialStep5(intervals[5]);
+      setInitialStep6(intervals[6]);
+      setInitialStep7(intervals[7]);
+      setInitialStep8(intervals[8]);
     }, [hardThrowback, stopLearning, advancedRevisionMode, intervals]),
   );
 
@@ -119,78 +116,81 @@ export default function Modal() {
   };
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Stack.Screen options={{ title: t('settings.title'), headerShown: false }} />
-      <Toolbar>
-        <BackButton color={Colors.library.light.contrast} saveAction={hasChanged() ? handleValidate : undefined} />
-        <LanguageButton color={Colors.library.light.contrast} switchLanguage={switchLanguage} />
-        <DocButton color={Colors.library.light.contrast} openDoc={() => setIsDocOpen(true)} />
-        <ImportExportButton color={Colors.library.light.contrast} />
-      </Toolbar>
-      <Header
-        level={1}
-        text={t('settings.title')}
-        color={Colors.library.light.contrast}
-      />
-      <ScrollView contentContainerStyle={styles.container} style={styles.scrollableWindow} showsVerticalScrollIndicator={false}>
-        <Header
-          level={3}
-          text={t('settings.intervals')}
-          color={Colors.library.light.contrast}
-        />
+      <Appbar.Header>
+        <Appbar.BackAction onPress={hasChanged() ? handleValidate : () => router.back()} />
+        <Appbar.Content title={t('settings.title')} />
+        <Menu
+          visible={showLanguageMenu}
+          onDismiss={() => setShowLanguageMenu(false)}
+          anchor={<Appbar.Action icon="ab-testing" onPress={() => setShowLanguageMenu(true)} />}
+        >
+          <Menu.Item title='Français' onPress={() => setLanguage('fr')} />
+          <Menu.Item title='English' onPress={() => setLanguage('en')} />
+        </Menu>
+        <Appbar.Action icon="help" onPress={() => setShowTutorial(true)} />
+        <Appbar.Action icon="restore" onPress={() =>
+          alertAction(
+            t('notifications.confirm'),
+            t('common.reset'),
+            t('settings.resettingSettings'),
+            t('common.cancel'),
+            resetSettings,
+          )} />
+      </Appbar.Header>
+
+      <ScrollView contentContainerStyle={[globalStyles.modalContainer]}>
+        <Text variant='titleLarge' style={globalStyles.titleCenter}>{t('settings.intervals')}</Text>
         <View style={styles.stepsContainer}>
           <SettingStep
-            textLabel="1 :"
-            textInput={step0}
-            setTextInput={setStep0}
+            stepNumber={1}
+            selectedStep={step0}
+            setSelectedStep={setStep0}
           />
           <SettingStep
-            textLabel="2 :"
-            textInput={step1}
-            setTextInput={setStep1}
+            stepNumber={2}
+            selectedStep={step1}
+            setSelectedStep={setStep1}
           />
           <SettingStep
-            textLabel="3 :"
-            textInput={step2}
-            setTextInput={setStep2}
+            stepNumber={3}
+            selectedStep={step2}
+            setSelectedStep={setStep2}
           />
           <SettingStep
-            textLabel="4 :"
-            textInput={step3}
-            setTextInput={setStep3}
+            stepNumber={4}
+            selectedStep={step3}
+            setSelectedStep={setStep3}
           />
           <SettingStep
-            textLabel="5 :"
-            textInput={step4}
-            setTextInput={setStep4}
+            stepNumber={5}
+            selectedStep={step4}
+            setSelectedStep={setStep4}
           />
           <SettingStep
-            textLabel="6 :"
-            textInput={step5}
-            setTextInput={setStep5}
+            stepNumber={6}
+            selectedStep={step5}
+            setSelectedStep={setStep5}
           />
           <SettingStep
-            textLabel="7 :"
-            textInput={step6}
-            setTextInput={setStep6}
+            stepNumber={7}
+            selectedStep={step6}
+            setSelectedStep={setStep6}
           />
           <SettingStep
-            textLabel="8 :"
-            textInput={step7}
-            setTextInput={setStep7}
+            stepNumber={8}
+            selectedStep={step7}
+            setSelectedStep={setStep7}
           />
           <SettingStep
-            textLabel="9 :"
-            textInput={step8}
-            setTextInput={setStep8}
+            stepNumber={9}
+            selectedStep={step8}
+            setSelectedStep={setStep8}
           />
         </View>
-        <Header
-          level={3}
-          text={t('settings.revisionSettings')}
-          color={Colors.library.light.contrast}
-        />
-        <View style={styles.checkboxContainer}>
+        <View>
+          <Text variant='titleLarge' style={globalStyles.titleCenter}>{t('settings.revisionSettings')}</Text>
           <CheckboxWithText
             isChecked={newHardThrowback}
             setIsChecked={setNewHardThrowback}
@@ -210,66 +210,23 @@ export default function Modal() {
             textExplanation={t('settings.advancedModeExplanation')}
           />
         </View>
-        <View style={styles.buttonLineContainer}>
-          <ButtonModal
-            text={t('settings.resetSettings')}
-            onPress={() =>
-              alertAction(
-                t('notifications.confirm'),
-                t('common.reset'),
-                t('settings.resettingSettings'),
-                t('common.cancel'),
-                resetSettings,
-              )
-            }
-          />
+        <View style={globalStyles.buttonLineContainer}>
+          <ModalButton variant='tertiary' text={t('common.cancel')} onPress={() => router.back()} />
+          <ModalButton variant='primary' text={t('common.save')} onPress={handleValidate} />
         </View>
       </ScrollView>
-      <View style={styles.buttonBottom}>
-        <ButtonModal text={t('common.cancel')} onPress={() => router.back()} />
-        <ButtonModal text={t('common.save')} onPress={handleValidate} />
-      </View>
-      <DocModal visible={isDocOpen} onClose={() => setIsDocOpen(false)} />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    ...globalStyles.page,
-    backgroundColor: Colors.library.light.main,
-  },
-  container: {
-    flexGrow: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-  },
-  scrollableWindow: {
-    marginBottom: 16,
-  },
   stepsContainer: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
     flexWrap: 'wrap',
     columnGap: 24,
     rowGap: 8,
-  },
-  checkboxContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    rowGap: 8,
-  },
-  buttonLineContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginTop: 16,
-  },
-  buttonBottom: {
-    marginTop: 'auto',
-    flexDirection: 'row',
-    justifyContent: 'center',
+    marginBottom: 8,
   },
 });

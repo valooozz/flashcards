@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { Appbar, FAB, ProgressBar, Searchbar, Text } from 'react-native-paper';
 import { ListCard } from '../../components/card/ListCard';
 import { useTranslation } from '../../hooks/useTranslation';
+import { globalStyles } from '../../style/Styles';
 import { CardType } from '../../types/CardType';
 
 interface DeckProps {
@@ -97,7 +98,7 @@ export function Deck({
             <ListCard card={item} triggerReload={reload} />
           )}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.cardsDisplay}
+          contentContainerStyle={[globalStyles.container, styles.cardsDisplay]}
           showsVerticalScrollIndicator={false}
         />
       ) : (
@@ -121,11 +122,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   cardsDisplay: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    rowGap: 4,
-    flexGrow: 1,
     padding: 8,
+    rowGap: 4,
   },
   text: {
     textAlign: 'center',

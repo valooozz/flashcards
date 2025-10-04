@@ -14,7 +14,7 @@ interface SettingsContextType {
     newStopLearning: boolean,
     newAdvancedRevisionMode: boolean,
   ) => Promise<void>;
-  switchLanguage: () => Promise<void>;
+  setLanguage: (language: string) => Promise<void>;
   resetSettings: () => Promise<void>;
 }
 
@@ -40,15 +40,17 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({ children }) => {
   const settings = useSettings();
   const { changeLanguage, getCurrentLanguage } = useTranslation();
 
-  const switchLanguage = async () => {
+  const setLanguage = async (language: string) => {
     const currentLanguage = getCurrentLanguage();
-    let newLanguage = 'fr';
+    if (currentLanguage === language) return;
 
-    if (currentLanguage === 'fr') {
-      newLanguage = 'en';
+    let newLanguage = language;
+    try {
+      changeLanguage(newLanguage);
+    } catch {
+      changeLanguage('fr');
+      newLanguage = 'fr';
     }
-
-    changeLanguage(newLanguage);
 
     AsyncStorage.setItem('language', newLanguage).catch(
       (error) => console.log(error),
@@ -58,7 +60,7 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({ children }) => {
   return (
     <SettingsContext.Provider value={{
       ...settings,
-      switchLanguage,
+      setLanguage,
     }}>
       {children}
     </SettingsContext.Provider>

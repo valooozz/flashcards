@@ -19,8 +19,7 @@ export const initDatabase = async (database: SQLiteDatabase) => {
   await createTableForgotten(database);
   await clearForToday(database);
 
-  await createAllTriggers(database);
-
   await migrateDatabase(database);
 
+  await createAllTriggers(database);
 };

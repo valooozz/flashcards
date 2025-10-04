@@ -1,37 +1,71 @@
-import { Dispatch, SetStateAction } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
+import { Card, Text } from 'react-native-paper';
+import { useTranslation } from '../../hooks/useTranslation';
 import { Sizes } from '../../style/Sizes';
-import { Input } from './Input';
+import { NumberPickerModal } from '../modal/NumberPickerModal';
 
 interface SettingStepProps {
-  textLabel: string;
-  textInput: string;
-  setTextInput: Dispatch<SetStateAction<string>>;
+  stepNumber: number;
+  selectedStep: number;
+  setSelectedStep: Dispatch<SetStateAction<number>>;
 }
 
 export function SettingStep({
-  textLabel,
-  textInput,
-  setTextInput,
+  stepNumber,
+  selectedStep,
+  setSelectedStep,
 }: SettingStepProps) {
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const numberToChoose = Array.from({ length: 100 }, (_, i) => i + 1);
+
+  const { t } = useTranslation();
+
+  const handleCardPress = () => {
+    setModalVisible(true);
+  };
+
+  const handleNumberSelect = (value: number) => {
+    setSelectedStep(value);
+  };
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.textLabel}>{textLabel}</Text>
-      <View style={{ flex: 1 }}>
-        <Input text={textInput} setText={setTextInput} numeric />
-      </View>
-    </View>
+    <>
+      <TouchableOpacity onPress={handleCardPress}>
+        <Card style={styles.container}>
+          <Card.Content style={styles.content}>
+            <Text variant="bodyMedium">{stepNumber} :</Text>
+            <Text variant="bodyLarge">{selectedStep}</Text>
+          </Card.Content>
+        </Card>
+      </TouchableOpacity>
+
+      <NumberPickerModal
+        visible={modalVisible}
+        items={numberToChoose}
+        selectedItem={selectedStep}
+        onSelect={handleNumberSelect}
+        onClose={() => setModalVisible(false)}
+        title={`${t('settings.stepSpacing')} ${stepNumber}`}
+      />
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     alignItems: 'center',
-    columnGap: 8,
     width: Sizes.component.large,
+  },
+  content: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    columnGap: 16,
   },
   textLabel: {
     width: Sizes.component.tiny,

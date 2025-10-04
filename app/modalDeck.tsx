@@ -12,6 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { useTranslation } from '../hooks/useTranslation';
+import { globalStyles } from '../style/Styles';
 import { ImportExportType } from '../types/ImportExportType';
 import { alertAction } from '../utils/alertAction.utils';
 import { getProgressInDeck } from '../utils/database/card/get/getProgressInDeck.utils';
@@ -194,7 +195,7 @@ export default function Modal() {
         )}
       </Appbar.Header>
 
-      <View style={styles.container}>
+      <View style={[globalStyles.container, globalStyles.modalContainer]}>
         <TextInput label={t('deck.name')} value={newDeckName} onChangeText={setNewDeckName} />
         <View style={styles.checkboxAction}>
           <CheckboxWithText
@@ -223,7 +224,7 @@ export default function Modal() {
           setIsChecked={setShowName}
           textLabel={t('deck.showName')}
         />
-        <View style={styles.buttonLineContainer}>
+        <View style={globalStyles.buttonLineContainer}>
           <ModalButton variant='tertiary' text={editMode ? t('common.back') : t('common.cancel')} onPress={() => router.back()} />
           <ModalButton variant='primary' text={editMode ? t('common.edit') : t('common.add')} onPress={handleValidate} />
         </View>
@@ -233,19 +234,6 @@ export default function Modal() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-    marginTop: 16,
-    paddingHorizontal: 8,
-    rowGap: 8,
-  },
-  buttonLineContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
   checkboxAction: {
     display: 'flex',
     flexDirection: 'row',

@@ -99,12 +99,15 @@
         "advancedModeExplanation": "Advanced review mode displays four buttons instead of two during card revision, allowing for more precise feedback on your knowledge of the card.",
         "resetSettings": "Reset settings",
         "resettingSettings": "the settings and return to default",
-        "updatedSettings": "Settings updated"
+        "updatedSettings": "Settings updated",
+        "stepSpacing": "Spacing days of step"
     },
     "library": {
         "title": "Library",
         "decks": "Decks",
-        "noDeck": "There are no decks here. Click the + button to add one!"
+        "noDeck": "There are no decks here. Click the + button to add one!",
+        "import": "Import decks",
+        "export": "Export all decks"
     },
     "learning": {
         "title": "Learning",

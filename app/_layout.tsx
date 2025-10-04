@@ -9,8 +9,62 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ToastManager from 'toastify-react-native';
 import { TutorialModal } from '../components/modal/TutorialModal';
 import { SettingsProvider } from '../context/SettingsContext';
+import { TutorialProvider, useTutorialContext } from '../context/TutorialContext';
 import { i18nReady } from '../i18n';
 import { initDatabase } from '../utils/database/initDatabase.utils';
+
+function TutorialWrapper() {
+  const { showTutorial, setShowTutorial } = useTutorialContext();
+  const [initialTutorialShown, setInitialTutorialShown] = useState(false);
+
+  useEffect(() => {
+    const checkFirstOpen = async () => {
+      try {
+        const flag = await AsyncStorage.getItem('hasSeenTutorial');
+        if (!flag && !initialTutorialShown) {
+          setShowTutorial(true);
+          setInitialTutorialShown(true);
+        }
+      } catch (e) {
+        if (!initialTutorialShown) {
+          setShowTutorial(true);
+          setInitialTutorialShown(true);
+        }
+      }
+    };
+    checkFirstOpen();
+  }, [setShowTutorial, initialTutorialShown]);
+
+  const tutoSlides = useMemo(
+    () => [
+      {
+        key: 'welcome',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+    ],
+    [],
+  );
+
+  return (
+    <TutorialModal
+      visible={showTutorial}
+      slides={tutoSlides}
+      onSkip={async () => {
+        setShowTutorial(false);
+        try {
+          await AsyncStorage.setItem('hasSeenTutorial', 'true');
+        } catch { }
+      }}
+      onDone={async () => {
+        setShowTutorial(false);
+        try {
+          await AsyncStorage.setItem('hasSeenTutorial', 'true');
+        } catch { }
+      }}
+    />
+  );
+}
 
 export default function Layout() {
   const [fontsLoaded] = useFonts({
@@ -19,7 +73,6 @@ export default function Layout() {
     JosefinSemiBold: require('../assets/fonts/JosefinSans-SemiBold.ttf'),
   });
   const [i18nLoaded, setI18nLoaded] = useState(false);
-  const [showTutorial, setShowTutorial] = useState(false);
 
   const fontConfig = {
     displayLarge: { fontFamily: 'JosefinBold' },
@@ -69,31 +122,6 @@ export default function Layout() {
     }
   }, [fontsLoaded, i18nLoaded]);
 
-  useEffect(() => {
-    const checkFirstOpen = async () => {
-      try {
-        const flag = await AsyncStorage.getItem('hasSeenTutorial');
-        if (!flag) {
-          setShowTutorial(true);
-        }
-      } catch (e) {
-        setShowTutorial(true);
-      }
-    };
-    checkFirstOpen();
-  }, []);
-
-  const tutoSlides = useMemo(
-    () => [
-      {
-        key: 'welcome',
-        image: require('../assets/images/logo.png'),
-        hasTitle: true,
-      },
-    ],
-    [],
-  );
-
   if (!fontsLoaded || !i18nLoaded) {
     return null;
   }
@@ -102,42 +130,29 @@ export default function Layout() {
     <SQLiteProvider databaseName="flashcards.db" onInit={initDatabase}>
       <PaperProvider theme={theme}>
         <SafeAreaProvider style={{ flex: 1 }}>
-          <SettingsProvider>
-            <SafeAreaView style={{ flex: 1 }}>
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen
-                  name="modalDeck"
-                  options={{ presentation: 'modal' }}
-                />
-                <Stack.Screen
-                  name="modalCard"
-                  options={{ presentation: 'modal' }}
-                />
-                <Stack.Screen
-                  name="modalSettings"
-                  options={{ presentation: 'modal' }}
-                />
-              </Stack>
-              <ToastManager useModal={false} />
-              <TutorialModal
-                visible={showTutorial}
-                slides={tutoSlides}
-                onSkip={async () => {
-                  setShowTutorial(false);
-                  try {
-                    await AsyncStorage.setItem('hasSeenTutorial', 'true');
-                  } catch { }
-                }}
-                onDone={async () => {
-                  setShowTutorial(false);
-                  try {
-                    await AsyncStorage.setItem('hasSeenTutorial', 'true');
-                  } catch { }
-                }}
-              />
-            </SafeAreaView>
-          </SettingsProvider>
+          <TutorialProvider>
+            <SettingsProvider>
+              <SafeAreaView style={{ flex: 1 }}>
+                <Stack>
+                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    name="modalDeck"
+                    options={{ presentation: 'modal' }}
+                  />
+                  <Stack.Screen
+                    name="modalCard"
+                    options={{ presentation: 'modal' }}
+                  />
+                  <Stack.Screen
+                    name="modalSettings"
+                    options={{ presentation: 'modal' }}
+                  />
+                </Stack>
+                <ToastManager useModal={false} />
+                <TutorialWrapper />
+              </SafeAreaView>
+            </SettingsProvider>
+          </TutorialProvider>
         </SafeAreaProvider>
       </PaperProvider>
     </SQLiteProvider>

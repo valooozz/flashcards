@@ -99,12 +99,15 @@
         "advancedModeExplanation": "Le mode de révision avancé permet de faire apparaître quatre boutons au lieu de deux lors de la révision des cartes, permettant d'être plus précis dans son retour sur sa connaissance de la carte.",
         "resetSettings": "Réinitialiser les paramètres",
         "resettingSettings": "les paramètres et revenir aux paramètres par défaut",
-        "updatedSettings": "Paramètres mis à jour"
+        "updatedSettings": "Paramètres mis à jour",
+        "stepSpacing": "Jours d'espacement de l'étape"
     },
     "library": {
         "title": "Bibliothèque",
         "decks": "Decks",
-        "noDeck": "Il n'y a aucun deck par ici. Clique sur le bouton + pour en ajouter !"
+        "noDeck": "Il n'y a aucun deck par ici. Clique sur le bouton + pour en ajouter !",
+        "import": "Importer des decks",
+        "export": "Exporter tous les decks"
     },
     "learning": {
         "title": "Apprentissage",

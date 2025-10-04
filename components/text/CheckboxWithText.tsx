@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native';
 import { Checkbox, Text } from 'react-native-paper';
-import { Colors } from '../../style/Colors';
 import { InfoButton } from '../button/InfoButton';
 
 interface CheckboxWithTextProps {
@@ -22,11 +21,13 @@ export function CheckboxWithText({
         status={isChecked ? 'checked' : 'unchecked'}
         onPress={() => setIsChecked(!isChecked)}
       />
-      <Text variant='titleMedium'>
-        {textLabel}
-      </Text>
+      <View style={styles.textContainer}>
+        <Text variant='titleMedium' style={styles.text}>
+          {textLabel}
+        </Text>
+      </View>
       {textExplanation && (
-        <InfoButton color={Colors.library.dark.main} textLabel={textLabel} textExplanation={textExplanation} />
+        <InfoButton textLabel={textLabel} textExplanation={textExplanation} />
       )}
     </View>
   );
@@ -38,5 +39,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+  },
+  textContainer: {
+    flexShrink: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  text: {
+    flex: 1,
+    flexWrap: 'wrap',
   },
 });
