@@ -9,7 +9,7 @@ import { SettingStep } from '../components/text/SettingStep';
 import { useSettingsContext } from '../context/SettingsContext';
 import { useTutorialContext } from '../context/TutorialContext';
 import { useTranslation } from '../hooks/useTranslation';
-import { globalStyles } from '../style/Styles';
+import { GlobalStyles } from '../style/GlobalStyles';
 import { alertAction } from '../utils/alertAction.utils';
 import { notify } from '../utils/notify.utils';
 
@@ -140,8 +140,8 @@ export default function Modal() {
           )} />
       </Appbar.Header>
 
-      <ScrollView contentContainerStyle={[globalStyles.modalContainer]}>
-        <Text variant='titleLarge' style={globalStyles.titleCenter}>{t('settings.intervals')}</Text>
+      <ScrollView contentContainerStyle={[GlobalStyles.modalContainer]}>
+        <Text variant='titleLarge' style={GlobalStyles.titleCenter}>{t('settings.intervals')}</Text>
         <View style={styles.stepsContainer}>
           <SettingStep
             stepNumber={1}
@@ -190,7 +190,7 @@ export default function Modal() {
           />
         </View>
         <View>
-          <Text variant='titleLarge' style={globalStyles.titleCenter}>{t('settings.revisionSettings')}</Text>
+          <Text variant='titleLarge' style={GlobalStyles.titleCenter}>{t('settings.revisionSettings')}</Text>
           <CheckboxWithText
             isChecked={newHardThrowback}
             setIsChecked={setNewHardThrowback}
@@ -210,7 +210,7 @@ export default function Modal() {
             textExplanation={t('settings.advancedModeExplanation')}
           />
         </View>
-        <View style={globalStyles.buttonLineContainer}>
+        <View style={GlobalStyles.buttonLineContainer}>
           <ModalButton variant='tertiary' text={t('common.cancel')} onPress={() => router.back()} />
           <ModalButton variant='primary' text={t('common.save')} onPress={handleValidate} />
         </View>

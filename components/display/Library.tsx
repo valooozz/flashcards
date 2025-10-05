@@ -6,8 +6,8 @@ import { Appbar, FAB, Menu } from 'react-native-paper';
 import { DeckCard } from '../../components/card/DeckCard';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
+import { GlobalStyles } from '../../style/GlobalStyles';
 import { Sizes } from '../../style/Sizes';
-import { globalStyles } from '../../style/Styles';
 import { DeckType } from '../../types/DeckType';
 import { exportAllDecks } from '../../utils/database/deck/exportAllDecks.utils';
 import { importDocument } from '../../utils/import/importDocument.utils';
@@ -39,7 +39,7 @@ export function Library({ decks, openDeck }: LibraryProps) {
       </Appbar.Header>
       {decks.length > 0 ? (
         <ScrollView
-          contentContainerStyle={[globalStyles.container, styles.decksDisplay]}
+          contentContainerStyle={[GlobalStyles.container, styles.decksDisplay]}
           showsVerticalScrollIndicator={false}
         >
           {decks.map((deck) => (

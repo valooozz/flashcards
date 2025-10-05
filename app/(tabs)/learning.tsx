@@ -7,7 +7,7 @@ import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
-import { globalStyles } from '../../style/Styles';
+import { GlobalStyles } from '../../style/GlobalStyles';
 import { LearningAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
@@ -75,7 +75,7 @@ export default function Tab() {
   };
 
   return (
-    <View style={globalStyles.container}>
+    <View style={GlobalStyles.container}>
       <Appbar.Header>
         <Appbar.Content title={t('learning.title')} />
         <Appbar.Action
@@ -102,7 +102,7 @@ export default function Tab() {
             previousPossible={previousCard !== undefined}
             handlePrevious={handlePrevious}
           />
-          <View style={globalStyles.flashButtonContainer}>
+          <View style={GlobalStyles.flashButtonContainer}>
             <FlashButton
               text={t('learning.ignore')}
               backgroundColor={Colors.learning.light.main}
@@ -124,7 +124,7 @@ export default function Tab() {
           </View>
         </>
       ) : (
-        <Text variant='titleMedium' style={globalStyles.centerText}>{t('learning.over')}</Text>
+        <Text variant='titleMedium' style={GlobalStyles.centerText}>{t('learning.over')}</Text>
       )}
     </View>
   );

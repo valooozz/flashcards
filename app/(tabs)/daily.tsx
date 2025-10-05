@@ -1,16 +1,14 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
-import { Header } from '../../components/text/Header';
 import { useSettingsContext } from '../../context/SettingsContext';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
-import { Sizes } from '../../style/Sizes';
-import { globalStyles } from '../../style/Styles';
+import { GlobalStyles } from '../../style/GlobalStyles';
 import { DailyAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
 import { NbCardsToReviseType } from '../../types/NbCardsToReviseType';
@@ -191,7 +189,7 @@ export default function Tab() {
   };
 
   return (
-    <View style={globalStyles.container}>
+    <View style={GlobalStyles.container}>
       <Appbar.Header>
         <Appbar.Content title={t('daily.title')} />
         <Appbar.Action
@@ -219,7 +217,7 @@ export default function Tab() {
             previousPossible={previousCard !== undefined}
             handlePrevious={handlePrevious}
           />
-          <View style={globalStyles.flashButtonContainer}>
+          <View style={GlobalStyles.flashButtonContainer}>
             <FlashButton
               text={t('daily.forgotten')}
               backgroundColor={Colors.daily.light.main}
@@ -250,32 +248,15 @@ export default function Tab() {
         </>
       ) : (
         <>
-          <Text
-            style={{
-              ...styles.text,
-              textAlign: 'center',
-              marginVertical: '10%',
-              marginHorizontal: '20%',
-            }}
-          >
-            {t('daily.over')}
-          </Text>
+          <Text variant='titleMedium' style={GlobalStyles.centerText}>{t('daily.over')}</Text>
           <View>
-            <Header
-              level={3}
-              text={t('days.today')}
-              color={Colors.daily.dark.contrast}
-            />
-            <Text style={styles.text}>{t('daily.cardsReviewed')} : {nbRevised}</Text>
-            <Text style={styles.text}>{t('daily.cardsKnown')} : {nbKnown}</Text>
-            <Text style={styles.text}>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
+            <Text variant='titleLarge'>{t('days.today')}</Text>
+            <Text variant='bodyLarge'>{t('daily.cardsReviewed')} : {nbRevised}</Text>
+            <Text variant='bodyLarge'>{t('daily.cardsKnown')} : {nbKnown}</Text>
+            <Text variant='bodyLarge'>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
           </View>
           <View style={{ marginTop: 16 }}>
-            <Header
-              level={3}
-              text={t('daily.weekRevisions')}
-              color={Colors.daily.dark.contrast}
-            />
+            <Text variant='titleMedium'>{t('daily.weekRevisions')}</Text>
             {nbCardsToReviseThisWeek.map((nbCardsToRevise) => {
               const revisionDate = new Date();
               revisionDate.setDate(revisionDate.getDate() + nbCardsToRevise.daysFromToday);
@@ -289,7 +270,7 @@ export default function Tab() {
               }
 
               return (
-                <Text style={styles.text} key={nbCardsToRevise.daysFromToday}>
+                <Text variant='bodyLarge' key={nbCardsToRevise.daysFromToday}>
                   {dayLabel} : {nbCardsToRevise.nbCards}
                 </Text>
               );
@@ -300,22 +281,3 @@ export default function Tab() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    height: Sizes.component.large,
-  },
-  text: {
-    color: Colors.daily.dark.contrast,
-    fontSize: Sizes.font.small,
-    fontFamily: 'JosefinRegular',
-  },
-  weekRevisionsContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
-});

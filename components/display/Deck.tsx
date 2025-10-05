@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { Appbar, FAB, ProgressBar, Searchbar, Text } from 'react-native-paper';
 import { ListCard } from '../../components/card/ListCard';
 import { useTranslation } from '../../hooks/useTranslation';
-import { globalStyles } from '../../style/Styles';
+import { GlobalStyles } from '../../style/GlobalStyles';
 import { CardType } from '../../types/CardType';
 
 interface DeckProps {
@@ -98,7 +98,7 @@ export function Deck({
             <ListCard card={item} triggerReload={reload} />
           )}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={[globalStyles.container, styles.cardsDisplay]}
+          contentContainerStyle={[GlobalStyles.container, styles.cardsDisplay]}
           showsVerticalScrollIndicator={false}
         />
       ) : (

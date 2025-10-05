@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { Appbar, ProgressBar, Text } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
-import { Sizes } from '../../style/Sizes';
-import { globalStyles } from '../../style/Styles';
+import { GlobalStyles } from '../../style/GlobalStyles';
 import { RevisionAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
 import { RevisionSide } from '../../types/FlashRevisionSettings';
@@ -105,7 +104,7 @@ export function Revision({
   }
 
   return (
-    <View style={globalStyles.container}>
+    <View style={GlobalStyles.container}>
       <Appbar.Header>
         <Appbar.BackAction onPress={closeRevision} />
         <Appbar.Content title={deckName} />
@@ -126,7 +125,7 @@ export function Revision({
             previousPossible={previousCard !== undefined}
             handlePrevious={handlePrevious}
           />
-          <View style={globalStyles.flashButtonContainer}>
+          <View style={GlobalStyles.flashButtonContainer}>
             <FlashButton
               text={t('revision.again')}
               backgroundColor={Colors.revision.light.main}
@@ -142,43 +141,8 @@ export function Revision({
           </View>
         </>
       ) : (
-        <Text variant='titleMedium' style={globalStyles.centerText}>{t('revision.over')}</Text>
+        <Text variant='titleMedium' style={GlobalStyles.centerText}>{t('revision.over')}</Text>
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    ...globalStyles.page,
-    backgroundColor: Colors.revision.dark.main,
-  },
-  interface: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    rowGap: 16,
-  },
-  cardContainer: {
-    flex: 1,
-  },
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    height: Sizes.component.large,
-  },
-  text: {
-    color: Colors.revision.dark.contrast,
-    textAlign: 'center',
-    fontFamily: 'JosefinRegular',
-    marginHorizontal: 'auto',
-  },
-  progressText: {
-    fontSize: Sizes.font.medium,
-  },
-  overText: {
-    fontSize: Sizes.font.small,
-    marginVertical: 'auto',
-  }
-});

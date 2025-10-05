@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { useTranslation } from '../hooks/useTranslation';
-import { globalStyles } from '../style/Styles';
+import { GlobalStyles } from '../style/GlobalStyles';
 import { CardChangeSide } from '../types/CardChangeSide';
 import { alertAction } from '../utils/alertAction.utils';
 import { createCard } from '../utils/database/card/createCard.utils';
@@ -217,7 +217,7 @@ export default function Modal() {
         )}
       </Appbar.Header>
 
-      <ScrollView style={{}} contentContainerStyle={globalStyles.modalContainer}>
+      <ScrollView style={{}} contentContainerStyle={GlobalStyles.modalContainer}>
         <TextInput
           label={t('card.front')}
           value={recto}
@@ -248,7 +248,7 @@ export default function Modal() {
             <Card.Cover source={{ uri: versoImage }} />
           </Card>
         }
-        <Text variant='titleMedium' style={globalStyles.titleCenter}>{t('card.alternateSides')}</Text>
+        <Text variant='titleMedium' style={GlobalStyles.titleCenter}>{t('card.alternateSides')}</Text>
         <SegmentedButtons
           value={selectedChangeSide}
           onValueChange={setSelectedChangeSide as ((value: string) => void)}
@@ -278,7 +278,7 @@ export default function Modal() {
             rectoInputRef.current.focus();
           }} />
         )}
-        <View style={globalStyles.buttonLineContainer}>
+        <View style={GlobalStyles.buttonLineContainer}>
           <ModalButton variant='tertiary' text={editMode ? t('common.back') : t('common.cancel')} onPress={() => router.back()} />
           <ModalButton variant='primary' text={editMode ? t('common.edit') : t('common.add')} onPress={() => handleValidate(false)} />
         </View>

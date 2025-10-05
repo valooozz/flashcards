@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { useTranslation } from '../hooks/useTranslation';
-import { globalStyles } from '../style/Styles';
+import { GlobalStyles } from '../style/GlobalStyles';
 import { ImportExportType } from '../types/ImportExportType';
 import { alertAction } from '../utils/alertAction.utils';
 import { getProgressInDeck } from '../utils/database/card/get/getProgressInDeck.utils';
@@ -195,7 +195,7 @@ export default function Modal() {
         )}
       </Appbar.Header>
 
-      <View style={[globalStyles.container, globalStyles.modalContainer]}>
+      <View style={[GlobalStyles.container, GlobalStyles.modalContainer]}>
         <TextInput label={t('deck.name')} value={newDeckName} onChangeText={setNewDeckName} />
         <View style={styles.checkboxAction}>
           <CheckboxWithText
@@ -224,7 +224,7 @@ export default function Modal() {
           setIsChecked={setShowName}
           textLabel={t('deck.showName')}
         />
-        <View style={globalStyles.buttonLineContainer}>
+        <View style={GlobalStyles.buttonLineContainer}>
           <ModalButton variant='tertiary' text={editMode ? t('common.back') : t('common.cancel')} onPress={() => router.back()} />
           <ModalButton variant='primary' text={editMode ? t('common.edit') : t('common.add')} onPress={handleValidate} />
         </View>

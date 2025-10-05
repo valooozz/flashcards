@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { Shadows } from './Shadows';
 import { Sizes } from './Sizes';
 
-export const globalStyles = StyleSheet.create({
+export const GlobalStyles = StyleSheet.create({
   page: {
     flex: 1,
     flexDirection: 'column',
