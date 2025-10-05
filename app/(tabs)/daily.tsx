@@ -1,7 +1,7 @@
 import { useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Appbar, Text } from 'react-native-paper';
 import { FlashButton } from '../../components/button/FlashButton';
 import { FlashCard } from '../../components/card/FlashCard';
@@ -247,16 +247,16 @@ export default function Tab() {
           </View>
         </>
       ) : (
-        <>
+        <View style={styles.container}>
           <Text variant='titleMedium' style={GlobalStyles.centerText}>{t('daily.over')}</Text>
           <View>
-            <Text variant='titleLarge'>{t('days.today')}</Text>
-            <Text variant='bodyLarge'>{t('daily.cardsReviewed')} : {nbRevised}</Text>
-            <Text variant='bodyLarge'>{t('daily.cardsKnown')} : {nbKnown}</Text>
-            <Text variant='bodyLarge'>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
+            <Text variant='headlineLarge'>{t('days.today')}</Text>
+            <Text variant='titleMedium'>{t('daily.cardsReviewed')} : {nbRevised}</Text>
+            <Text variant='titleMedium'>{t('daily.cardsKnown')} : {nbKnown}</Text>
+            <Text variant='titleMedium'>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
           </View>
-          <View style={{ marginTop: 16 }}>
-            <Text variant='titleMedium'>{t('daily.weekRevisions')}</Text>
+          <View>
+            <Text variant='headlineLarge'>{t('daily.weekRevisions')}</Text>
             {nbCardsToReviseThisWeek.map((nbCardsToRevise) => {
               const revisionDate = new Date();
               revisionDate.setDate(revisionDate.getDate() + nbCardsToRevise.daysFromToday);
@@ -270,14 +270,25 @@ export default function Tab() {
               }
 
               return (
-                <Text variant='bodyLarge' key={nbCardsToRevise.daysFromToday}>
+                <Text variant='titleMedium' key={nbCardsToRevise.daysFromToday}>
                   {dayLabel} : {nbCardsToRevise.nbCards}
                 </Text>
               );
             })}
           </View>
-        </>
+        </View>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    rowGap: 16,
+  }
+})

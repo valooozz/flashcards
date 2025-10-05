@@ -30,6 +30,7 @@ export const GlobalStyles = StyleSheet.create({
     textAlign: 'center',
     marginVertical: 'auto',
     marginHorizontal: '20%',
+    alignSelf: 'center',
   },
   buttonLineContainer: {
     flexDirection: 'row',
