@@ -69,6 +69,11 @@ export default function Modal() {
     notify(true, '', t('settings.updatedSettings'));
   };
 
+  const changeLanguage = (newLanguage: string) => {
+    setLanguage(newLanguage);
+    setShowLanguageMenu(false);
+  }
+
   useFocusEffect(
     useCallback(() => {
       setNewHardThrowback(hardThrowback);
@@ -126,8 +131,8 @@ export default function Modal() {
           onDismiss={() => setShowLanguageMenu(false)}
           anchor={<Appbar.Action icon="ab-testing" onPress={() => setShowLanguageMenu(true)} />}
         >
-          <Menu.Item title='Français' onPress={() => setLanguage('fr')} />
-          <Menu.Item title='English' onPress={() => setLanguage('en')} />
+          <Menu.Item title='Français' onPress={() => changeLanguage('fr')} />
+          <Menu.Item title='English' onPress={() => changeLanguage('en')} />
         </Menu>
         <Appbar.Action icon="help" onPress={() => setShowTutorial(true)} />
         <Appbar.Action icon="restore" onPress={() =>

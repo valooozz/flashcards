@@ -102,7 +102,7 @@ export function Deck({
           showsVerticalScrollIndicator={false}
         />
       ) : (
-        <Text variant="bodyLarge" style={styles.text}>{t('deck.noCards')}</Text>
+        <Text variant="bodyLarge" style={GlobalStyles.centerText}>{t('deck.noCards')}</Text>
       )}
       <FAB
         icon="plus"
@@ -124,11 +124,6 @@ const styles = StyleSheet.create({
   cardsDisplay: {
     padding: 8,
     rowGap: 4,
-  },
-  text: {
-    textAlign: 'center',
-    marginHorizontal: 8,
-    marginVertical: 'auto',
   },
   fab: {
     position: 'absolute',

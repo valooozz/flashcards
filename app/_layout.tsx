@@ -134,7 +134,7 @@ export default function Layout() {
             <SettingsProvider>
               <SafeAreaView style={{ flex: 1 }}>
                 <Stack>
-                  <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                  <Stack.Screen name="index" options={{ headerShown: false }} />
                   <Stack.Screen
                     name="modalDeck"
                     options={{ presentation: 'modal' }}
