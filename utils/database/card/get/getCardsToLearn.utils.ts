@@ -21,7 +21,7 @@ export const getCardsToLearn = async (database: SQLiteDatabase) => {
       WHERE nextRevision IS NULL AND toLearn=1`,
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   return cardsToLearn;

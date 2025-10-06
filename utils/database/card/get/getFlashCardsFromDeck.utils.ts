@@ -1,14 +1,15 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 import { FlashCardType } from '../../../../types/FlashCardType';
-import { StepDelimiter } from '../../../../types/FlashRevisionSettings';
+import { CardsToReviseLearnt, StepDelimiter } from '../../../../types/FlashRevisionSettings';
 
 export const getFlashCardsFromDeck = async (
   database: SQLiteDatabase,
   idDeck: number,
-  notLearnt?: boolean,
+  cardsToReviseLearnt: CardsToReviseLearnt,
   stepDelimiter?: StepDelimiter
 ): Promise<FlashCardType[]> => {
   let flashcards: FlashCardType[];
+
 
   try {
     flashcards = await database.getAllAsync<FlashCardType>(
@@ -25,12 +26,12 @@ export const getFlashCardsFromDeck = async (
       FROM Card C
       INNER JOIN Deck D ON C.deck=D.id
       WHERE D.id=? AND C.toLearn=1
-      ${notLearnt ? 'AND C.nextRevision IS NULL' : ''}
+      ${cardsToReviseLearnt !== 'all' ? `AND C.nextRevision IS ${cardsToReviseLearnt === 'learnt' ? 'NOT' : ''} NULL` : ''}
       ${stepDelimiter ? `AND C.step ${stepDelimiter.above ? '>=' : '<='} ${stepDelimiter.step}` : ''}`,
       [idDeck],
     );
   } catch (error) {
-    console.log('getFlashCardsFromDeck:', error);
+    console.error('getFlashCardsFromDeck:', error);
   }
 
   return flashcards;

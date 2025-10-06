@@ -110,7 +110,7 @@ export function Revision({
         <Appbar.Content title={deckName} />
         <Appbar.Content title={`${sizeOfDeck - cardsToRevise.length} / ${sizeOfDeck}`} />
       </Appbar.Header>
-      <ProgressBar progress={(sizeOfDeck - cardsToRevise.length) / sizeOfDeck} />
+      <ProgressBar progress={sizeOfDeck > 0 ? (sizeOfDeck - cardsToRevise.length) / sizeOfDeck : 0} />
       {cardToShow ? (
         <>
           <FlashCard

@@ -6,15 +6,15 @@ import { BackHandler } from 'react-native';
 import { CardType } from '../../types/CardType';
 import { DeckType } from '../../types/DeckType';
 import { FlashCardType } from '../../types/FlashCardType';
-import { CardsToRevise, FlashRevisionSettingsType, RevisionSide, StepDelimiter } from '../../types/FlashRevisionSettings';
+import { CardsToReviseLearnt, FlashRevisionSettingsType, RevisionSide, StepDelimiter } from '../../types/FlashRevisionSettings';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
+import { FlashRevisionDialog } from '../dialog/FlashRevisionDialog';
 import { Deck } from '../display/Deck';
 import { Library } from '../display/Library';
 import { Revision } from '../display/Revision';
-import { FlashRevisionSettingsModal } from '../modal/FlashRevisionSettingsModal';
 
 export function Home() {
     const [inDeck, setInDeck] = useState(false);
@@ -75,11 +75,11 @@ export function Home() {
         });
     };
 
-    const loadFlashCards = async (id: number, cardsToRevise: CardsToRevise, stepDelimiter: StepDelimiter) => {
+    const loadFlashCards = async (id: number, cardsToReviseLearnt: CardsToReviseLearnt, stepDelimiter: StepDelimiter) => {
         await getFlashCardsFromDeck(
             database,
             id,
-            cardsToRevise === 'notLearnt',
+            cardsToReviseLearnt,
             stepDelimiter
         ).then((flashCardsResult) => {
             setFlashCards(flashCardsResult);
@@ -106,15 +106,17 @@ export function Home() {
         setInDeck(false);
     };
 
-    const chooseRevisionSide = () => {
+    const chooseFlashRevisionSettings = () => {
         setShowRevisionChoice(true);
     }
 
     const openRevision = (flashRevisionSettings: FlashRevisionSettingsType) => {
         setShowRevisionChoice(false);
-        setNumberOfCards(flashRevisionSettings.numberOfCards);
+        if (flashRevisionSettings.cardsToRevise === 'number') {
+            setNumberOfCards(flashRevisionSettings.numberOfCards);
+        }
         setRevisionSide(flashRevisionSettings.revisionSide);
-        loadFlashCards(idDeck, flashRevisionSettings.cardsToRevise, flashRevisionSettings.stepDelimiter).then(() => {
+        loadFlashCards(idDeck, flashRevisionSettings.cardsToReviseLearnt, flashRevisionSettings.cardsToRevise === 'step' ? flashRevisionSettings.stepDelimiter : undefined).then(() => {
             setInRevision(true);
         });
     }
@@ -179,9 +181,9 @@ export function Home() {
                 progress={progressInDeck}
                 reload={() => loadCards(idDeck)}
                 closeDeck={closeDeck}
-                chooseRevisionSide={chooseRevisionSide}
+                chooseFlashRevisionSettings={chooseFlashRevisionSettings}
             />
-            <FlashRevisionSettingsModal visible={showRevisionChoice} openRevision={openRevision} closeModal={() => setShowRevisionChoice(false)} />
+            <FlashRevisionDialog visible={showRevisionChoice} hideDialog={() => setShowRevisionChoice(false)} validate={openRevision} />
         </>
     ) : (
         <Library decks={decks} openDeck={openDeck} />

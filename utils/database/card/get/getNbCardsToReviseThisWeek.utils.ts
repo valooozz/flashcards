@@ -19,7 +19,7 @@ export const getNbCardsToReviseThisWeek = async (database: SQLiteDatabase) => {
             daysFromToday;`,
     );
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 
   return nbCardsToRevise;

@@ -27,7 +27,7 @@ export const getCardsToRevise = async (
       [today],
     );
   } catch (error) {
-    console.log('getCardsToRevise:', error);
+    console.error('getCardsToRevise:', error);
   }
 
   return cardsToRevise;

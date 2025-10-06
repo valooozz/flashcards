@@ -186,7 +186,7 @@ describe('Deck', () => {
         it('calls chooseRevisionSide when FlashDeckButton is pressed', () => {
             const chooseRevisionSide = jest.fn();
             const { getByTestId } = render(
-                <Deck {...defaultProps} chooseRevisionSide={chooseRevisionSide} />
+                <Deck {...defaultProps} chooseFlashRevisionSettings={chooseRevisionSide} />
             );
 
             fireEvent.press(getByTestId('flash-deck-button'));
