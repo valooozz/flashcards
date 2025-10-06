@@ -134,9 +134,10 @@
         "over": "All cards have been revised!",
         "chooseCards": "Which cards to review?",
         "all": "All",
-        "number": "A specific number",
-        "step": "By learning level",
-        "notLearnt": "Not yet learnt",
+        "number": "Number",
+        "step": "Step",
+        "notLearnt": "Not learnt",
+        "learnt": "Learnt",
         "chooseNumber": "How many cards to review?",
         "chooseStep": "Which step?",
         "above": "Above",
@@ -144,8 +145,8 @@
         "chooseSide": "Which side to show first?",
         "recto": "Front",
         "verso": "Back",
-        "random": "Random",
-        "current": "Current state"
+        "random": "?",
+        "current": "State"
     },
     "notifications": {
         "errorOccurred": "An error occurred",

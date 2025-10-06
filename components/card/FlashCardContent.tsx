@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
-import { Sizes } from '../../style/Sizes';
+import { Image, StyleSheet, View } from 'react-native';
+import { Text } from 'react-native-paper';
 
 interface FlashCardContentProps {
   text: string;
@@ -30,7 +30,7 @@ export function FlashCardContent({
         return (
           <>
             {hasText ? (
-              <Text adjustsFontSizeToFit style={{ ...styles.text, color: textColor }}>
+              <Text variant='displaySmall' style={styles.text}>
                 {text}
               </Text>
             ) : null}
@@ -65,8 +65,5 @@ const styles = StyleSheet.create({
   },
   text: {
     textAlign: 'center',
-    fontSize: Sizes.font.large,
-    fontFamily: 'JosefinSemiBold',
-    marginVertical: 'auto',
-  },
+  }
 });
