@@ -3,13 +3,13 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, Text, useTheme } from 'react-native-paper';
+import { useNotify } from '../../hooks/useNotify';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Sizes } from '../../style/Sizes';
 import { CardType } from '../../types/CardType';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { resetCard } from '../../utils/database/card/update/resetCard.utils';
 import { getDelay } from '../../utils/getDelay.utils';
-import { notify } from '../../utils/notify.utils';
 import { ConfirmDialog } from '../dialog/ConfirmDialog';
 import { ListCardElement } from '../text/ListCardElement';
 
@@ -20,6 +20,7 @@ interface ListCardProps {
 
 export function ListCard({ card, triggerReload }: ListCardProps) {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const notify = useNotify();
 
   const { t } = useTranslation();
   const { colors } = useTheme();

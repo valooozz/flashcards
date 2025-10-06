@@ -15,6 +15,7 @@ import { ConfirmDialog } from '../components/dialog/ConfirmDialog';
 import { QuitDialog } from '../components/dialog/QuitDialog';
 import { StatsDeckDialog } from '../components/dialog/StatsDeckDialog';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
+import { useNotify } from '../hooks/useNotify';
 import { useTranslation } from '../hooks/useTranslation';
 import { GlobalStyles } from '../style/GlobalStyles';
 import { ImportExportType } from '../types/ImportExportType';
@@ -29,9 +30,9 @@ import { getNbCardsToLearnInDeck } from '../utils/database/deck/get/getNbCardsTo
 import { resetDeck } from '../utils/database/deck/update/resetDeck.utils';
 import { updateDeckInfo } from '../utils/database/deck/update/updateDeckInfo.utils';
 import { importDocument } from '../utils/import/importDocument.utils';
-import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
+  const notify = useNotify();
   const [deckName, setDeckName] = useState('');
   const [newDeckName, setNewDeckName] = useState('');
   const [changeSide, setChangeSide] = useState<boolean>(true);

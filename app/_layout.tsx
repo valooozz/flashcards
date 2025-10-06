@@ -8,6 +8,7 @@ import { MD3LightTheme, PaperProvider, configureFonts } from 'react-native-paper
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ToastManager from 'toastify-react-native';
 import { TutorialModal } from '../components/modal/TutorialModal';
+import { NotificationProvider } from '../context/NotificationContext';
 import { SettingsProvider } from '../context/SettingsContext';
 import { TutorialProvider, useTutorialContext } from '../context/TutorialContext';
 import { i18nReady } from '../i18n';
@@ -132,25 +133,27 @@ export default function Layout() {
         <SafeAreaProvider style={{ flex: 1 }}>
           <TutorialProvider>
             <SettingsProvider>
-              <SafeAreaView style={{ flex: 1 }}>
-                <Stack>
-                  <Stack.Screen name="index" options={{ headerShown: false }} />
-                  <Stack.Screen
-                    name="modalDeck"
-                    options={{ presentation: 'modal' }}
-                  />
-                  <Stack.Screen
-                    name="modalCard"
-                    options={{ presentation: 'modal' }}
-                  />
-                  <Stack.Screen
-                    name="modalSettings"
-                    options={{ presentation: 'modal' }}
-                  />
-                </Stack>
-                <ToastManager useModal={false} />
-                <TutorialWrapper />
-              </SafeAreaView>
+              <NotificationProvider>
+                <SafeAreaView style={{ flex: 1 }}>
+                  <Stack>
+                    <Stack.Screen name="index" options={{ headerShown: false }} />
+                    <Stack.Screen
+                      name="modalDeck"
+                      options={{ presentation: 'modal' }}
+                    />
+                    <Stack.Screen
+                      name="modalCard"
+                      options={{ presentation: 'modal' }}
+                    />
+                    <Stack.Screen
+                      name="modalSettings"
+                      options={{ presentation: 'modal' }}
+                    />
+                  </Stack>
+                  <ToastManager useModal={false} />
+                  <TutorialWrapper />
+                </SafeAreaView>
+              </NotificationProvider>
             </SettingsProvider>
           </TutorialProvider>
         </SafeAreaProvider>

@@ -10,11 +10,12 @@ import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { SettingStep } from '../components/text/SettingStep';
 import { useSettingsContext } from '../context/SettingsContext';
 import { useTutorialContext } from '../context/TutorialContext';
+import { useNotify } from '../hooks/useNotify';
 import { useTranslation } from '../hooks/useTranslation';
 import { GlobalStyles } from '../style/GlobalStyles';
-import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
+  const notify = useNotify();
   const [newHardThrowback, setNewHardThrowback] = useState(true);
   const [newStopLearning, setNewStopLearning] = useState(false);
   const [newAdvancedRevisionMode, setNewAdvancedRevisionMode] = useState(false);

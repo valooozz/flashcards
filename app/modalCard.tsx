@@ -15,6 +15,7 @@ import { ConfirmDialog } from '../components/dialog/ConfirmDialog';
 import { QuitDialog } from '../components/dialog/QuitDialog';
 import { StatsCardDialog } from '../components/dialog/StatsCardDialog';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
+import { useNotify } from '../hooks/useNotify';
 import { useTranslation } from '../hooks/useTranslation';
 import { GlobalStyles } from '../style/GlobalStyles';
 import { CardChangeSide } from '../types/CardChangeSide';
@@ -24,9 +25,9 @@ import { getCardById } from '../utils/database/card/get/getCardById.utils';
 import { resetCard } from '../utils/database/card/update/resetCard.utils';
 import { updateCardInfo } from '../utils/database/card/update/updateCardInfo.utils';
 import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
-import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
+  const notify = useNotify();
   const [deckName, setDeckName] = useState('');
   const [recto, setRecto] = useState('');
   const [verso, setVerso] = useState('');
