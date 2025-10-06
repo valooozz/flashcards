@@ -6,10 +6,11 @@ import {
 } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Appbar, FAB, Menu, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
+import { StatsDeckDialog } from '../components/dialog/StatsDeckDialog';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { useTranslation } from '../hooks/useTranslation';
 import { GlobalStyles } from '../style/GlobalStyles';
@@ -41,6 +42,7 @@ export default function Modal() {
   const [nbCardsLearnt, setNbCardsLearnt] = useState(0);
   const [nbCardsToLearn, setNbCardsToLearn] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [showStatsDialog, setShowStatsDialog] = useState(false);
 
   const [showExportMenu, setShowExportMenu] = useState(false);
 
@@ -111,13 +113,6 @@ export default function Modal() {
     router.back();
   };
 
-  const showStats = () => {
-    Alert.alert(
-      t('common.stats'),
-      `${t('deck.cardsLearnt')} : ${nbCardsLearnt}\n${t('deck.cardsToLearn')} : ${nbCardsToLearn}\n${t('deck.progress')} : ${progress} %`
-    )
-  }
-
   useFocusEffect(
     useCallback(() => {
       if (idDeck) {
@@ -155,7 +150,7 @@ export default function Modal() {
         <Appbar.Content title={editMode ? deckName : t('deck.new')} />
         {editMode && (
           <>
-            <Appbar.Action icon="poll" onPress={showStats} />
+            <Appbar.Action icon="poll" onPress={() => setShowStatsDialog(true)} />
             <Menu
               visible={showExportMenu}
               onDismiss={() => setShowExportMenu(false)}
@@ -229,6 +224,8 @@ export default function Modal() {
           <ModalButton variant='primary' text={editMode ? t('common.edit') : t('common.add')} onPress={handleValidate} />
         </View>
       </View>
+
+      <StatsDeckDialog visible={showStatsDialog} hideDialog={() => setShowStatsDialog(false)} nbCardsLearnt={nbCardsLearnt} nbCardsToLearn={nbCardsToLearn} progress={progress} />
     </SafeAreaView>
   )
 }

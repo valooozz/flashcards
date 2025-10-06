@@ -1,5 +1,6 @@
 {
     "common": {
+        "ok": "OK",
         "add": "Ajouter",
         "cancel": "Annuler",
         "delete": "Supprimer",

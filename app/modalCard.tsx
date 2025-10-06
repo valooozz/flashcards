@@ -7,10 +7,11 @@ import {
 } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useRef, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { Appbar, Card, SegmentedButtons, Text, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
+import { StatsCardDialog } from '../components/dialog/StatsCardDialog';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { useTranslation } from '../hooks/useTranslation';
 import { GlobalStyles } from '../style/GlobalStyles';
@@ -22,7 +23,6 @@ import { getCardById } from '../utils/database/card/get/getCardById.utils';
 import { resetCard } from '../utils/database/card/update/resetCard.utils';
 import { updateCardInfo } from '../utils/database/card/update/updateCardInfo.utils';
 import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
-import { formatDate } from '../utils/formatDate.utils';
 import { getDelay } from '../utils/getDelay.utils';
 import { notify } from '../utils/notify.utils';
 
@@ -45,6 +45,8 @@ export default function Modal() {
   const [initialVersoImage, setInitialVersoImage] = useState<string | null>(null);
   const [initialSelectedChangeSide, setInitialSelectedChangeSide] = useState<CardChangeSide>('deck');
   const [initialCheckedLearn, setInitialCheckedLearn] = useState(true);
+
+  const [showStatsDialog, setShowStatsDialog] = useState(false);
 
   const rectoInputRef = useRef(null);
   const { t } = useTranslation();
@@ -165,23 +167,6 @@ export default function Modal() {
     );
   }
 
-  const getNextRevisionText = () => {
-    return nextRevision
-      ? delay < 0
-        ? `${t('card.nextRevision')} : ${formatDate(nextRevision)} (${-getDelay(nextRevision)} ${t('common.dayAbbreviation')})`
-        : delay > 0
-          ? `${delay} ${delay > 1 ? t('common.dayPlural') : t('common.daySingular')} ${t('card.delayInRevisions')}`
-          : t('card.reviseToday')
-      : t('card.notLearnt')
-  }
-
-  const showStats = () => {
-    Alert.alert(
-      t('common.info'),
-      `${t('card.learningStep')} : ${step}/8\n${getNextRevisionText()}`
-    )
-  }
-
   const pickImage = async () => {
     const result = await DocumentPicker.getDocumentAsync({ type: ['image/*'], multiple: false, copyToCacheDirectory: true });
     if (result.canceled) return;
@@ -196,7 +181,7 @@ export default function Modal() {
         <Appbar.Content title={deckName} />
         {editMode && (
           <>
-            <Appbar.Action icon="poll" onPress={showStats} />
+            <Appbar.Action icon="poll" onPress={() => setShowStatsDialog(true)} />
             <Appbar.Action icon="restore" onPress={() =>
               alertAction(
                 t('notifications.confirm'),
@@ -283,9 +268,8 @@ export default function Modal() {
           <ModalButton variant='primary' text={editMode ? t('common.edit') : t('common.add')} onPress={() => handleValidate(false)} />
         </View>
       </ScrollView>
+
+      <StatsCardDialog visible={showStatsDialog} hideDialog={() => setShowStatsDialog(false)} learningStep={step} nextRevision={nextRevision} />
     </SafeAreaView>
   )
 }
-
-const styles = StyleSheet.create({
-});
