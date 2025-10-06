@@ -22,7 +22,7 @@ export function CheckboxWithText({
         onPress={() => setIsChecked(!isChecked)}
       />
       <View style={styles.textContainer}>
-        <Text variant='titleMedium' style={styles.text}>
+        <Text variant='titleMedium' style={[styles.text, textExplanation && styles.expandText]}>
           {textLabel}
         </Text>
       </View>
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    flexShrink: 1,
   },
   textContainer: {
     flexShrink: 1,
@@ -47,7 +48,10 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   text: {
-    flex: 1,
+    flexShrink: 1,
     flexWrap: 'wrap',
+  },
+  expandText: {
+    flexGrow: 1,
   },
 });

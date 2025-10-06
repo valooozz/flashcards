@@ -150,7 +150,9 @@
         "current": "Actuel"
     },
     "notifications": {
-        "errorOccurred": "Une erreur est survenue",
+        "errorOccurred": "Une erreur est survenue"
+    },
+    "dialog": {
         "confirm": "Es-tu sûr·e de vouloir",
         "leave": "Quitter ?",
         "notSaved": "Tu n'as pas enregistré les modifications.",

@@ -11,19 +11,19 @@ import { ScrollView, View } from 'react-native';
 import { Appbar, Card, SegmentedButtons, Text, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
+import { ConfirmDialog } from '../components/dialog/ConfirmDialog';
+import { QuitDialog } from '../components/dialog/QuitDialog';
 import { StatsCardDialog } from '../components/dialog/StatsCardDialog';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { useTranslation } from '../hooks/useTranslation';
 import { GlobalStyles } from '../style/GlobalStyles';
 import { CardChangeSide } from '../types/CardChangeSide';
-import { alertAction } from '../utils/alertAction.utils';
 import { createCard } from '../utils/database/card/createCard.utils';
 import { deleteCard } from '../utils/database/card/deleteCard.utils';
 import { getCardById } from '../utils/database/card/get/getCardById.utils';
 import { resetCard } from '../utils/database/card/update/resetCard.utils';
 import { updateCardInfo } from '../utils/database/card/update/updateCardInfo.utils';
 import { getNameDeckById } from '../utils/database/deck/get/getNameDeckById.utils';
-import { getDelay } from '../utils/getDelay.utils';
 import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
@@ -35,7 +35,6 @@ export default function Modal() {
   const [rectoFirst, setRectoFirst] = useState(true);
   const [step, setStep] = useState(0);
   const [nextRevision, setNextRevision] = useState('');
-  const [delay, setDelay] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [selectedChangeSide, setSelectedChangeSide] = useState<CardChangeSide>('deck');
   const [checkedLearn, setCheckedLearn] = useState(true);
@@ -47,6 +46,9 @@ export default function Modal() {
   const [initialCheckedLearn, setInitialCheckedLearn] = useState(true);
 
   const [showStatsDialog, setShowStatsDialog] = useState(false);
+  const [showQuitDialog, setShowQuitDialog] = useState(false);
+  const [showConfirmResetDialog, setShowConfirmResetDialog] = useState(false);
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
 
   const rectoInputRef = useRef(null);
   const { t } = useTranslation();
@@ -75,7 +77,6 @@ export default function Modal() {
           setRectoFirst(Boolean(card.rectoFirst));
           setStep(card.step);
           setNextRevision(card.nextRevision);
-          setDelay(getDelay(card.nextRevision));
           setSelectedChangeSide(numberToCardChangeSide(card.changeSide));
           setCheckedLearn(Boolean(card.toLearn));
           setInitialRecto(card.recto);
@@ -146,6 +147,11 @@ export default function Modal() {
   const handleReset = async () => {
     const resetOk = await resetCard(database, idCard);
     notify(resetOk, t('notifications.errorOccurred'), t('card.resetted'));
+    setShowConfirmResetDialog(false);
+    getCardById(database, idCard).then((card) => {
+      setStep(card.step);
+      setNextRevision(card.nextRevision);
+    });
   };
 
   const handleDelete = async () => {
@@ -154,6 +160,7 @@ export default function Modal() {
       router.back();
     }
     notify(deleteOk, t('notifications.errorOccurred'), t('card.deleted'));
+    setShowConfirmDeleteDialog(false);
   };
 
   const hasChanged = (): boolean => {
@@ -177,27 +184,13 @@ export default function Modal() {
     <SafeAreaView style={{ flex: 1 }}>
       <Stack.Screen options={{ title: t('card.title'), headerShown: false }} />
       <Appbar.Header>
-        <Appbar.BackAction onPress={hasChanged() ? () => handleValidate(false) : () => router.back()} />
+        <Appbar.BackAction onPress={hasChanged() ? () => setShowQuitDialog(true) : () => router.back()} />
         <Appbar.Content title={deckName} />
         {editMode && (
           <>
             <Appbar.Action icon="poll" onPress={() => setShowStatsDialog(true)} />
-            <Appbar.Action icon="restore" onPress={() =>
-              alertAction(
-                t('notifications.confirm'),
-                t('common.reset'),
-                t('card.learningOfCard'),
-                t('common.cancel'),
-                handleReset,
-              )} />
-            <Appbar.Action icon="delete" onPress={() =>
-              alertAction(
-                t('notifications.confirm'),
-                t('common.delete'),
-                t('card.theCard'),
-                t('common.cancel'),
-                handleDelete,
-              )} />
+            <Appbar.Action icon="restore" onPress={() => setShowConfirmResetDialog(true)} />
+            <Appbar.Action icon="delete" onPress={() => setShowConfirmDeleteDialog(true)} />
           </>
         )}
       </Appbar.Header>
@@ -269,7 +262,34 @@ export default function Modal() {
         </View>
       </ScrollView>
 
-      <StatsCardDialog visible={showStatsDialog} hideDialog={() => setShowStatsDialog(false)} learningStep={step} nextRevision={nextRevision} />
+      <StatsCardDialog
+        visible={showStatsDialog}
+        hideDialog={() => setShowStatsDialog(false)}
+        learningStep={step}
+        nextRevision={nextRevision}
+      />
+
+      <QuitDialog
+        visible={showQuitDialog}
+        hideDialog={() => setShowQuitDialog(false)}
+        saveAction={() => handleValidate(false)}
+      />
+
+      <ConfirmDialog
+        visible={showConfirmResetDialog}
+        hideDialog={() => setShowConfirmResetDialog(false)}
+        actionVerb={t('common.reset')}
+        element={t('card.learningOfCard')}
+        onValidate={handleReset}
+      />
+
+      <ConfirmDialog
+        visible={showConfirmDeleteDialog}
+        hideDialog={() => setShowConfirmDeleteDialog(false)}
+        actionVerb={t('common.delete')}
+        element={t('card.theCard')}
+        onValidate={handleDelete}
+      />
     </SafeAreaView>
   )
 }

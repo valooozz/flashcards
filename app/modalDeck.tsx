@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   router,
   Stack,
@@ -10,12 +11,13 @@ import { StyleSheet, View } from 'react-native';
 import { Appbar, FAB, Menu, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
+import { ConfirmDialog } from '../components/dialog/ConfirmDialog';
+import { QuitDialog } from '../components/dialog/QuitDialog';
 import { StatsDeckDialog } from '../components/dialog/StatsDeckDialog';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { useTranslation } from '../hooks/useTranslation';
 import { GlobalStyles } from '../style/GlobalStyles';
 import { ImportExportType } from '../types/ImportExportType';
-import { alertAction } from '../utils/alertAction.utils';
 import { getProgressInDeck } from '../utils/database/card/get/getProgressInDeck.utils';
 import { setNullChangeSideOnAllCardsFromDeck } from '../utils/database/card/update/setNullChangeSideOnAllCardsFromDeck.utils';
 import { createDeck } from '../utils/database/deck/createDeck.utils';
@@ -42,7 +44,12 @@ export default function Modal() {
   const [nbCardsLearnt, setNbCardsLearnt] = useState(0);
   const [nbCardsToLearn, setNbCardsToLearn] = useState(0);
   const [progress, setProgress] = useState(0);
+
   const [showStatsDialog, setShowStatsDialog] = useState(false);
+  const [showQuitDialog, setShowQuitDialog] = useState(false);
+  const [showConfirmResetDialog, setShowConfirmResetDialog] = useState(false);
+  const [showConfirmDeleteDialog, setShowConfirmDeleteDialog] = useState(false);
+  const [showConfirmForceDialog, setShowConfirmForceDialog] = useState(false);
 
   const [showExportMenu, setShowExportMenu] = useState(false);
 
@@ -81,14 +88,12 @@ export default function Modal() {
 
   const handleReset = async () => {
     const resetOk = await resetDeck(database, idDeck);
-    if (resetOk) {
-      router.back();
-    }
     notify(
       resetOk,
       t('notifications.errorOccurred'),
       t('deck.learningResetted'),
     );
+    setShowConfirmResetDialog(false);
   };
 
   const handleForceAlternate = async () => {
@@ -98,12 +103,20 @@ export default function Modal() {
       t('notifications.errorOccurred'),
       t('common.settingUpdated')
     )
+    setShowConfirmForceDialog(false);
   }
 
   const handleDelete = async () => {
     const deleteOk = await deleteDeck(database, idDeck);
+    setShowConfirmDeleteDialog(false);
     if (deleteOk) {
-      router.back();
+      try {
+        await AsyncStorage.setItem(
+          'tabState',
+          JSON.stringify({ inDeck: false, idDeck: -1, deckName: '' }),
+        );
+      } catch { }
+      router.replace('/');
     }
     notify(deleteOk, t('notifications.errorOccurred'), t('deck.deleted'));
   };
@@ -146,7 +159,7 @@ export default function Modal() {
     <SafeAreaView>
       <Stack.Screen options={{ title: t('deck.title'), headerShown: false }} />
       <Appbar.Header>
-        <Appbar.BackAction onPress={hasChanged() ? handleValidate : () => router.back()} />
+        <Appbar.BackAction onPress={hasChanged() ? () => setShowQuitDialog(true) : () => router.back()} />
         <Appbar.Content title={editMode ? deckName : t('deck.new')} />
         {editMode && (
           <>
@@ -160,22 +173,8 @@ export default function Modal() {
               <Menu.Item title={t('deck.exportCardsCsv')} onPress={() => exportDeck(database, idDeck, deckName, 'csv', false)} />
               <Menu.Item title={t('deck.exportLearning')} onPress={() => exportDeck(database, idDeck, deckName, 'json', true)} />
             </Menu>
-            <Appbar.Action icon="restore" onPress={() =>
-              alertAction(
-                t('notifications.confirm'),
-                t('common.reset'),
-                t('deck.learning'),
-                t('common.cancel'),
-                handleReset,
-              )} />
-            <Appbar.Action icon="delete" onPress={() =>
-              alertAction(
-                t('notifications.confirm'),
-                t('common.delete'),
-                t('deck.theDeck'),
-                t('common.cancel'),
-                handleDelete,
-              )} />
+            <Appbar.Action icon="restore" onPress={() => setShowConfirmResetDialog(true)} />
+            <Appbar.Action icon="delete" onPress={() => setShowConfirmDeleteDialog(true)} />
           </>
         )}
         {!editMode && (
@@ -202,15 +201,8 @@ export default function Modal() {
             <FAB
               icon="sync"
               size="small"
-              onPress={() =>
-                alertAction(
-                  t('notifications.confirm'),
-                  t('deck.detailedForceAlternate'),
-                  t('deck.followDeckOnAlternate'),
-                  t('common.cancel'),
-                  handleForceAlternate
-                )
-              }
+              onPress={() => setShowConfirmForceDialog(true)}
+              style={{ marginRight: 8 }}
             />
           )}
         </View>
@@ -225,7 +217,43 @@ export default function Modal() {
         </View>
       </View>
 
-      <StatsDeckDialog visible={showStatsDialog} hideDialog={() => setShowStatsDialog(false)} nbCardsLearnt={nbCardsLearnt} nbCardsToLearn={nbCardsToLearn} progress={progress} />
+      <StatsDeckDialog
+        visible={showStatsDialog}
+        hideDialog={() => setShowStatsDialog(false)}
+        nbCardsLearnt={nbCardsLearnt}
+        nbCardsToLearn={nbCardsToLearn}
+        progress={progress}
+      />
+
+      <QuitDialog
+        visible={showQuitDialog}
+        hideDialog={() => setShowQuitDialog(false)}
+        saveAction={handleValidate}
+      />
+
+      <ConfirmDialog
+        visible={showConfirmResetDialog}
+        hideDialog={() => setShowConfirmResetDialog(false)}
+        actionVerb={t('common.reset')}
+        element={t('deck.learning')}
+        onValidate={handleReset}
+      />
+
+      <ConfirmDialog
+        visible={showConfirmDeleteDialog}
+        hideDialog={() => setShowConfirmDeleteDialog(false)}
+        actionVerb={t('common.delete')}
+        element={t('deck.theDeck')}
+        onValidate={handleDelete}
+      />
+
+      <ConfirmDialog
+        visible={showConfirmForceDialog}
+        hideDialog={() => setShowConfirmForceDialog(false)}
+        actionVerb={t('deck.detailedForceAlternate')}
+        element={t('deck.followDeckOnAlternate')}
+        onValidate={handleForceAlternate}
+      />
     </SafeAreaView>
   )
 }

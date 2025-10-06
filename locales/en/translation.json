@@ -151,7 +151,9 @@
     },
     "notifications": {
         "errorOccurred": "An error occurred",
-        "confirm": "Are you sure you want to",
+        "confirm": "Are you sure you want to"
+    },
+    "dialog": {
         "leave": "Leave?",
         "notSaved": "You haven't saved your changes.",
         "saveAndQuit": "Save and close",

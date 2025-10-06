@@ -4,18 +4,17 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Appbar, Menu, Text } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
+import { ConfirmDialog } from '../components/dialog/ConfirmDialog';
+import { QuitDialog } from '../components/dialog/QuitDialog';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { SettingStep } from '../components/text/SettingStep';
 import { useSettingsContext } from '../context/SettingsContext';
 import { useTutorialContext } from '../context/TutorialContext';
 import { useTranslation } from '../hooks/useTranslation';
 import { GlobalStyles } from '../style/GlobalStyles';
-import { alertAction } from '../utils/alertAction.utils';
 import { notify } from '../utils/notify.utils';
 
 export default function Modal() {
-  const [isDocOpen, setIsDocOpen] = useState(false);
-
   const [newHardThrowback, setNewHardThrowback] = useState(true);
   const [newStopLearning, setNewStopLearning] = useState(false);
   const [newAdvancedRevisionMode, setNewAdvancedRevisionMode] = useState(false);
@@ -41,6 +40,8 @@ export default function Modal() {
   const [initialStep7, setInitialStep7] = useState(30);
   const [initialStep8, setInitialStep8] = useState(60);
 
+  const [showQuitDialog, setShowQuitDialog] = useState(false);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showLanguageMenu, setShowLanguageMenu] = useState(false);
 
   const { hardThrowback, stopLearning, advancedRevisionMode, intervals, setSettings, setLanguage, resetSettings } =
@@ -124,7 +125,7 @@ export default function Modal() {
     <SafeAreaView style={{ flex: 1 }}>
       <Stack.Screen options={{ title: t('settings.title'), headerShown: false }} />
       <Appbar.Header>
-        <Appbar.BackAction onPress={hasChanged() ? handleValidate : () => router.back()} />
+        <Appbar.BackAction onPress={hasChanged() ? () => setShowQuitDialog(true) : () => router.back()} />
         <Appbar.Content title={t('settings.title')} />
         <Menu
           visible={showLanguageMenu}
@@ -135,14 +136,7 @@ export default function Modal() {
           <Menu.Item title='English' onPress={() => changeLanguage('en')} />
         </Menu>
         <Appbar.Action icon="help" onPress={() => setShowTutorial(true)} />
-        <Appbar.Action icon="restore" onPress={() =>
-          alertAction(
-            t('notifications.confirm'),
-            t('common.reset'),
-            t('settings.resettingSettings'),
-            t('common.cancel'),
-            resetSettings,
-          )} />
+        <Appbar.Action icon="restore" onPress={() => setShowConfirmDialog(true)} />
       </Appbar.Header>
 
       <ScrollView contentContainerStyle={[GlobalStyles.modalContainer]}>
@@ -220,6 +214,20 @@ export default function Modal() {
           <ModalButton variant='primary' text={t('common.save')} onPress={handleValidate} />
         </View>
       </ScrollView>
+
+      <QuitDialog
+        visible={showQuitDialog}
+        hideDialog={() => setShowQuitDialog(false)}
+        saveAction={handleValidate}
+      />
+
+      <ConfirmDialog
+        visible={showConfirmDialog}
+        hideDialog={() => setShowConfirmDialog(false)}
+        actionVerb={t('common.reset')}
+        element={t('settings.resettingSettings')}
+        onValidate={handleValidate}
+      />
     </SafeAreaView>
   );
 }
