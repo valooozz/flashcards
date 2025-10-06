@@ -258,7 +258,7 @@ export default function Modal() {
           }} />
         )}
         <View style={GlobalStyles.buttonLineContainer}>
-          <ModalButton variant='tertiary' text={editMode ? t('common.back') : t('common.cancel')} onPress={() => router.back()} />
+          <ModalButton variant='tertiary' text={editMode ? t('common.back') : t('common.cancel')} onPressIn={() => router.back()} />
           <ModalButton variant='primary' text={editMode ? t('common.edit') : t('common.add')} onPress={() => handleValidate(false)} />
         </View>
       </ScrollView>

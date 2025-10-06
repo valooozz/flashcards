@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Card, Text } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Sizes } from '../../style/Sizes';
@@ -32,14 +32,12 @@ export function SettingStep({
 
   return (
     <>
-      <TouchableOpacity onPress={handleCardPress}>
-        <Card style={styles.container}>
-          <Card.Content style={styles.content}>
-            <Text variant="bodyMedium">{stepNumber} :</Text>
-            <Text variant="bodyLarge">{selectedStep}</Text>
-          </Card.Content>
-        </Card>
-      </TouchableOpacity>
+      <Card style={styles.container} onPress={handleCardPress}>
+        <Card.Content style={styles.content}>
+          <Text variant="bodyMedium">{stepNumber} :</Text>
+          <Text variant="bodyLarge">{selectedStep}</Text>
+        </Card.Content>
+      </Card>
 
       <NumberPickerModal
         visible={modalVisible}
