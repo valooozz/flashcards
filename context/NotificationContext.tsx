@@ -80,7 +80,7 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({ children }
     const backgroundColor = useMemo(() => {
         switch (variant) {
             case 'success':
-                return theme.colors.primary;
+                return theme.colors.inversePrimary;
             case 'error':
                 return theme.colors.error;
             default:
@@ -98,6 +98,11 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({ children }
                 style={{ backgroundColor, marginBottom: 96 }}
                 onIconPress={hideSnackbar}
                 action={actionLabel ? { label: actionLabel, onPress: () => actionHandlerRef.current?.() } : undefined}
+                theme={{
+                    colors: {
+                        inverseOnSurface: theme.colors.onPrimaryContainer,
+                    }
+                }}
             >
                 {message}
             </Snackbar>

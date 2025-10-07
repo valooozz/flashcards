@@ -7,7 +7,7 @@ export const createCard = async (
   rectoImage: string | null,
   versoImage: string | null,
   idDeck: string,
-  changeSide: boolean = true,
+  changeSide: boolean,
   toLearn: boolean = true,
   rectoFirst: boolean = true,
   step: number = 0,
@@ -26,7 +26,7 @@ export const createCard = async (
         step,
         nextRevision,
         toLearn ? 1 : 0,
-        changeSide ? 1 : 0,
+        changeSide === undefined || changeSide === null ? null : changeSide ? 1 : 0,
       ],
     )
     .then(() => true)
