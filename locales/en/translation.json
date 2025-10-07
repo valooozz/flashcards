@@ -137,7 +137,6 @@
         "all": "All",
         "number": "Number",
         "step": "Step",
-        "notLearnt": "Not learnt",
         "learnt": "Learnt",
         "chooseNumber": "How many cards to review?",
         "chooseStep": "Which step?",
@@ -147,7 +146,10 @@
         "recto": "Front",
         "verso": "Back",
         "random": "?",
-        "current": "State"
+        "current": "State",
+        "notToLearn": "Not to learn",
+        "notLearnt": "Not yet learnt",
+        "ended": "Learning completed"
     },
     "notifications": {
         "errorOccurred": "An error occurred",

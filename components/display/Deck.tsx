@@ -4,6 +4,7 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import { Appbar, FAB, Menu, ProgressBar, Searchbar, Text, useTheme } from 'react-native-paper';
 import { ListCard } from '../../components/card/ListCard';
 import { useTranslation } from '../../hooks/useTranslation';
+import { Colors } from '../../style/Colors';
 import { GlobalStyles } from '../../style/GlobalStyles';
 import { CardType } from '../../types/CardType';
 
@@ -101,7 +102,10 @@ export function Deck({
         <Appbar.Action icon={searchMode ? 'magnify-close' : 'magnify'} onPress={toggleSearchMode} />
         <Appbar.Action icon="cog" onPress={() => router.push(`/modalDeck?idDeck=${idDeck}`)} />
       </Appbar.Header>
-      <ProgressBar progress={progress || 0} style={{ backgroundColor: colors.primary }} color={colors.primaryContainer} />
+      <ProgressBar
+        progress={progress || 0}
+        color={Colors.library.intermediate.main}
+      />
       {searchMode && (
         <Searchbar
           placeholder='Search'
