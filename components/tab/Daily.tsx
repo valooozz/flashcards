@@ -3,7 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
-import { Appbar, Text } from 'react-native-paper';
+import { Appbar, Text, useTheme } from 'react-native-paper';
 import { useSettingsContext } from '../../context/SettingsContext';
 import { Colors } from '../../style/Colors';
 import { GlobalStyles } from '../../style/GlobalStyles';
@@ -52,6 +52,7 @@ export function Daily() {
     const { hardThrowback, stopLearning, advancedRevisionMode, intervals } = useSettingsContext();
 
     const { t } = useTranslation();
+    const { colors } = useTheme();
 
     const database = useSQLiteContext();
 
@@ -189,17 +190,12 @@ export function Daily() {
     };
 
     return (
-        <View style={GlobalStyles.container}>
-            <Appbar.Header>
+        <View style={[GlobalStyles.container, { backgroundColor: colors.primary }]}>
+            <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
                 <Appbar.Content title={t('daily.title')} />
-                <Appbar.Action
-                    icon={() => (
-                        <Text variant='titleLarge'>
-                            {cardsToRevise.length + forgottenCards.length > 0 ? cardsToRevise.length + forgottenCards.length : ''}
-                        </Text>
-                    )}
-                    style={{ marginLeft: 'auto' }}
-                    disabled
+                <Appbar.Content
+                    title={cardsToRevise.length + forgottenCards.length > 0 ? (cardsToRevise.length + forgottenCards.length).toString() : ''}
+                    titleStyle={{ marginLeft: 'auto', marginRight: 24 }}
                 />
             </Appbar.Header>
             {cardToShow ? (
@@ -248,15 +244,15 @@ export function Daily() {
                 </>
             ) : (
                 <View style={styles.container}>
-                    <Text variant='titleMedium' style={GlobalStyles.centerText}>{t('daily.over')}</Text>
+                    <Text variant='titleMedium' style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>{t('daily.over')}</Text>
                     <View>
-                        <Text variant='headlineLarge'>{t('days.today')}</Text>
-                        <Text variant='titleMedium'>{t('daily.cardsReviewed')} : {nbRevised}</Text>
-                        <Text variant='titleMedium'>{t('daily.cardsKnown')} : {nbKnown}</Text>
-                        <Text variant='titleMedium'>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
+                        <Text variant='headlineLarge' style={{ color: colors.onPrimary }}>{t('days.today')}</Text>
+                        <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsReviewed')} : {nbRevised}</Text>
+                        <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsKnown')} : {nbKnown}</Text>
+                        <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
                     </View>
                     <View>
-                        <Text variant='headlineLarge'>{t('daily.weekRevisions')}</Text>
+                        <Text variant='headlineLarge' style={{ color: colors.onPrimary }}>{t('daily.weekRevisions')}</Text>
                         {nbCardsToReviseThisWeek.map((nbCardsToRevise) => {
                             const revisionDate = new Date();
                             revisionDate.setDate(revisionDate.getDate() + nbCardsToRevise.daysFromToday);
@@ -270,7 +266,7 @@ export function Daily() {
                             }
 
                             return (
-                                <Text variant='titleMedium' key={nbCardsToRevise.daysFromToday}>
+                                <Text variant='titleMedium' style={{ color: colors.onPrimary }} key={nbCardsToRevise.daysFromToday}>
                                     {dayLabel} : {nbCardsToRevise.nbCards}
                                 </Text>
                             );
@@ -290,5 +286,5 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-start',
         rowGap: 16,
-    }
-})
+    },
+});

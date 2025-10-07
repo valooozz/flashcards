@@ -1,0 +1,17 @@
+export const fontConfig = {
+    displayLarge: { fontFamily: 'JosefinBold' },
+    displayMedium: { fontFamily: 'JosefinBold' },
+    displaySmall: { fontFamily: 'JosefinSemiBold' },
+    headlineLarge: { fontFamily: 'JosefinSemiBold' },
+    headlineMedium: { fontFamily: 'JosefinSemiBold' },
+    headlineSmall: { fontFamily: 'JosefinSemiBold' },
+    titleLarge: { fontFamily: 'JosefinSemiBold' },
+    titleMedium: { fontFamily: 'JosefinSemiBold' },
+    titleSmall: { fontFamily: 'JosefinSemiBold' },
+    labelLarge: { fontFamily: 'JosefinSemiBold' },
+    labelMedium: { fontFamily: 'JosefinSemiBold' },
+    labelSmall: { fontFamily: 'JosefinSemiBold' },
+    bodyLarge: { fontFamily: 'JosefinRegular' },
+    bodyMedium: { fontFamily: 'JosefinRegular' },
+    bodySmall: { fontFamily: 'JosefinRegular' },
+} as const;

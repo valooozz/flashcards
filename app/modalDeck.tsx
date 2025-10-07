@@ -8,7 +8,7 @@ import {
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Appbar, FAB, Menu, TextInput } from 'react-native-paper';
+import { Appbar, FAB, Menu, TextInput, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
 import { ConfirmDialog } from '../components/dialog/ConfirmDialog';
@@ -54,6 +54,7 @@ export default function Modal() {
 
   const [showExportMenu, setShowExportMenu] = useState(false);
 
+  const { colors } = useTheme();
   const { t } = useTranslation();
 
   const database = useSQLiteContext();
@@ -157,9 +158,9 @@ export default function Modal() {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.inversePrimary }}>
       <Stack.Screen options={{ title: t('deck.title'), headerShown: false }} />
-      <Appbar.Header>
+      <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
         <Appbar.BackAction onPress={hasChanged() ? () => setShowQuitDialog(true) : () => router.back()} />
         <Appbar.Content title={editMode ? deckName : t('deck.new')} />
         {editMode && (
@@ -191,7 +192,11 @@ export default function Modal() {
       </Appbar.Header>
 
       <View style={[GlobalStyles.container, GlobalStyles.modalContainer]}>
-        <TextInput label={t('deck.name')} value={newDeckName} onChangeText={setNewDeckName} />
+        <TextInput
+          label={t('deck.name')}
+          value={newDeckName}
+          onChangeText={setNewDeckName}
+        />
         <View style={styles.checkboxAction}>
           <CheckboxWithText
             isChecked={changeSide}
@@ -203,7 +208,8 @@ export default function Modal() {
               icon="sync"
               size="small"
               onPress={() => setShowConfirmForceDialog(true)}
-              style={{ marginRight: 8 }}
+              color={colors.onPrimary}
+              style={{ marginRight: 8, backgroundColor: colors.primary }}
             />
           )}
         </View>

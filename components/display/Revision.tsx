@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Appbar, ProgressBar, Text } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
@@ -104,13 +104,17 @@ export function Revision({
   }
 
   return (
-    <View style={GlobalStyles.container}>
-      <Appbar.Header>
+    <View style={[GlobalStyles.container, { backgroundColor: Colors.revision.dark.main }]}>
+      <Appbar.Header style={{ backgroundColor: Colors.revision.light.main }}>
         <Appbar.BackAction onPress={closeRevision} />
         <Appbar.Content title={deckName} />
         <Appbar.Content title={`${sizeOfDeck - cardsToRevise.length} / ${sizeOfDeck}`} />
       </Appbar.Header>
-      <ProgressBar progress={sizeOfDeck > 0 ? (sizeOfDeck - cardsToRevise.length) / sizeOfDeck : 0} />
+      <ProgressBar
+        progress={sizeOfDeck > 0 ? (sizeOfDeck - cardsToRevise.length) / sizeOfDeck : 0}
+        style={{ backgroundColor: Colors.revision.middle.main }}
+        color={Colors.revision.intermediate.main}
+      />
       {cardToShow ? (
         <>
           <FlashCard
@@ -141,8 +145,14 @@ export function Revision({
           </View>
         </>
       ) : (
-        <Text variant='titleMedium' style={GlobalStyles.centerText}>{t('revision.over')}</Text>
+        <Text variant='titleMedium' style={[GlobalStyles.centerText, styles.text]}>{t('revision.over')}</Text>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  text: {
+    color: Colors.revision.dark.contrast,
+  }
+})

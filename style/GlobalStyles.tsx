@@ -47,4 +47,9 @@ export const GlobalStyles = StyleSheet.create({
     overflow: 'hidden',
     boxShadow: Shadows.flashCard,
   },
+  fab: {
+    position: 'absolute',
+    right: 16,
+    bottom: 16,
+  }
 });

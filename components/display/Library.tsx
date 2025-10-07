@@ -2,10 +2,9 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Appbar, FAB, Menu } from 'react-native-paper';
+import { Appbar, FAB, Menu, useTheme } from 'react-native-paper';
 import { DeckCard } from '../../components/card/DeckCard';
 import { useTranslation } from '../../hooks/useTranslation';
-import { Colors } from '../../style/Colors';
 import { GlobalStyles } from '../../style/GlobalStyles';
 import { Sizes } from '../../style/Sizes';
 import { DeckType } from '../../types/DeckType';
@@ -19,13 +18,14 @@ interface LibraryProps {
 
 export function Library({ decks, openDeck }: LibraryProps) {
   const { t } = useTranslation();
+  const { colors } = useTheme();
   const database = useSQLiteContext();
 
   const [showExportMenu, setShowExportMenu] = useState(false);
 
   return (
-    <View style={styles.container}>
-      <Appbar.Header>
+    <View style={[styles.container, { backgroundColor: colors.primary }]}>
+      <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
         <Appbar.Content title={t('library.title')} />
         <Menu
           visible={showExportMenu}
@@ -47,14 +47,14 @@ export function Library({ decks, openDeck }: LibraryProps) {
           ))}
         </ScrollView>
       ) : (
-        <Text style={styles.text}>
+        <Text style={[styles.text, { color: colors.onPrimary }]}>
           {t('library.noDeck')}
         </Text>
       )}
 
       <FAB
         icon="plus"
-        style={styles.fab}
+        style={[GlobalStyles.fab, { backgroundColor: colors.inversePrimary }]}
         onPress={() => router.push('/modalDeck')}
       />
     </View>
@@ -70,16 +70,10 @@ const styles = StyleSheet.create({
     rowGap: 8,
   },
   text: {
-    color: Colors.learning.dark.contrast,
     textAlign: 'center',
     fontSize: Sizes.font.small,
     fontFamily: 'JosefinRegular',
     marginTop: 80,
     marginRight: 24,
-  },
-  fab: {
-    position: 'absolute',
-    right: 16,
-    bottom: 16,
   },
 });

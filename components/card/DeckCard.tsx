@@ -30,7 +30,11 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
   );
 
   return (
-    <Card onPress={() => openDeck(deck.id, deck.name)} onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}>
+    <Card
+      onPress={() => openDeck(deck.id, deck.name)}
+      onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}
+    // style={{ backgroundColor: colors.onPrimary }}
+    >
       <Card.Title title={deck.name} />
       <Card.Content>
         <Text adjustsFontSizeToFit variant="bodyMedium" style={{ color: colors.secondary }}>{nbCards + word}</Text>

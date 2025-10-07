@@ -1,7 +1,7 @@
 import { router, Stack, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Appbar, Menu, Text } from 'react-native-paper';
+import { Appbar, Menu, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
 import { ConfirmDialog } from '../components/dialog/ConfirmDialog';
@@ -49,6 +49,7 @@ export default function Modal() {
     useSettingsContext();
   const { setShowTutorial } = useTutorialContext();
   const { t } = useTranslation();
+  const { colors } = useTheme();
 
   const handleValidate = async () => {
     setSettings(
@@ -123,9 +124,9 @@ export default function Modal() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.inversePrimary }}>
       <Stack.Screen options={{ title: t('settings.title'), headerShown: false }} />
-      <Appbar.Header>
+      <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
         <Appbar.BackAction onPress={hasChanged() ? () => setShowQuitDialog(true) : () => router.back()} />
         <Appbar.Content title={t('settings.title')} />
         <Menu

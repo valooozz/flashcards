@@ -3,7 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { Appbar, Text } from 'react-native-paper';
+import { Appbar, Text, useTheme } from 'react-native-paper';
 import { Colors } from '../../style/Colors';
 import { GlobalStyles } from '../../style/GlobalStyles';
 import { LearningAction } from '../../types/Actions';
@@ -25,6 +25,7 @@ export function Learning() {
     const [lastAction, setLastAction] = useState<LearningAction>(undefined);
 
     const { t } = useTranslation();
+    const { colors } = useTheme();
 
     const database = useSQLiteContext();
 
@@ -75,17 +76,12 @@ export function Learning() {
     };
 
     return (
-        <View style={GlobalStyles.container}>
-            <Appbar.Header>
+        <View style={[GlobalStyles.container, { backgroundColor: colors.primary }]}>
+            <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
                 <Appbar.Content title={t('learning.title')} />
-                <Appbar.Action
-                    icon={() => (
-                        <Text variant='titleLarge'>
-                            {cardsToLearn.length > 0 ? cardsToLearn.length : ''}
-                        </Text>
-                    )}
-                    style={{ marginLeft: 'auto' }}
-                    disabled
+                <Appbar.Content
+                    title={cardsToLearn.length > 0 ? cardsToLearn.length.toString() : ''}
+                    titleStyle={{ marginLeft: 'auto', marginRight: 24 }}
                 />
             </Appbar.Header>
             {cardToShow ? (
@@ -124,7 +120,7 @@ export function Learning() {
                     </View>
                 </>
             ) : (
-                <Text variant='titleMedium' style={GlobalStyles.centerText}>{t('learning.over')}</Text>
+                <Text variant='titleMedium' style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>{t('learning.over')}</Text>
             )}
         </View>
     );

@@ -86,18 +86,18 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
                     <View style={styles.buttonsContainer}>
                         {index > 0 ? (
                             <TouchableOpacity onPress={goPrev} style={[styles.button, styles.secondaryButton]} testID='tuto-previous-button'>
-                                <MaterialIcons name="navigate-before" size={40} color={Colors.logo.tertiary} />
+                                <MaterialIcons name="navigate-before" size={40} color={'black'} />
                             </TouchableOpacity>
                         ) : (
                             <View style={{ width: '25%' }} />
                         )}
 
                         <TouchableOpacity onPress={onSkip} style={styles.button} testID='tuto-close-button'>
-                            <MaterialIcons name={'close'} size={40} color={Colors.logo.tertiary} />
+                            <MaterialIcons name={'close'} size={40} color={'black'} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={goNext} style={[styles.button, styles.primaryButton]} testID='tuto-next-button'>
-                            <MaterialIcons name={isLast ? 'done' : 'navigate-next'} size={40} color={Colors.logo.tertiary} />
+                            <MaterialIcons name={isLast ? 'done' : 'navigate-next'} size={40} color={'black'} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     container: {
-        backgroundColor: Colors.logo.background,
+        backgroundColor: 'white',
         width: '100%',
         height: '100%',
         paddingVertical: 24,
@@ -139,13 +139,13 @@ const styles = StyleSheet.create({
     title: {
         fontFamily: 'JosefinSemiBold',
         fontSize: Sizes.font.large,
-        color: Colors.logo.tertiary,
+        color: 'black',
         textAlign: 'center',
     },
     text: {
         fontFamily: 'JosefinRegular',
         fontSize: Sizes.font.small,
-        color: Colors.logo.tertiary,
+        color: 'black',
         textAlign: 'center',
     },
     dotsContainer: {
@@ -177,10 +177,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     primaryButton: {
-        backgroundColor: Colors.logo.primary,
+        backgroundColor: 'white',
     },
     secondaryButton: {
-        backgroundColor: Colors.logo.secondary,
+        backgroundColor: 'white',
     },
 });
 

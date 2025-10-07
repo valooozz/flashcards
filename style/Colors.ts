@@ -92,24 +92,4 @@ export const Colors = {
     light: '#e7ecf0',
     dark: '#687681',
   },
-  logo: {
-    primary: '#63bdf2',
-    secondary: '#fed09a',
-    tertiary: '#253753',
-    background: '#fffcf2',
-  },
-  palette: {
-    background: {
-      primary: "#FAFAFA",
-      secondary: "#E6F4FD",
-    },
-    accent: {
-      primary: "#63BDF2",
-      secondary: "#FED09A",
-    },
-    text: {
-      primary: "#333333",
-      secondary: "#666666",
-    }
-  }
 };
