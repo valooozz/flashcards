@@ -86,7 +86,10 @@
         "forceAlternate": "Forcer paramètre d'alternance",
         "detailedForceAlternate": "Forcer toutes les cartes",
         "followDeckOnAlternate": "à suivre le deck sur le paramètre d'alternance",
-        "showName": "Afficher le nom du deck pendant les révisions"
+        "showName": "Afficher le nom du deck pendant les révisions",
+        "notToLearn": "Pas à apprendre",
+        "notLearnt": "Pas encore apprises",
+        "ended": "Apprentissage terminé"
     },
     "settings": {
         "title": "Paramètres",

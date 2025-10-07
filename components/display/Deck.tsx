@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Appbar, FAB, ProgressBar, Searchbar, Text, useTheme } from 'react-native-paper';
+import { Appbar, FAB, Menu, ProgressBar, Searchbar, Text, useTheme } from 'react-native-paper';
 import { ListCard } from '../../components/card/ListCard';
 import { useTranslation } from '../../hooks/useTranslation';
 import { GlobalStyles } from '../../style/GlobalStyles';
@@ -32,7 +32,9 @@ export function Deck({
   const [searchMode, setSearchMode] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [filteredCards, setFilteredCards] = useState<CardType[]>(cards);
-  const [filterLearnedCards, setFilterLearnedCards] = useState(false);
+
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
+  const [filterCards, setFilterCards] = useState<string>(undefined);
 
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -52,8 +54,12 @@ export function Deck({
   useEffect(() => {
     let filtered = cards;
 
-    if (filterLearnedCards) {
+    if (filterCards === 'notToLearn') {
       filtered = filtered.filter(card => card.toLearn === 0);
+    } else if (filterCards === 'notLearnt') {
+      filtered = filtered.filter(card => card.nextRevision === null);
+    } else if (filterCards === 'ended') {
+      filtered = filtered.filter(card => card.step === 8);
     }
 
     if (searchText.trim() !== '') {
@@ -64,7 +70,7 @@ export function Deck({
     }
 
     setFilteredCards(filtered);
-  }, [searchText, cards, filterLearnedCards]);
+  }, [searchText, cards, filterCards]);
 
   const toggleSearchMode = () => {
     setSearchMode(!searchMode);
@@ -79,7 +85,19 @@ export function Deck({
         <Appbar.BackAction onPress={closeDeck} />
         <Appbar.Content title={deckName} />
         <Appbar.Action icon="flash" onPress={chooseFlashRevisionSettings} />
-        <Appbar.Action icon={filterLearnedCards ? 'filter-off' : 'filter'} onPress={() => setFilterLearnedCards(!filterLearnedCards)} />
+        {filterCards ?
+          <Appbar.Action icon={'filter-off'} onPress={() => { setFilterCards(undefined), setShowFilterMenu(false) }} />
+          :
+          <Menu
+            visible={showFilterMenu}
+            onDismiss={() => setShowFilterMenu(false)}
+            anchor={<Appbar.Action icon="filter" onPress={() => setShowFilterMenu(true)} />}
+          >
+            <Menu.Item title={t('deck.notToLearn')} onPress={() => setFilterCards('notToLearn')} />
+            <Menu.Item title={t('deck.notLearnt')} onPress={() => setFilterCards('notLearnt')} />
+            <Menu.Item title={t('deck.ended')} onPress={() => setFilterCards('ended')} />
+          </Menu>
+        }
         <Appbar.Action icon={searchMode ? 'magnify-close' : 'magnify'} onPress={toggleSearchMode} />
         <Appbar.Action icon="cog" onPress={() => router.push(`/modalDeck?idDeck=${idDeck}`)} />
       </Appbar.Header>
