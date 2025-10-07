@@ -14,6 +14,7 @@ import { putCardToReviseTommorow } from '../../utils/database/card/update/putCar
 import { resetCard } from '../../utils/database/card/update/resetCard.utils';
 import { stopLearningCard } from '../../utils/database/card/update/stopLearningCard.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
+import { getDeckIdsWithCardsToLearn } from '../../utils/database/deck/get/getDecksWithCardsToLearn.utils';
 import { decrementStatOfToday } from '../../utils/database/stats/decrementStatOfToday.utils';
 import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
 import { shuffle } from '../../utils/shuffle.utils';
@@ -39,8 +40,11 @@ export function Learning() {
         useCallback(() => {
             loadCardsToLearn(undefined);
             getAllDecks(database).then((decksResult) => {
-                setDecks(decksResult)
-            })
+                getDeckIdsWithCardsToLearn(database).then((ids) => {
+                    const presentDecks = decksResult.filter((deck) => ids.includes(deck.id));
+                    setDecks(presentDecks);
+                })
+            });
         }, []),
     );
 
@@ -97,18 +101,22 @@ export function Learning() {
         <View style={[GlobalStyles.container, { backgroundColor: colors.primary }]}>
             <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
                 <Appbar.Content title={t('learning.title')} />
-                {deckFilter ?
-                    <Appbar.Action icon={'filter-off'} onPress={() => changeFilter(undefined)} />
-                    :
-                    <Menu
-                        visible={showFilterMenu}
-                        onDismiss={() => setShowFilterMenu(false)}
-                        anchor={<Appbar.Action icon="filter" onPress={() => setShowFilterMenu(true)} />}
-                    >
-                        {decks.map((deck) => (
-                            <Menu.Item title={deck.name} onPress={() => changeFilter(deck.id)} key={deck.id} />
-                        ))}
-                    </Menu>
+                {cardToShow &&
+                    <>
+                        {deckFilter ?
+                            <Appbar.Action icon={'filter-off'} onPress={() => changeFilter(undefined)} />
+                            :
+                            <Menu
+                                visible={showFilterMenu}
+                                onDismiss={() => setShowFilterMenu(false)}
+                                anchor={<Appbar.Action icon="filter" onPress={() => setShowFilterMenu(true)} />}
+                            >
+                                {decks.map((deck) => (
+                                    <Menu.Item title={deck.name} onPress={() => changeFilter(deck.id)} key={deck.id} />
+                                ))}
+                            </Menu>
+                        }
+                    </>
                 }
                 <Appbar.Content
                     title={cardsToLearn.length > 0 ? cardsToLearn.length.toString() : ''}
