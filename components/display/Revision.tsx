@@ -7,6 +7,7 @@ import { GlobalStyles } from '../../style/GlobalStyles';
 import { RevisionAction } from '../../types/Actions';
 import { FlashCardType } from '../../types/FlashCardType';
 import { RevisionSide } from '../../types/FlashRevisionSettings';
+import { isLastItem } from '../../utils/isLastItem.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 import { FlashButton } from '../button/FlashButton';
 import { FlashCard } from '../card/FlashCard';
@@ -98,7 +99,11 @@ export function Revision({
   }
 
   const handlePrevious = () => {
-    setCardsToRevise([previousCard, ...cardsToRevise.slice(0, -1)]);
+    if (isLastItem(previousCard, cardsToRevise)) {
+      setCardsToRevise([previousCard, ...cardsToRevise.slice(0, -1)]);
+    } else {
+      setCardsToRevise([previousCard, ...cardsToRevise]);
+    }
     updateCardToShow(previousCard);
     setPreviousCard(undefined);
   }
@@ -124,7 +129,6 @@ export function Revision({
             versoImage={versoImageToShow}
             deckName={cardToShow.name}
             backgroundColor={Colors.revision.simple.main}
-            textColor={Colors.revision.simple.contrast}
             textDeckColor={Colors.revision.dark.main}
             previousPossible={previousCard !== undefined}
             handlePrevious={handlePrevious}

@@ -16,7 +16,6 @@ interface FlashCardProps {
   deckName: string;
   delay?: number;
   backgroundColor: string;
-  textColor: string;
   textDeckColor: string;
   previousPossible: boolean;
   handlePrevious: () => void;
@@ -30,7 +29,6 @@ export function FlashCard({
   deckName,
   delay = 0,
   backgroundColor,
-  textColor,
   textDeckColor,
   previousPossible,
   handlePrevious,
@@ -73,13 +71,12 @@ export function FlashCard({
             handleClick={handlePrevious}
           />
         )}
-        {deckName &&
-          <Text
-            numberOfLines={1}
-            style={{ ...styles.text, color: textDeckColor }}
-          >
-            {deckName}
-          </Text>}
+        <Text
+          numberOfLines={1}
+          style={{ ...styles.text, color: textDeckColor }}
+        >
+          {deckName}
+        </Text>
         {delay ? (
           <Text
             style={{
@@ -92,7 +89,7 @@ export function FlashCard({
               : 'Oubliée'}
           </Text>
         ) : null}
-        <FlashCardContent text={flippedAtFirst ? verso : recto} image={flippedAtFirst ? versoImage : rectoImage} textColor={textColor} />
+        <FlashCardContent text={flippedAtFirst ? verso : recto} image={flippedAtFirst ? versoImage : rectoImage} />
       </TouchableOpacity>
       <TouchableOpacity
         style={{ ...styles.container, backgroundColor: backgroundColor }}
@@ -124,7 +121,7 @@ export function FlashCard({
               : 'Oubliée'}
           </Text>
         ) : null}
-        <FlashCardContent text={flippedAtFirst ? recto : verso} image={flippedAtFirst ? rectoImage : versoImage} textColor={textColor} />
+        <FlashCardContent text={flippedAtFirst ? recto : verso} image={flippedAtFirst ? rectoImage : versoImage} />
       </TouchableOpacity>
     </FlipCard>
   );

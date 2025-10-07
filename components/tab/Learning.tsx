@@ -93,7 +93,6 @@ export function Learning() {
                         versoImage={cardToShow.versoImage}
                         deckName={cardToShow.name}
                         backgroundColor={Colors.learning.simple.main}
-                        textColor={Colors.learning.simple.contrast}
                         textDeckColor={Colors.learning.dark.main}
                         previousPossible={previousCard !== undefined}
                         handlePrevious={handlePrevious}

@@ -208,7 +208,6 @@ export function Daily() {
                         deckName={cardToShow.name}
                         delay={delay}
                         backgroundColor={Colors.daily.simple.main}
-                        textColor={Colors.daily.simple.contrast}
                         textDeckColor={Colors.daily.dark.main}
                         previousPossible={previousCard !== undefined}
                         handlePrevious={handlePrevious}
