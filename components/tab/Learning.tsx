@@ -3,15 +3,17 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { Appbar, Text, useTheme } from 'react-native-paper';
+import { Appbar, Menu, Text, useTheme } from 'react-native-paper';
 import { Colors } from '../../style/Colors';
 import { GlobalStyles } from '../../style/GlobalStyles';
 import { LearningAction } from '../../types/Actions';
+import { DeckType } from '../../types/DeckType';
 import { FlashCardType } from '../../types/FlashCardType';
 import { getCardsToLearn } from '../../utils/database/card/get/getCardsToLearn.utils';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { resetCard } from '../../utils/database/card/update/resetCard.utils';
 import { stopLearningCard } from '../../utils/database/card/update/stopLearningCard.utils';
+import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
 import { decrementStatOfToday } from '../../utils/database/stats/decrementStatOfToday.utils';
 import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOfToday.utils';
 import { shuffle } from '../../utils/shuffle.utils';
@@ -24,6 +26,10 @@ export function Learning() {
     const [previousCard, setPreviousCard] = useState<FlashCardType>(undefined);
     const [lastAction, setLastAction] = useState<LearningAction>(undefined);
 
+    const [decks, setDecks] = useState<DeckType[]>([]);
+    const [deckFilter, setDeckFilter] = useState(false);
+    const [showFilterMenu, setShowFilterMenu] = useState(false);
+
     const { t } = useTranslation();
     const { colors } = useTheme();
 
@@ -31,13 +37,25 @@ export function Learning() {
 
     useFocusEffect(
         useCallback(() => {
-            setPreviousCard(undefined);
-            getCardsToLearn(database).then((cardsResult) => {
-                shuffle(cardsResult);
-                updateCardsToLearn(cardsResult);
-            });
+            loadCardsToLearn(undefined);
+            getAllDecks(database).then((decksResult) => {
+                setDecks(decksResult)
+            })
         }, []),
     );
+
+    const changeFilter = (newFilter: number | undefined) => {
+        setDeckFilter(newFilter !== undefined);
+        loadCardsToLearn(newFilter);
+    }
+
+    const loadCardsToLearn = (deckFilter: number) => {
+        setPreviousCard(undefined);
+        getCardsToLearn(database, deckFilter).then((cardsResult) => {
+            shuffle(cardsResult);
+            updateCardsToLearn(cardsResult);
+        });
+    }
 
     const updateCardsToLearn = (newCardsToLearn: FlashCardType[]) => {
         if (cardsToLearn.length === 1) {
@@ -79,6 +97,19 @@ export function Learning() {
         <View style={[GlobalStyles.container, { backgroundColor: colors.primary }]}>
             <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
                 <Appbar.Content title={t('learning.title')} />
+                {deckFilter ?
+                    <Appbar.Action icon={'filter-off'} onPress={() => changeFilter(undefined)} />
+                    :
+                    <Menu
+                        visible={showFilterMenu}
+                        onDismiss={() => setShowFilterMenu(false)}
+                        anchor={<Appbar.Action icon="filter" onPress={() => setShowFilterMenu(true)} />}
+                    >
+                        {decks.map((deck) => (
+                            <Menu.Item title={deck.name} onPress={() => changeFilter(deck.id)} key={deck.id} />
+                        ))}
+                    </Menu>
+                }
                 <Appbar.Content
                     title={cardsToLearn.length > 0 ? cardsToLearn.length.toString() : ''}
                     titleStyle={{ marginLeft: 'auto', marginRight: 24 }}

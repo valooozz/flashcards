@@ -259,7 +259,6 @@ export default function Modal() {
         {!editMode && (
           <ModalButton variant='primary' text={t('card.addAndContinue')} onPress={() => {
             handleValidate(true);
-            rectoInputRef.current.focus();
           }} />
         )}
         <View style={GlobalStyles.buttonLineContainer}>

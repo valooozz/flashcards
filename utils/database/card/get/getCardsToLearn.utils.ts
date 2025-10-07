@@ -1,7 +1,10 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 import { FlashCardType } from '../../../../types/FlashCardType';
 
-export const getCardsToLearn = async (database: SQLiteDatabase) => {
+export const getCardsToLearn = async (
+  database: SQLiteDatabase,
+  idDeckFilter: number,
+) => {
   let cardsToLearn: FlashCardType[];
   try {
     cardsToLearn = await database.getAllAsync<FlashCardType>(
@@ -18,7 +21,8 @@ export const getCardsToLearn = async (database: SQLiteDatabase) => {
         CASE WHEN D.showName = 1 THEN D.name ELSE '' END as name
       FROM Card C
       INNER JOIN Deck D ON C.deck=D.id
-      WHERE nextRevision IS NULL AND toLearn=1`,
+      WHERE nextRevision IS NULL AND toLearn=1
+      ${idDeckFilter !== undefined ? `AND C.deck=${idDeckFilter}` : ''}`,
     );
   } catch (error) {
     console.error(error);
