@@ -37,8 +37,8 @@ export default function Modal() {
   const [newDeckName, setNewDeckName] = useState('');
   const [changeSide, setChangeSide] = useState<boolean>(true);
   const [showName, setShowName] = useState<boolean>(true);
-  const [initialShowName, setInitialShowName] = useState<boolean>(undefined);
-  const [initialChangeSide, setInitialChangeSide] = useState<boolean>(undefined);
+  const [initialShowName, setInitialShowName] = useState<boolean>(true);
+  const [initialChangeSide, setInitialChangeSide] = useState<boolean>(true);
 
   const [editMode, setEditMode] = useState(false);
 

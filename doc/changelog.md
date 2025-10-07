@@ -1,4 +1,8 @@
 
+### Version 2.0.0
+
+- Nouveau style d'interface
+
 ### Version 1.6.0
 
 - La dernière carte révisée ne peut pas apparaître en premier dans les cartes oubliées, s'il y en a d'autres
