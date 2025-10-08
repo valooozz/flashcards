@@ -2,6 +2,23 @@
 ### Version 2.0.0
 
 - Nouveau style d'interface
+- Fix : bouton retour dans la création d'un deck demande confirmation que si un changement a été effectué
+- Fix : le paramètre d'alternance est bien enregistré lors de la création d'une carte
+- Fix : carte précédente bien gérée dans les révisions flash
+- Nouveaux filtres dans les deck
+- Barre de progression sur les decks
+- Barre de progression générale dans la bibliothèque
+- Filtre dans l'onglet Apprentissage pour n'apprendre les cartes que d'un deck
+- Tutoriel affiché lors de la première ouverture de l'application, et disponible depuis les paramètres
+- Boutons d'informations pour les paramètres d'alternance
+- Boutons d'informations pour les paramètres de révision flash
+- Choix de la langue lors de la première ouverture de l'application, avant le tutoriel
+- Bouton d'aide dans les onglets Révisions du jour et Apprentissage, pour expliquer l'action réalisée par chaque bouton des cartes
+- Indication du nombre de cartes à réviser et du nombre de cartes à apprendre sur les decks de la bibliothèque
+- Fix : réinitialisation de l'apprentissage d'un deck, les cartes reviennent bien à la première étape
+- Affichage du score réalisé à la fin d'une révision flash
+- Bouton pour recommencer une révision flash avec les mêmes paramètres
+- Révision flash de toutes les cartes de la bibliothèque
 
 ### Version 1.6.0
 

@@ -20,13 +20,9 @@ Voici quelques exemples de l'interface :
 
 ## 📆 Nouveautés prévues prochainement
 
-- Gestion de plusieurs langues via un fichier de traduction
-- Bouton dans l'onglet Apprentissage pour dire qu'on ne veut pas apprendre une carte
-- Nouveau mode pour afficher trois boutons lors de la révision, pour plus de précision dans l'algorithme de répétition espacée
-- Pouvoir indiquer sur le deck entier s'il faut alterner recto et verso pour les cartes du deck en question, avec une possibilité de surcharge au niveau de la carte, comme présent actuellement
-- Pouvoir ne pas afficher le nom du deck lors des révisions
-- Pouvoir repousser la révision d'une carte
-- Meilleur système de notifications
+- Images incluses dans les imports et les exports
+- Catégories pour organiser ses decks
+- Ajout de nouvelles langues
 
 ## 📜 Licence
 
