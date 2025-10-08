@@ -1,3 +1,4 @@
+import { StyleSheet } from "react-native";
 import { Button, useTheme } from "react-native-paper";
 
 interface PrimaryButtonProps {
@@ -14,8 +15,21 @@ export const ModalButton = ({ text, onPress, onPressIn, variant }: PrimaryButton
     const buttonColor = variant === 'primary' ? colors.primary : variant === 'secondary' ? colors.secondary : colors.onPrimary;
 
     return (
-        <Button mode="elevated" textColor={textColor} buttonColor={buttonColor} onPress={onPress} onPressIn={onPressIn}>
+        <Button
+            mode="elevated"
+            textColor={textColor}
+            buttonColor={buttonColor}
+            onPress={onPress}
+            onPressIn={onPressIn}
+            style={styles.button}
+        >
             {text}
         </Button>
     )
 }
+
+const styles = StyleSheet.create({
+    button: {
+        flex: 1,
+    }
+})

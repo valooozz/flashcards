@@ -35,6 +35,7 @@ export const GlobalStyles = StyleSheet.create({
   buttonLineContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    columnGap: 8,
   },
   flashButtonContainer: {
     display: 'flex',
