@@ -51,5 +51,5 @@ export const GlobalStyles = StyleSheet.create({
     position: 'absolute',
     right: 16,
     bottom: 16,
-  }
+  },
 });

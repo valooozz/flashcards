@@ -105,6 +105,7 @@ export function Deck({
       <ProgressBar
         progress={progress || 0}
         color={Colors.library.intermediate.main}
+        style={styles.progressBar}
       />
       {searchMode && (
         <Searchbar
@@ -148,4 +149,7 @@ const styles = StyleSheet.create({
     padding: 8,
     rowGap: 4,
   },
+  progressBar: {
+    height: 8,
+  }
 });

@@ -42,6 +42,7 @@ export function Library({ decks, progress, openDeck }: LibraryProps) {
       <ProgressBar
         progress={progress || 0}
         color={Colors.library.intermediate.main}
+        style={styles.progressBar}
       />
 
       {decks.length > 0 ? (
@@ -83,4 +84,7 @@ const styles = StyleSheet.create({
     marginTop: 80,
     marginRight: 24,
   },
+  progressBar: {
+    height: 8,
+  }
 });

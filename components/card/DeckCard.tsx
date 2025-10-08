@@ -64,7 +64,7 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
       <ProgressBar
         progress={progressInDeck}
         color={Colors.library.intermediate.main}
-        style={styles.progressBar}
+        style={[styles.progressBar, { backgroundColor: colors.onPrimary }]}
       />
     </Card>
   )

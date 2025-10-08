@@ -81,7 +81,7 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
         <ProgressBar
           progress={getProgressBarLength(card.step)}
           color={Colors.library.intermediate.main}
-          style={styles.progressBar}
+          style={[styles.progressBar, { backgroundColor: colors.onPrimary }]}
         />
       </Card>
       <ConfirmDialog
