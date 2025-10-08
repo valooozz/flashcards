@@ -1,5 +1,5 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Dimensions, FlatList, Image, Modal, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
@@ -22,6 +22,15 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
     const { t } = useTranslation();
 
     const isLast = useMemo(() => index === slides.length - 1, [index, slides.length]);
+
+    useEffect(() => {
+        if (visible) {
+            setIndex(0);
+            requestAnimationFrame(() => {
+                flatListRef.current?.scrollToIndex({ index: 0, animated: false });
+            });
+        }
+    }, [visible]);
 
     const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
         const xOffset = e.nativeEvent.contentOffset.x;
@@ -85,19 +94,19 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
 
                     <View style={styles.buttonsContainer}>
                         {index > 0 ? (
-                            <TouchableOpacity onPress={goPrev} style={[styles.button, styles.secondaryButton]} testID='tuto-previous-button'>
-                                <MaterialIcons name="navigate-before" size={40} color={'black'} />
+                            <TouchableOpacity onPress={goPrev} style={[styles.button, styles.leftButton]} testID='tuto-previous-button'>
+                                <MaterialIcons name="navigate-before" size={40} color={Colors.library.dark.contrast} />
                             </TouchableOpacity>
                         ) : (
-                            <View style={{ width: '25%' }} />
+                            <View style={{ width: '30%' }} />
                         )}
 
-                        <TouchableOpacity onPress={onSkip} style={styles.button} testID='tuto-close-button'>
-                            <MaterialIcons name={'close'} size={40} color={'black'} />
+                        <TouchableOpacity onPress={onSkip} style={[styles.button, styles.middleButton]} testID='tuto-close-button'>
+                            <MaterialIcons name={'close'} size={40} color={Colors.daily.dark.contrast} />
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={goNext} style={[styles.button, styles.primaryButton]} testID='tuto-next-button'>
-                            <MaterialIcons name={isLast ? 'done' : 'navigate-next'} size={40} color={'black'} />
+                        <TouchableOpacity onPress={goNext} style={[styles.button, styles.rightButton]} testID='tuto-next-button'>
+                            <MaterialIcons name={isLast ? 'done' : 'navigate-next'} size={40} color={Colors.learning.dark.contrast} />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -147,6 +156,7 @@ const styles = StyleSheet.create({
         fontSize: Sizes.font.small,
         color: 'black',
         textAlign: 'center',
+        paddingHorizontal: 16,
     },
     dotsContainer: {
         flexDirection: 'row',
@@ -167,20 +177,24 @@ const styles = StyleSheet.create({
     buttonsContainer: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         alignItems: 'center',
+        paddingHorizontal: 16,
     },
     button: {
         borderRadius: Radius.small,
         paddingVertical: 8,
-        width: '25%',
+        width: '30%',
         alignItems: 'center',
     },
-    primaryButton: {
-        backgroundColor: 'white',
+    rightButton: {
+        backgroundColor: Colors.learning.dark.main,
     },
-    secondaryButton: {
-        backgroundColor: 'white',
+    middleButton: {
+        backgroundColor: Colors.daily.dark.main,
+    },
+    leftButton: {
+        backgroundColor: Colors.library.dark.main,
     },
 });
 

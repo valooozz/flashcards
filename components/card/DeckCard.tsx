@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   },
   center: {
     position: 'absolute',
-    left: 152,
+    left: '40%',
   },
   right: {
     marginLeft: 'auto',

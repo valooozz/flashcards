@@ -44,6 +44,51 @@ function TutorialWrapper() {
         image: require('../assets/images/logo.png'),
         hasTitle: true,
       },
+      {
+        key: 'library',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+      {
+        key: 'newDeck',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+      {
+        key: 'deck',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+      {
+        key: 'card',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+      {
+        key: 'learning',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+      {
+        key: 'daily',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+      {
+        key: 'flash',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+      {
+        key: 'settings',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
+      {
+        key: 'end',
+        image: require('../assets/images/logo.png'),
+        hasTitle: true,
+      },
     ],
     [],
   );

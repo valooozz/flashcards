@@ -170,6 +170,42 @@
         "welcome": {
             "title": "Bienvenue sur Flipo !",
             "text": "Crée des flashcards et laisse Flipo te dire quand les réviser !"
+        },
+        "library": {
+            "title": "Voici ta bibliothèque",
+            "text": "C'est dans cet onglet que tu gères tes decks et tes cartes. Clique sur le bouton + pour ajouter un deck."
+        },
+        "newDeck": {
+            "title": "Crée des decks",
+            "text": "Choisis les paramètres du deck. Tu peux aussi importer un deck, au format JSON (pour un export effectué depuis Flipo), ou au format CSV."
+        },
+        "deck": {
+            "title": "Visualise tes cartes",
+            "text": "Depuis la page d'un deck, tu peux voir les cartes. Leur date de prochaine révision est indiquée à droite. Tu peux filtrer et rechercher des cartes. Clique sur une carte pour la modifier. Appuie plus longtemps pour changer l'état d'apprentissage de la carte."
+        },
+        "card": {
+            "title": "Ajoute des cartes",
+            "text": "Clique sur le bouton + pour ajouter des cartes. Tu peux ajouter une image sur le recto et le verso."
+        },
+        "learning": {
+            "title": "Apprends !",
+            "text": "Une fois une carte ajoutée, elle apparaît dans l'onglet Apprentissage. Le bouton Apprise passe la carte à réviser pour le lendemain. Le bouton À revoir laisse la carte à apprendre. Le bouton Ignorer passe la carte comme pas à apprendre, elle n'apparaîtra plus dans l'onglet Apprentissage tant qu'elle ne sera pas repassée à apprendre (depuis la bibliothèque)."
+        },
+        "daily": {
+            "title": "Révise chaque jour !",
+            "text": "Chaque jour, rends toi sur l'onglet Révisions du jour. Tu y trouveras toutes les cartes que tu dois réviser aujourd'hui. Indique simplement si tu te souviens de la carte ou non. Flipo se chargera de calculer quand il devra te la présenter à nouveau."
+        },
+        "flash": {
+            "title": "Révision flash",
+            "text": "Depuis la page de deck, clique sur le petit éclair pour réviser le deck sans impacter les dates de révision."
+        },
+        "settings": {
+            "title": "Paramètres",
+            "text": "Depuis les paramètres, tu peux choisir les jours d'espacement de chaque étape d'apprentissage. Tu peux également activer quelques paramètres. Clique sur les petits boutons d'information pour comprendre ce qu'ils font."
+        },
+        "end": {
+            "title": "Amuse toi bien avec Flipo !",
+            "text": "Tu peux retrouver ce tutoriel en cliquant sur le point d'interrogation dans les paramètres."
         }
     }
 }
