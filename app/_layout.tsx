@@ -7,30 +7,34 @@ import { useEffect, useMemo, useState } from 'react';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import ToastManager from 'toastify-react-native';
+import { LanguagePickerModal } from '../components/modal/LanguagePickerModal';
 import { TutorialModal } from '../components/modal/TutorialModal';
 import { NotificationProvider } from '../context/NotificationContext';
 import { SettingsProvider } from '../context/SettingsContext';
 import { TutorialProvider, useTutorialContext } from '../context/TutorialContext';
-import { i18nReady } from '../i18n';
+import i18n, { i18nReady } from '../i18n';
 import { homeLightTheme } from '../style/Themes';
 import { initDatabase } from '../utils/database/initDatabase.utils';
 
 function TutorialWrapper() {
   const { showTutorial, setShowTutorial } = useTutorialContext();
   const [initialTutorialShown, setInitialTutorialShown] = useState(false);
+  const [needsLanguageChoice, setNeedsLanguageChoice] = useState(false);
 
   useEffect(() => {
     const checkFirstOpen = async () => {
       try {
         const flag = await AsyncStorage.getItem('hasSeenTutorial');
-        if (!flag && !initialTutorialShown) {
+        const savedLanguage = await AsyncStorage.getItem('language');
+        if (!savedLanguage) {
+          setNeedsLanguageChoice(true);
+        } else if (!flag && !initialTutorialShown) {
           setShowTutorial(true);
           setInitialTutorialShown(true);
         }
       } catch (e) {
         if (!initialTutorialShown) {
-          setShowTutorial(true);
-          setInitialTutorialShown(true);
+          setNeedsLanguageChoice(true);
         }
       }
     };
@@ -94,22 +98,42 @@ function TutorialWrapper() {
   );
 
   return (
-    <TutorialModal
-      visible={showTutorial}
-      slides={tutoSlides}
-      onSkip={async () => {
-        setShowTutorial(false);
-        try {
-          await AsyncStorage.setItem('hasSeenTutorial', 'true');
-        } catch { }
-      }}
-      onDone={async () => {
-        setShowTutorial(false);
-        try {
-          await AsyncStorage.setItem('hasSeenTutorial', 'true');
-        } catch { }
-      }}
-    />
+    <>
+      <LanguagePickerModal
+        visible={needsLanguageChoice}
+        onSelect={async (lang) => {
+          try {
+            await AsyncStorage.setItem('language', lang);
+          } catch { }
+          // switch language immediately
+          try {
+            i18n.changeLanguage(lang);
+          } catch { }
+          setNeedsLanguageChoice(false);
+          const hasSeen = await AsyncStorage.getItem('hasSeenTutorial');
+          if (!hasSeen && !initialTutorialShown) {
+            setShowTutorial(true);
+            setInitialTutorialShown(true);
+          }
+        }}
+      />
+      <TutorialModal
+        visible={showTutorial}
+        slides={tutoSlides}
+        onSkip={async () => {
+          setShowTutorial(false);
+          try {
+            await AsyncStorage.setItem('hasSeenTutorial', 'true');
+          } catch { }
+        }}
+        onDone={async () => {
+          setShowTutorial(false);
+          try {
+            await AsyncStorage.setItem('hasSeenTutorial', 'true');
+          } catch { }
+        }}
+      />
+    </>
   );
 }
 
