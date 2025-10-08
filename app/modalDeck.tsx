@@ -202,6 +202,10 @@ export default function Modal() {
             isChecked={changeSide}
             setIsChecked={setChangeSide}
             textLabel={t('card.alternateSides')}
+            textExplanation={editMode ?
+              t('deck.alternateSidesExplanation') + t('deck.alternateSidesExplanationForce') :
+              t('deck.alternateSidesExplanation')
+            }
           />
           {editMode && (
             <FAB
@@ -209,7 +213,7 @@ export default function Modal() {
               size="small"
               onPress={() => setShowConfirmForceDialog(true)}
               color={colors.onPrimary}
-              style={{ marginRight: 8, backgroundColor: colors.primary }}
+              style={{ marginRight: 8, backgroundColor: colors.primary, position: 'absolute', left: '65%' }}
             />
           )}
         </View>

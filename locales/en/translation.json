@@ -89,7 +89,12 @@
         "forceAlternate": "Force alternate setting",
         "detailedForceAlternate": "Force all cards",
         "followDeckOnAlternate": "to follow the deck's alternate setting",
-        "showName": "Show deck name during reviews"
+        "showName": "Show deck name during reviews",
+        "notToLearn": "Not to learn",
+        "notLearnt": "Not yet learned",
+        "ended": "Learning completed",
+        "alternateSidesExplanation": "If this option is enabled, a card will alternate between showing the front and back during reviews. When a card is forgotten, the side does not change—the next review will show the side that was failed.",
+        "alternateSidesExplanationForce": "\n\nThe button forces all cards in the deck to follow the deck's alternate setting."
     },
     "settings": {
         "title": "Settings",
@@ -164,5 +169,47 @@
         "saveAndQuit": "Save and close",
         "quit": "Quit without saving",
         "noQuit": "Don't quit"
+    },
+    "tuto": {
+        "welcome": {
+            "title": "Welcome to Flipo!",
+            "text": "Create flashcards and let Flipo tell you when to review them!"
+        },
+        "library": {
+            "title": "Here’s your library",
+            "text": "This is where you manage your decks and cards. Click the + button to add a deck."
+        },
+        "newDeck": {
+            "title": "Create decks",
+            "text": "Choose the deck settings. You can also import a deck in JSON format (for Flipo exports) or CSV format."
+        },
+        "deck": {
+            "title": "View your cards",
+            "text": "From a deck’s page, you can see all its cards. Their next review date is shown on the right. You can filter and search for cards. Click a card to edit it. Long-press to change its learning status."
+        },
+        "card": {
+            "title": "Add cards",
+            "text": "Click the + button to add cards. You can include an image on the front and back."
+        },
+        "learning": {
+            "title": "Start learning!",
+            "text": "Once a card is added, it appears in the Learning tab. The 'Learned' button moves the card to review for tomorrow. The 'Review Again' button keeps it in the Learning tab. The 'Ignore' button marks the card as not to learn—it won’t appear in the Learning tab until you mark it for learning again (from the Library)."
+        },
+        "daily": {
+            "title": "Review every day!",
+            "text": "Go to the Daily Revisions tab each day to find all the cards you need to review. Simply indicate whether you remember the card or not. Flipo will calculate when to show it again."
+        },
+        "flash": {
+            "title": "Flash review",
+            "text": "From the deck page, click the small lightning bolt to review the deck without affecting the review dates."
+        },
+        "settings": {
+            "title": "Settings",
+            "text": "In Settings, you can adjust the spacing days for each learning step. You can also enable additional options. Click the info buttons to understand what they do."
+        },
+        "end": {
+            "title": "Enjoy using Flipo!",
+            "text": "You can revisit this tutorial by clicking the question mark in Settings."
+        }
     }
 }
