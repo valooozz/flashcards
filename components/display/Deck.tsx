@@ -87,20 +87,20 @@ export function Deck({
         <Appbar.Content title={deckName} />
         <Appbar.Action icon="flash" onPress={chooseFlashRevisionSettings} />
         {filterCards ?
-          <Appbar.Action icon={'filter-off'} onPress={() => { setFilterCards(undefined), setShowFilterMenu(false) }} />
+          <Appbar.Action icon={'filter-off'} onPressIn={() => { setFilterCards(undefined), setShowFilterMenu(false) }} />
           :
           <Menu
             visible={showFilterMenu}
             onDismiss={() => setShowFilterMenu(false)}
-            anchor={<Appbar.Action icon="filter" onPress={() => setShowFilterMenu(true)} />}
+            anchor={<Appbar.Action icon="filter" onPressIn={() => setShowFilterMenu(true)} />}
           >
             <Menu.Item title={t('deck.notToLearn')} onPress={() => setFilterCards('notToLearn')} />
             <Menu.Item title={t('deck.notLearnt')} onPress={() => setFilterCards('notLearnt')} />
             <Menu.Item title={t('deck.ended')} onPress={() => setFilterCards('ended')} />
           </Menu>
         }
-        <Appbar.Action icon={searchMode ? 'magnify-close' : 'magnify'} onPress={toggleSearchMode} />
-        <Appbar.Action icon="cog" onPress={() => router.push(`/modalDeck?idDeck=${idDeck}`)} />
+        <Appbar.Action icon={searchMode ? 'magnify-close' : 'magnify'} onPressIn={toggleSearchMode} />
+        <Appbar.Action icon="cog" onPressIn={() => router.push(`/modalDeck?idDeck=${idDeck}`)} />
       </Appbar.Header>
       <ProgressBar
         progress={progress || 0}

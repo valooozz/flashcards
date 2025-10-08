@@ -8,7 +8,7 @@ import { DeckType } from '../../types/DeckType';
 import { FlashCardType } from '../../types/FlashCardType';
 import { CardsToReviseLearnt, FlashRevisionSettingsType, RevisionSide, StepDelimiter } from '../../types/FlashRevisionSettings';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
-import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
+import { getFlashCardsForFlashRevision } from '../../utils/database/card/get/getFlashCardsForFlashRevision.utils';
 import { getGeneralProgress } from '../../utils/database/card/get/getGeneralProgress.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
@@ -80,7 +80,7 @@ export function Home() {
     };
 
     const loadFlashCards = async (id: number, cardsToReviseLearnt: CardsToReviseLearnt, stepDelimiter: StepDelimiter) => {
-        await getFlashCardsFromDeck(
+        await getFlashCardsForFlashRevision(
             database,
             id,
             cardsToReviseLearnt,
@@ -177,30 +177,42 @@ export function Home() {
         }, [inDeck]),
     );
 
-    return inDeck ? inRevision ? (
-        <Revision
-            deckName={deckName}
-            flashCards={flashCards}
-            numberOfCards={numberOfCards}
-            revisionSide={revisionSide}
-            closeRevision={closeRevision}
-            reload={reload}
-        />
-    ) : (
+    return (
         <>
-            <Deck
-                idDeck={idDeck}
-                deckName={deckName}
-                cards={cards}
-                nbCards={nbCards}
-                progress={progressInDeck}
-                reload={() => loadCards(idDeck)}
-                closeDeck={closeDeck}
-                chooseFlashRevisionSettings={chooseFlashRevisionSettings}
-            />
+            {
+                inRevision ? (
+                    <Revision
+                        deckName={deckName}
+                        flashCards={flashCards}
+                        numberOfCards={numberOfCards}
+                        revisionSide={revisionSide}
+                        closeRevision={closeRevision}
+                        reload={reload}
+                    />
+                ) : inDeck ? (
+                    <>
+                        <Deck
+                            idDeck={idDeck}
+                            deckName={deckName}
+                            cards={cards}
+                            nbCards={nbCards}
+                            progress={progressInDeck}
+                            reload={() => loadCards(idDeck)}
+                            closeDeck={closeDeck}
+                            chooseFlashRevisionSettings={chooseFlashRevisionSettings}
+                        />
+                    </>
+                ) : (
+                    <Library
+                        decks={decks}
+                        progress={generalProgress}
+                        openDeck={openDeck}
+                        chooseFlashRevisionSettings={chooseFlashRevisionSettings}
+                    />
+                )
+            }
+
             <FlashRevisionDialog visible={showRevisionChoice} hideDialog={() => setShowRevisionChoice(false)} validate={openRevision} />
         </>
-    ) : (
-        <Library decks={decks} progress={generalProgress} openDeck={openDeck} />
-    );
+    )
 }
