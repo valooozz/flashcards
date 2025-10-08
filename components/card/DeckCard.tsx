@@ -40,7 +40,7 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
       getNbCardsToReviseInDeck(database, deck.id).then((nb) => {
         setNbCardsToRevise(nb);
       });
-      getNbCardsToLearnInDeck(database, deck.id).then((nb) => {
+      getNbCardsToLearnInDeck(database, deck.id, true).then((nb) => {
         setNbCardsToLearn(nb);
       });
       getProgressInDeck(database, deck.id).then((progress) => {
