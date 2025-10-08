@@ -2,10 +2,11 @@ import { router, useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, Text, useTheme } from 'react-native-paper';
+import { Card, ProgressBar, Text, useTheme } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { DeckType } from '../../types/DeckType';
+import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 import { getNbCardsToLearnInDeck } from '../../utils/database/deck/get/getNbCardsToLearnInDeck.utils';
 import { getNbCardsToReviseInDeck } from '../../utils/database/deck/get/getNbCardsToReviseInDeck.utils';
@@ -21,6 +22,7 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
   const [nbCardsToRevise, setNbCardsToRevise] = useState(0);
   const [nbCardsToLearn, setNbCardsToLearn] = useState(0);
   const [word, setWord] = useState('');
+  const [progressInDeck, setProgressInDeck] = useState(0);
 
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -41,6 +43,9 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
       getNbCardsToLearnInDeck(database, deck.id).then((nb) => {
         setNbCardsToLearn(nb);
       });
+      getProgressInDeck(database, deck.id).then((progress) => {
+        setProgressInDeck(progress);
+      })
     }, []),
   );
 
@@ -48,7 +53,7 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
     <Card
       onPress={() => openDeck(deck.id, deck.name)}
       onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}
-      style={{ backgroundColor: colors.onPrimary }}
+      style={[styles.card, { backgroundColor: colors.onPrimary }]}
     >
       <Card.Title title={deck.name} />
       <Card.Content style={styles.content}>
@@ -56,14 +61,23 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
         {nbCardsToRevise ? <Text variant="bodyMedium" style={[styles.center, { color: Colors.daily.dark.main }]}>{nbCardsToRevise + t('deck.toReview')}</Text> : null}
         {nbCardsToLearn ? <Text variant="bodyMedium" style={[styles.right, { color: Colors.learning.dark.main }]}>{nbCardsToLearn + t('deck.toLearn')}</Text> : null}
       </Card.Content>
+      <ProgressBar
+        progress={progressInDeck}
+        color={Colors.library.intermediate.main}
+        style={styles.progressBar}
+      />
     </Card>
   )
 }
 
 const styles = StyleSheet.create({
+  card: {
+    overflow: 'hidden',
+  },
   content: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingBottom: 12,
   },
   center: {
     position: 'absolute',
@@ -71,5 +85,8 @@ const styles = StyleSheet.create({
   },
   right: {
     marginLeft: 'auto',
-  }
+  },
+  progressBar: {
+    height: 6,
+  },
 })

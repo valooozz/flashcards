@@ -57,7 +57,7 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
           router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
         }
         onLongPress={handleLongPress}
-        style={{ overflow: 'hidden', backgroundColor: colors.onPrimary }}
+        style={[styles.card, { backgroundColor: colors.onPrimary }]}
       >
         <Card.Content style={styles.content}>
           <ListCardElement text={card.recto} image={card.rectoImage} light={!card.toLearn} />
@@ -96,6 +96,9 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    overflow: 'hidden',
+  },
   content: {
     flexGrow: 1,
     paddingHorizontal: 16,
