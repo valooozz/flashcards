@@ -148,7 +148,7 @@ export default function Modal() {
 
   const handleReset = async () => {
     const resetOk = await resetCard(database, idCard);
-    notify(resetOk, t('notifications.errorOccurred'), t('card.resetted'));
+    notify(resetOk, t('notifications.errorOccurred'), t('card.resetted'), true);
     setShowConfirmResetDialog(false);
     getCardById(database, idCard).then((card) => {
       setStep(card.step);

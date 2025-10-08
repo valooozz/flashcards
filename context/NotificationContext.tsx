@@ -1,7 +1,7 @@
 import { FC, ReactNode, createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { Snackbar, useTheme } from 'react-native-paper';
 
-type SnackbarVariant = 'default' | 'success' | 'error';
+type SnackbarVariant = 'default' | 'success' | 'error' | 'successInModal';
 
 interface ShowOptions {
     duration?: number;
@@ -81,6 +81,8 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({ children }
         switch (variant) {
             case 'success':
                 return theme.colors.inversePrimary;
+            case 'successInModal':
+                return theme.colors.primary;
             case 'error':
                 return theme.colors.error;
             default:
@@ -100,7 +102,7 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({ children }
                 action={actionLabel ? { label: actionLabel, onPress: () => actionHandlerRef.current?.() } : undefined}
                 theme={{
                     colors: {
-                        inverseOnSurface: theme.colors.onPrimaryContainer,
+                        inverseOnSurface: variant === 'successInModal' ? theme.colors.onPrimary : theme.colors.onPrimaryContainer,
                     }
                 }}
             >

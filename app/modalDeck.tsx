@@ -65,7 +65,7 @@ export default function Modal() {
 
   const handleValidate = async () => {
     if (newDeckName === '') {
-      notify(false, t('deck.emptyNameError'));
+      notify(false, t('deck.emptyNameError'), '', true);
       return;
     }
 
@@ -94,6 +94,7 @@ export default function Modal() {
       resetOk,
       t('notifications.errorOccurred'),
       t('deck.learningResetted'),
+      true
     );
     setShowConfirmResetDialog(false);
   };
@@ -103,7 +104,8 @@ export default function Modal() {
     notify(
       forceOk,
       t('notifications.errorOccurred'),
-      t('common.settingUpdated')
+      t('common.settingUpdated'),
+      true
     )
     setShowConfirmForceDialog(false);
   }
