@@ -58,7 +58,16 @@
         "notLearnt": "Not yet learnt",
         "learningOfCard": "the card's learning",
         "theCard": "the card",
-        "followDeck": "Follow deck"
+        "followDeck": "Follow deck",
+        "help": {
+            "title": "Help",
+            "known": "Known: You remembered the card, it moves to the next learning step",
+            "difficult": "\n\nDifficult: You barely remembered the card, it stays at the same learning step",
+            "almost": "\n\nAlmost: You forgot the card but were close to the answer, it goes back to the previous step",
+            "forgottenSoft": "\n\nForgotten: You forgot the card, it goes back to the previous step because you didn't enable the option to return to the first step when forgetting (in settings)",
+            "forgottenHard": "\n\nForgotten: You forgot the card, it returns to the first step because you enabled the option to return to the first step when forgetting (in settings)",
+            "forgotten": "\n\nForgotten: You forgot the card, it returns to the first step"
+        }
     },
     "deck": {
         "title": "Deck",

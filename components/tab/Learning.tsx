@@ -20,6 +20,7 @@ import { incrementStatOfToday } from '../../utils/database/stats/incrementStatOf
 import { shuffle } from '../../utils/shuffle.utils';
 import { FlashButton } from '../button/FlashButton';
 import { FlashCard } from '../card/FlashCard';
+import { InfoDialog } from '../dialog/InfoDialog';
 
 export function Learning() {
     const [cardsToLearn, setCardsToLearn] = useState<FlashCardType[]>([]);
@@ -30,6 +31,7 @@ export function Learning() {
     const [decks, setDecks] = useState<DeckType[]>([]);
     const [deckFilter, setDeckFilter] = useState(false);
     const [showFilterMenu, setShowFilterMenu] = useState(false);
+    const [showHelpDialog, setShowHelpDialog] = useState(false);
 
     const { t } = useTranslation();
     const { colors } = useTheme();
@@ -98,68 +100,78 @@ export function Learning() {
     };
 
     return (
-        <View style={[GlobalStyles.container, { backgroundColor: colors.primary }]}>
-            <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
-                <Appbar.Content title={t('learning.title')} />
-                {cardToShow &&
-                    <>
-                        {deckFilter ?
-                            <Appbar.Action icon={'filter-off'} onPress={() => changeFilter(undefined)} />
-                            :
-                            <Menu
-                                visible={showFilterMenu}
-                                onDismiss={() => setShowFilterMenu(false)}
-                                anchor={<Appbar.Action icon="filter" onPress={() => setShowFilterMenu(true)} />}
-                            >
-                                {decks.map((deck) => (
-                                    <Menu.Item title={deck.name} onPress={() => changeFilter(deck.id)} key={deck.id} />
-                                ))}
-                            </Menu>
-                        }
-                    </>
-                }
-                <Appbar.Content
-                    title={cardsToLearn.length > 0 ? cardsToLearn.length.toString() : ''}
-                    titleStyle={{ marginLeft: 'auto', marginRight: 24 }}
-                />
-            </Appbar.Header>
-            {cardToShow ? (
-                <>
-                    <FlashCard
-                        recto={cardToShow.recto}
-                        verso={cardToShow.verso}
-                        rectoImage={cardToShow.rectoImage}
-                        versoImage={cardToShow.versoImage}
-                        deckName={cardToShow.name}
-                        backgroundColor={Colors.learning.simple.main}
-                        textDeckColor={Colors.learning.dark.main}
-                        previousPossible={previousCard !== undefined}
-                        handlePrevious={handlePrevious}
+        <>
+            <View style={[GlobalStyles.container, { backgroundColor: colors.primary }]}>
+                <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
+                    <Appbar.Content title={t('learning.title')} titleStyle={{ width: '140%' }} />
+                    <Appbar.Content
+                        title={cardsToLearn.length > 0 ? cardsToLearn.length.toString() : ''}
+                        titleStyle={{ marginHorizontal: 'auto' }}
                     />
-                    <View style={GlobalStyles.flashButtonContainer}>
-                        <FlashButton
-                            text={t('learning.ignore')}
-                            backgroundColor={Colors.learning.light.main}
-                            textColor={Colors.learning.light.contrast}
-                            handleClick={() => handleNext('ignore')}
+                    {cardToShow &&
+                        <>
+                            {deckFilter ?
+                                <Appbar.Action icon={'filter-off'} onPress={() => changeFilter(undefined)} />
+                                :
+                                <Menu
+                                    visible={showFilterMenu}
+                                    onDismiss={() => setShowFilterMenu(false)}
+                                    anchor={<Appbar.Action icon="filter" onPress={() => setShowFilterMenu(true)} />}
+                                >
+                                    {decks.map((deck) => (
+                                        <Menu.Item title={deck.name} onPress={() => changeFilter(deck.id)} key={deck.id} />
+                                    ))}
+                                </Menu>
+                            }
+                        </>
+                    }
+                    <Appbar.Action icon="help" onPressIn={() => setShowHelpDialog(true)} />
+                </Appbar.Header>
+                {cardToShow ? (
+                    <>
+                        <FlashCard
+                            recto={cardToShow.recto}
+                            verso={cardToShow.verso}
+                            rectoImage={cardToShow.rectoImage}
+                            versoImage={cardToShow.versoImage}
+                            deckName={cardToShow.name}
+                            backgroundColor={Colors.learning.simple.main}
+                            textDeckColor={Colors.learning.dark.main}
+                            previousPossible={previousCard !== undefined}
+                            handlePrevious={handlePrevious}
                         />
-                        <FlashButton
-                            text={t('learning.again')}
-                            backgroundColor={Colors.learning.middle.main}
-                            textColor={Colors.learning.light.contrast}
-                            handleClick={() => handleNext('again')}
-                        />
-                        <FlashButton
-                            text={t('learning.learnt')}
-                            backgroundColor={Colors.learning.intermediate.main}
-                            textColor={Colors.learning.intermediate.contrast}
-                            handleClick={() => handleNext('learnt')}
-                        />
-                    </View>
-                </>
-            ) : (
-                <Text variant='titleMedium' style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>{t('learning.over')}</Text>
-            )}
-        </View>
+                        <View style={GlobalStyles.flashButtonContainer}>
+                            <FlashButton
+                                text={t('learning.ignore')}
+                                backgroundColor={Colors.learning.light.main}
+                                textColor={Colors.learning.light.contrast}
+                                handleClick={() => handleNext('ignore')}
+                            />
+                            <FlashButton
+                                text={t('learning.again')}
+                                backgroundColor={Colors.learning.middle.main}
+                                textColor={Colors.learning.light.contrast}
+                                handleClick={() => handleNext('again')}
+                            />
+                            <FlashButton
+                                text={t('learning.learnt')}
+                                backgroundColor={Colors.learning.intermediate.main}
+                                textColor={Colors.learning.intermediate.contrast}
+                                handleClick={() => handleNext('learnt')}
+                            />
+                        </View>
+                    </>
+                ) : (
+                    <Text variant='titleMedium' style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>{t('learning.over')}</Text>
+                )}
+            </View>
+
+            <InfoDialog
+                visible={showHelpDialog}
+                hideDialog={() => setShowHelpDialog(false)}
+                title={t('common.help')}
+                text={t('learning.help')}
+            />
+        </>
     );
 };

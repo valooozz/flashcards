@@ -62,7 +62,7 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
         {nbCardsToLearn ? <Text variant="bodyMedium" style={[styles.right, { color: Colors.learning.dark.main }]}>{nbCardsToLearn + t('deck.toLearn')}</Text> : null}
       </Card.Content>
       <ProgressBar
-        progress={progressInDeck}
+        progress={progressInDeck || 0}
         color={Colors.library.intermediate.main}
         style={[styles.progressBar, { backgroundColor: colors.onPrimary }]}
       />

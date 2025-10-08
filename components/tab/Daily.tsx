@@ -30,6 +30,7 @@ import { preventCardToBeFirst } from '../../utils/preventCardToBeFirst.utils';
 import { shuffle } from '../../utils/shuffle.utils';
 import { FlashButton } from '../button/FlashButton';
 import { FlashCard } from '../card/FlashCard';
+import { InfoDialog } from '../dialog/InfoDialog';
 
 export function Daily() {
     const [cardsToRevise, setCardsToRevise] = useState<FlashCardType[]>([]);
@@ -48,6 +49,8 @@ export function Daily() {
     const [previousCard, setPreviousCard] = useState<FlashCardType>(undefined);
     const [previousStatIncremented, setPreviousStatIncremented] =
         useState<string>(undefined);
+
+    const [showHelpDialog, setShowHelpDialog] = useState(false);
 
     const { hardThrowback, stopLearning, advancedRevisionMode, intervals } = useSettingsContext();
 
@@ -189,91 +192,111 @@ export function Daily() {
         updateCardsToRevise(cardsToRevise.slice(1));
     };
 
+    const getHelpText = () => {
+        if (advancedRevisionMode) {
+            return t('daily.help.known') + t('daily.help.difficult') + t('daily.help.almost') + t('daily.help.forgotten');
+        }
+        if (hardThrowback) {
+            return t('daily.help.known') + t('daily.help.forgottenHard');
+        }
+        return t('daily.help.known') + t('daily.help.forgottenSoft');
+    }
+
     return (
-        <View style={[GlobalStyles.container, { backgroundColor: colors.primary }]}>
-            <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
-                <Appbar.Content title={t('daily.title')} />
-                <Appbar.Content
-                    title={cardsToRevise.length + forgottenCards.length > 0 ? (cardsToRevise.length + forgottenCards.length).toString() : ''}
-                    titleStyle={{ marginLeft: 'auto', marginRight: 24 }}
-                />
-            </Appbar.Header>
-            {cardToShow ? (
-                <>
-                    <FlashCard
-                        recto={cardToShow.recto}
-                        verso={cardToShow.verso}
-                        rectoImage={cardToShow.rectoImage}
-                        versoImage={cardToShow.versoImage}
-                        deckName={cardToShow.name}
-                        delay={delay}
-                        backgroundColor={Colors.daily.simple.main}
-                        textDeckColor={Colors.daily.dark.main}
-                        previousPossible={previousCard !== undefined}
-                        handlePrevious={handlePrevious}
+        <>
+            <View style={[GlobalStyles.container, { backgroundColor: colors.primary }]}>
+                <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
+                    <Appbar.Content title={t('daily.title')} titleStyle={{ width: '140%' }} />
+                    <Appbar.Content
+                        title={cardsToRevise.length + forgottenCards.length > 0 ? (cardsToRevise.length + forgottenCards.length).toString() : ''}
+                        titleStyle={{ marginHorizontal: 'auto' }}
                     />
-                    <View style={GlobalStyles.flashButtonContainer}>
-                        <FlashButton
-                            text={t('daily.forgotten')}
-                            backgroundColor={Colors.daily.light.main}
-                            textColor={Colors.daily.light.contrast}
-                            handleClick={() => handleNext('forgotten')}
+                    <Appbar.Action icon="help" onPressIn={() => setShowHelpDialog(true)} />
+                </Appbar.Header>
+                {cardToShow ? (
+                    <>
+                        <FlashCard
+                            recto={cardToShow.recto}
+                            verso={cardToShow.verso}
+                            rectoImage={cardToShow.rectoImage}
+                            versoImage={cardToShow.versoImage}
+                            deckName={cardToShow.name}
+                            delay={delay}
+                            backgroundColor={Colors.daily.simple.main}
+                            textDeckColor={Colors.daily.dark.main}
+                            previousPossible={previousCard !== undefined}
+                            handlePrevious={handlePrevious}
                         />
-                        {(advancedRevisionMode && !inSecondPhase) && (
-                            <>
-                                <FlashButton
-                                    text={t('daily.almost')}
-                                    backgroundColor={Colors.daily.middleLight.main}
-                                    textColor={Colors.daily.middleLight.contrast}
-                                    handleClick={() => handleNext('almost')}
-                                /><FlashButton
-                                    text={t('daily.difficult')}
-                                    backgroundColor={Colors.daily.middleDark.main}
-                                    textColor={Colors.daily.middleDark.contrast}
-                                    handleClick={() => handleNext('difficult')}
-                                />
-                            </>)}
-                        <FlashButton
-                            text={t('daily.known')}
-                            backgroundColor={Colors.daily.intermediate.main}
-                            textColor={Colors.daily.intermediate.contrast}
-                            handleClick={() => handleNext('known')}
-                        />
-                    </View>
-                </>
-            ) : (
-                <View style={styles.container}>
-                    <Text variant='titleMedium' style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>{t('daily.over')}</Text>
-                    <View>
-                        <Text variant='headlineLarge' style={{ color: colors.onPrimary }}>{t('days.today')}</Text>
-                        <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsReviewed')} : {nbRevised}</Text>
-                        <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsKnown')} : {nbKnown}</Text>
-                        <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
-                    </View>
-                    <View>
-                        <Text variant='headlineLarge' style={{ color: colors.onPrimary }}>{t('daily.weekRevisions')}</Text>
-                        {nbCardsToReviseThisWeek.map((nbCardsToRevise) => {
-                            const revisionDate = new Date();
-                            revisionDate.setDate(revisionDate.getDate() + nbCardsToRevise.daysFromToday);
+                        <View style={GlobalStyles.flashButtonContainer}>
+                            <FlashButton
+                                text={t('daily.forgotten')}
+                                backgroundColor={Colors.daily.light.main}
+                                textColor={Colors.daily.light.contrast}
+                                handleClick={() => handleNext('forgotten')}
+                            />
+                            {(advancedRevisionMode && !inSecondPhase) && (
+                                <>
+                                    <FlashButton
+                                        text={t('daily.almost')}
+                                        backgroundColor={Colors.daily.middleLight.main}
+                                        textColor={Colors.daily.middleLight.contrast}
+                                        handleClick={() => handleNext('almost')}
+                                    /><FlashButton
+                                        text={t('daily.difficult')}
+                                        backgroundColor={Colors.daily.middleDark.main}
+                                        textColor={Colors.daily.middleDark.contrast}
+                                        handleClick={() => handleNext('difficult')}
+                                    />
+                                </>)}
+                            <FlashButton
+                                text={t('daily.known')}
+                                backgroundColor={Colors.daily.intermediate.main}
+                                textColor={Colors.daily.intermediate.contrast}
+                                handleClick={() => handleNext('known')}
+                            />
+                        </View>
+                    </>
+                ) : (
+                    <View style={styles.container}>
+                        <Text variant='titleMedium' style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>{t('daily.over')}</Text>
+                        <View>
+                            <Text variant='headlineLarge' style={{ color: colors.onPrimary }}>{t('days.today')}</Text>
+                            <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsReviewed')} : {nbRevised}</Text>
+                            <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsKnown')} : {nbKnown}</Text>
+                            <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
+                        </View>
+                        <View>
+                            <Text variant='headlineLarge' style={{ color: colors.onPrimary }}>{t('daily.weekRevisions')}</Text>
+                            {nbCardsToReviseThisWeek.map((nbCardsToRevise) => {
+                                const revisionDate = new Date();
+                                revisionDate.setDate(revisionDate.getDate() + nbCardsToRevise.daysFromToday);
 
-                            let dayLabel: string;
-                            if (nbCardsToRevise.daysFromToday === 1) {
-                                dayLabel = t('days.tomorrow');
-                            } else {
-                                const weekdayIndex = revisionDate.getDay();
-                                dayLabel = t(`days.${weekdayIndex}`);
-                            }
+                                let dayLabel: string;
+                                if (nbCardsToRevise.daysFromToday === 1) {
+                                    dayLabel = t('days.tomorrow');
+                                } else {
+                                    const weekdayIndex = revisionDate.getDay();
+                                    dayLabel = t(`days.${weekdayIndex}`);
+                                }
 
-                            return (
-                                <Text variant='titleMedium' style={{ color: colors.onPrimary }} key={nbCardsToRevise.daysFromToday}>
-                                    {dayLabel} : {nbCardsToRevise.nbCards}
-                                </Text>
-                            );
-                        })}
+                                return (
+                                    <Text variant='titleMedium' style={{ color: colors.onPrimary }} key={nbCardsToRevise.daysFromToday}>
+                                        {dayLabel} : {nbCardsToRevise.nbCards}
+                                    </Text>
+                                );
+                            })}
+                        </View>
                     </View>
-                </View>
-            )}
-        </View>
+                )}
+            </View>
+
+            <InfoDialog
+                visible={showHelpDialog}
+                hideDialog={() => setShowHelpDialog(false)}
+                title={t('common.help')}
+                text={getHelpText()}
+            />
+        </>
     );
 }
 
