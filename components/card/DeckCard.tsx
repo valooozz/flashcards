@@ -53,8 +53,8 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
       <Card.Title title={deck.name} />
       <Card.Content style={styles.content}>
         <Text variant="bodyMedium" style={{ color: colors.primary }}>{nbCards + word}</Text>
-        <Text variant="bodyMedium" style={{ color: Colors.daily.dark.main }}>{nbCardsToRevise + t('deck.toReview')}</Text>
-        <Text variant="bodyMedium" style={{ color: Colors.learning.dark.main }}>{nbCardsToLearn + t('deck.toLearn')}</Text>
+        {nbCardsToRevise ? <Text variant="bodyMedium" style={[styles.center, { color: Colors.daily.dark.main }]}>{nbCardsToRevise + t('deck.toReview')}</Text> : null}
+        {nbCardsToLearn ? <Text variant="bodyMedium" style={[styles.right, { color: Colors.learning.dark.main }]}>{nbCardsToLearn + t('deck.toLearn')}</Text> : null}
       </Card.Content>
     </Card>
   )
@@ -64,5 +64,12 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  center: {
+    position: 'absolute',
+    left: 152,
+  },
+  right: {
+    marginLeft: 'auto',
   }
 })
