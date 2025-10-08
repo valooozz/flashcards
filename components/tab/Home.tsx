@@ -9,6 +9,7 @@ import { FlashCardType } from '../../types/FlashCardType';
 import { CardsToReviseLearnt, FlashRevisionSettingsType, RevisionSide, StepDelimiter } from '../../types/FlashRevisionSettings';
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getFlashCardsFromDeck } from '../../utils/database/card/get/getFlashCardsFromDeck.utils';
+import { getGeneralProgress } from '../../utils/database/card/get/getGeneralProgress.utils';
 import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
 import { FlashRevisionDialog } from '../dialog/FlashRevisionDialog';
@@ -20,6 +21,7 @@ export function Home() {
     const [inDeck, setInDeck] = useState(false);
     const [inRevision, setInRevision] = useState(false);
     const [decks, setDecks] = useState<DeckType[]>([]);
+    const [generalProgress, setGeneralProgress] = useState(0);
 
     const [idDeck, setIdDeck] = useState(-1);
     const [deckName, setDeckName] = useState('');
@@ -132,6 +134,9 @@ export function Home() {
             getAllDecks(database).then((decksResult) => {
                 setDecks(decksResult);
             });
+            getGeneralProgress(database).then((progress) => {
+                setGeneralProgress(progress);
+            });
 
             // On blur, persist the latest state (using ref to avoid stale closures)
             return () => {
@@ -186,6 +191,6 @@ export function Home() {
             <FlashRevisionDialog visible={showRevisionChoice} hideDialog={() => setShowRevisionChoice(false)} validate={openRevision} />
         </>
     ) : (
-        <Library decks={decks} openDeck={openDeck} />
+        <Library decks={decks} progress={generalProgress} openDeck={openDeck} />
     );
 }

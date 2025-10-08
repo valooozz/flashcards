@@ -2,9 +2,10 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Appbar, FAB, Menu, useTheme } from 'react-native-paper';
+import { Appbar, FAB, Menu, ProgressBar, useTheme } from 'react-native-paper';
 import { DeckCard } from '../../components/card/DeckCard';
 import { useTranslation } from '../../hooks/useTranslation';
+import { Colors } from '../../style/Colors';
 import { GlobalStyles } from '../../style/GlobalStyles';
 import { Sizes } from '../../style/Sizes';
 import { DeckType } from '../../types/DeckType';
@@ -13,10 +14,11 @@ import { importDocument } from '../../utils/import/importDocument.utils';
 
 interface LibraryProps {
   decks: DeckType[];
+  progress: number;
   openDeck: (id: number, name: string) => void;
 }
 
-export function Library({ decks, openDeck }: LibraryProps) {
+export function Library({ decks, progress, openDeck }: LibraryProps) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const database = useSQLiteContext();
@@ -37,6 +39,11 @@ export function Library({ decks, openDeck }: LibraryProps) {
         </Menu>
         <Appbar.Action icon="cog" onPress={() => router.push("modalSettings")} />
       </Appbar.Header>
+      <ProgressBar
+        progress={progress || 0}
+        color={Colors.library.intermediate.main}
+      />
+
       {decks.length > 0 ? (
         <ScrollView
           contentContainerStyle={[GlobalStyles.container, styles.decksDisplay]}
