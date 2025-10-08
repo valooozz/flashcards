@@ -5,7 +5,7 @@ export const resetDeck = async (
   id: string,
 ): Promise<boolean> => {
   return database
-    .runAsync('UPDATE Card SET nextRevision=null WHERE deck=?', [id])
+    .runAsync('UPDATE Card SET nextRevision=null, step=0 WHERE deck=?', [id])
     .then(() => true)
     .catch(() => false);
 };
