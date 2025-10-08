@@ -1,21 +1,20 @@
 import React, { useState } from "react";
-import { useColorScheme } from "react-native";
 import { BottomNavigation, Icon, PaperProvider, Text } from "react-native-paper";
 import { Daily } from "../components/tab/Daily";
 import { Home } from "../components/tab/Home";
 import { Learning } from "../components/tab/Learning";
 import { useTranslation } from "../hooks/useTranslation";
-import { dailyDarkTheme, dailyLightTheme, homeDarkTheme, homeLightTheme, learningDarkTheme, learningLightTheme } from "../style/Themes";
+import { dailyLightTheme, homeLightTheme, learningLightTheme } from "../style/Themes";
 
 export default function Index() {
     const [index, setIndex] = useState(0);
 
     const { t } = useTranslation();
 
-    const colorScheme = useColorScheme();
-    const homeTheme = colorScheme === 'dark' ? homeDarkTheme : homeLightTheme;
-    const dailyTheme = colorScheme === 'dark' ? dailyDarkTheme : dailyLightTheme;
-    const learningTheme = colorScheme === 'dark' ? learningDarkTheme : learningLightTheme;
+    // const colorScheme = useColorScheme();
+    const homeTheme = homeLightTheme; // colorScheme === 'dark' ? homeDarkTheme : homeLightTheme;
+    const dailyTheme = dailyLightTheme; // colorScheme === 'dark' ? dailyDarkTheme : dailyLightTheme;
+    const learningTheme = learningLightTheme; // colorScheme === 'dark' ? learningDarkTheme : learningLightTheme;
 
     const routes = [
         { key: 'home', title: t('library.title'), icon: 'bookmark-box-multiple', color: homeTheme.colors.primary },

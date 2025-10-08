@@ -18,7 +18,12 @@ export function InfoButton({ textLabel, textExplanation }: InfoButtonProps) {
                 onPress={() => setShowInfoDialog(true)}
                 testID='checkbox-info-button'
             />
-            <InfoDialog visible={showInfoDialog} hideDialog={() => setShowInfoDialog(false)} title={textLabel} text={textExplanation} />
+            <InfoDialog
+                visible={showInfoDialog}
+                hideDialog={() => setShowInfoDialog(false)}
+                title={textLabel}
+                text={textExplanation}
+            />
         </>
     );
 }
