@@ -1,9 +1,14 @@
 import { router, useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import { Card, Text, useTheme } from 'react-native-paper';
+import { useTranslation } from '../../hooks/useTranslation';
+import { Colors } from '../../style/Colors';
 import { DeckType } from '../../types/DeckType';
 import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
+import { getNbCardsToLearnInDeck } from '../../utils/database/deck/get/getNbCardsToLearnInDeck.utils';
+import { getNbCardsToReviseInDeck } from '../../utils/database/deck/get/getNbCardsToReviseInDeck.utils';
 
 interface DeckCardProps {
   deck: DeckType;
@@ -13,18 +18,28 @@ interface DeckCardProps {
 export function DeckCard({ deck, openDeck }: DeckCardProps) {
   const database = useSQLiteContext();
   const [nbCards, setNbCards] = useState(0);
+  const [nbCardsToRevise, setNbCardsToRevise] = useState(0);
+  const [nbCardsToLearn, setNbCardsToLearn] = useState(0);
   const [word, setWord] = useState('');
+
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   useFocusEffect(
     useCallback(() => {
       getNbCardsInDeck(database, deck.id).then((nb) => {
         setNbCards(nb);
         if (nb > 1) {
-          setWord(' cartes');
+          setWord(t('deck.cards'));
         } else {
-          setWord(' carte');
+          setWord(t('deck.card'));
         }
+      });
+      getNbCardsToReviseInDeck(database, deck.id).then((nb) => {
+        setNbCardsToRevise(nb);
+      });
+      getNbCardsToLearnInDeck(database, deck.id).then((nb) => {
+        setNbCardsToLearn(nb);
       });
     }, []),
   );
@@ -33,12 +48,21 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
     <Card
       onPress={() => openDeck(deck.id, deck.name)}
       onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}
-    // style={{ backgroundColor: colors.onPrimary }}
+      style={{ backgroundColor: colors.onPrimary }}
     >
       <Card.Title title={deck.name} />
-      <Card.Content>
-        <Text adjustsFontSizeToFit variant="bodyMedium" style={{ color: colors.secondary }}>{nbCards + word}</Text>
+      <Card.Content style={styles.content}>
+        <Text variant="bodyMedium" style={{ color: colors.primary }}>{nbCards + word}</Text>
+        <Text variant="bodyMedium" style={{ color: Colors.daily.dark.main }}>{nbCardsToRevise + t('deck.toReview')}</Text>
+        <Text variant="bodyMedium" style={{ color: Colors.learning.dark.main }}>{nbCardsToLearn + t('deck.toLearn')}</Text>
       </Card.Content>
     </Card>
   )
 }
+
+const styles = StyleSheet.create({
+  content: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }
+})

@@ -63,7 +63,10 @@
     "deck": {
         "title": "Deck",
         "name": "Deck name",
-        "cards": "Cards",
+        "card": " card",
+        "cards": " cards",
+        "toReview": " to review",
+        "toLearn": " to learn",
         "noCards": "This deck contains no cards. Click the + button to add some!",
         "delete": "Delete deck",
         "reset": "Reset learning",

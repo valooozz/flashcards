@@ -4,7 +4,7 @@ export const getNbCardsInDeck = async (
   database: SQLiteDatabase,
   idDeck: number,
 ): Promise<number> => {
-  let nbCardsResult: object = undefined;
+  let nbCardsResult: object;
   try {
     nbCardsResult = await database.getFirstAsync(
       'SELECT COUNT(*) FROM Card WHERE deck=?',
