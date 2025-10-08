@@ -31,7 +31,9 @@ export function Home() {
     const [progressInDeck, setProgressInDeck] = useState(0);
 
     const [flashCards, setFlashCards] = useState<FlashCardType[]>([]);
+    const [cardsToReviseLearnt, setCardsToReviseLearnt] = useState<CardsToReviseLearnt>(undefined);
     const [numberOfCards, setNumberOfCards] = useState<number>(undefined);
+    const [stepDelimiter, setStepDelimiter] = useState<StepDelimiter>(undefined);
     const [revisionSide, setRevisionSide] = useState<RevisionSide>(undefined);
     const [showRevisionChoice, setShowRevisionChoice] = useState(false);
 
@@ -117,10 +119,17 @@ export function Home() {
         if (flashRevisionSettings.cardsToRevise === 'number') {
             setNumberOfCards(flashRevisionSettings.numberOfCards);
         }
+        const newStepDelimiter = flashRevisionSettings.cardsToRevise === 'step' ? flashRevisionSettings.stepDelimiter : undefined;
+        setStepDelimiter(newStepDelimiter);
+        setCardsToReviseLearnt(flashRevisionSettings.cardsToReviseLearnt);
         setRevisionSide(flashRevisionSettings.revisionSide);
-        loadFlashCards(idDeck, flashRevisionSettings.cardsToReviseLearnt, flashRevisionSettings.cardsToRevise === 'step' ? flashRevisionSettings.stepDelimiter : undefined).then(() => {
+        loadFlashCards(idDeck, flashRevisionSettings.cardsToReviseLearnt, newStepDelimiter).then(() => {
             setInRevision(true);
         });
+    }
+
+    const reload = () => {
+        loadFlashCards(idDeck, cardsToReviseLearnt, stepDelimiter);
     }
 
     const closeRevision = () => {
@@ -175,6 +184,7 @@ export function Home() {
             numberOfCards={numberOfCards}
             revisionSide={revisionSide}
             closeRevision={closeRevision}
+            reload={reload}
         />
     ) : (
         <>

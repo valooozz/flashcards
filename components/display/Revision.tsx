@@ -18,6 +18,7 @@ interface DeckProps {
   numberOfCards?: number;
   revisionSide: RevisionSide;
   closeRevision: () => void;
+  reload: () => void;
 }
 
 export function Revision({
@@ -26,6 +27,7 @@ export function Revision({
   numberOfCards,
   revisionSide,
   closeRevision,
+  reload,
 }: DeckProps) {
   const [cardsToRevise, setCardsToRevise] = useState<FlashCardType[]>([]);
   const [cardToShow, setCardToShow] = useState<FlashCardType>(undefined);
@@ -121,8 +123,9 @@ export function Revision({
         <Appbar.Content title={deckName} />
         <Appbar.Content
           title={`${sizeOfDeck - cardsToRevise.length} / ${sizeOfDeck}`}
-          titleStyle={{ marginLeft: 'auto', marginRight: 24 }}
+          titleStyle={{ marginHorizontal: 'auto' }}
         />
+        <Appbar.Action icon="reload" onPressIn={reload} />
       </Appbar.Header>
       <ProgressBar
         progress={sizeOfDeck > 0 ? (sizeOfDeck - cardsToRevise.length) / sizeOfDeck : 0}
