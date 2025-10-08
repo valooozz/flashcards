@@ -3,7 +3,7 @@ import { transformJsonToCsv } from '../export/transformJsonToCsv.utils';
 
 describe('transformJsonToCsv', () => {
     it('returns an empty string when there are no cards', () => {
-        const doc: DeckDocument = { deckName: 'Empty', cards: [], changeSide: true };
+        const doc: DeckDocument = { deckName: 'Empty', cards: [], changeSide: true, showName: true };
         const csv = transformJsonToCsv(doc);
         expect(csv).toBe('');
     });
@@ -16,6 +16,7 @@ describe('transformJsonToCsv', () => {
                 { recto: 'Yes', verso: 'Oui' },
             ],
             changeSide: true,
+            showName: true,
         };
         const csv = transformJsonToCsv(doc);
         expect(csv).toBe(['Hello,Bonjour,,', 'Yes,Oui,,'].join('\n'));
@@ -28,6 +29,7 @@ describe('transformJsonToCsv', () => {
                 { recto: 'He said "Hi"', verso: 'Test' },
             ],
             changeSide: false,
+            showName: true
         };
         const csv = transformJsonToCsv(doc);
         expect(csv).toBe('"He said ""Hi""",Test,,');
@@ -42,6 +44,7 @@ describe('transformJsonToCsv', () => {
                 { recto: 'carriage\rreturn', verso: 'z' },
             ],
             changeSide: false,
+            showName: false,
         };
         const csv = transformJsonToCsv(doc);
         expect(csv).toBe([
@@ -58,6 +61,7 @@ describe('transformJsonToCsv', () => {
                 { recto: null, verso: undefined },
             ],
             changeSide: true,
+            showName: false,
         };
         const csv = transformJsonToCsv(doc);
         expect(csv).toBe(',,,');

@@ -12,6 +12,7 @@ export const importCsvDocument = async (
   const deckDocument: DeckDocument = {
     deckName: fileName,
     changeSide: true,
+    showName: true,
     cards: [],
   };
 
