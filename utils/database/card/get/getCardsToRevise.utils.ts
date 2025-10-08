@@ -1,15 +1,12 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 import { FlashCardType } from '../../../../types/FlashCardType';
 import { getDate } from '../../../getDate.utils';
-import { logAllCards } from '../table/logAllCards.utils';
 
 export const getCardsToRevise = async (
   database: SQLiteDatabase,
 ): Promise<FlashCardType[]> => {
   let cardsToRevise: FlashCardType[];
   const today = getDate(0);
-
-  logAllCards(database);
 
   try {
     cardsToRevise = await database.getAllAsync<FlashCardType>(

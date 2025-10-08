@@ -53,7 +53,7 @@ export const SettingsProvider: FC<SettingsProviderProps> = ({ children }) => {
     }
 
     AsyncStorage.setItem('language', newLanguage).catch(
-      (error) => console.log(error),
+      (error) => console.error(error),
     );
   }
 

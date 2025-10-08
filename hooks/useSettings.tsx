@@ -14,7 +14,7 @@ const useSettings = () => {
           setIntervals(JSON.parse(result));
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
 
     AsyncStorage.getItem('hardThrowback')
       .then((result) => {
@@ -22,7 +22,7 @@ const useSettings = () => {
           setHardThrowback(JSON.parse(result));
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
 
     AsyncStorage.getItem('stopLearning')
       .then((result) => {
@@ -30,7 +30,7 @@ const useSettings = () => {
           setStopLearning(JSON.parse(result));
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
 
     AsyncStorage.getItem('advancedRevisionMode')
       .then((result) => {
@@ -38,24 +38,24 @@ const useSettings = () => {
           setAdvancedRevisionMode(JSON.parse(result));
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.error(error));
   }, []);
 
   const saveSettings = async (newIntervals: number[], newHardThrowback: boolean, newStopLearning: boolean, newAdvancedRevisionMode: boolean) => {
     AsyncStorage.setItem('intervals', JSON.stringify(newIntervals)).catch(
-      (error) => console.log(error),
+      (error) => console.error(error),
     );
 
     AsyncStorage.setItem('hardThrowback', JSON.stringify(newHardThrowback)).catch(
-      (error) => console.log(error),
+      (error) => console.error(error),
     );
 
     AsyncStorage.setItem('stopLearning', JSON.stringify(newStopLearning)).catch(
-      (error) => console.log(error),
+      (error) => console.error(error),
     );
 
     AsyncStorage.setItem('advancedRevisionMode', JSON.stringify(newAdvancedRevisionMode)).catch(
-      (error) => console.log(error),
+      (error) => console.error(error),
     );
   };
 
