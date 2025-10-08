@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { StyleSheet } from "react-native";
-import { Button, Dialog, SegmentedButtons, Text, TextInput } from "react-native-paper";
+import { Button, Dialog, SegmentedButtons, TextInput } from "react-native-paper";
 import { useTranslation } from "../../hooks/useTranslation";
-import { GlobalStyles } from "../../style/GlobalStyles";
 import { CardsToRevise, CardsToReviseLearnt, FlashRevisionSettingsType, RevisionSide, StepSide } from "../../types/FlashRevisionSettings";
+import { TitleWithInfo } from "../text/TitleWithInfo";
 
 interface FlashRevisionDialogProps {
     visible: boolean;
@@ -25,7 +25,7 @@ export const FlashRevisionDialog = ({ visible, hideDialog, validate }: FlashRevi
         <Dialog visible={visible} onDismiss={hideDialog}>
             <Dialog.Icon icon='flash' />
             <Dialog.Content style={styles.container}>
-                <Text variant='titleMedium' style={GlobalStyles.titleCenter}>{t('revision.chooseCards')}</Text>
+                <TitleWithInfo textLabel={t('revision.chooseCards')} textExplanation={t('revision.chooseCardsExplanation')} />
                 <SegmentedButtons
                     value={cardsToRevise}
                     onValueChange={(newValue: CardsToRevise) => setCardsToRevise(newValue)}
@@ -86,7 +86,7 @@ export const FlashRevisionDialog = ({ visible, hideDialog, validate }: FlashRevi
                         },
                     ]}
                 />
-                <Text variant='titleMedium' style={GlobalStyles.titleCenter}>{t('revision.chooseSide')}</Text>
+                <TitleWithInfo textLabel={t('revision.chooseSide')} textExplanation={t('revision.chooseSideExplanation')} />
                 <SegmentedButtons
                     value={revisionSide}
                     onValueChange={(newValue: RevisionSide) => setRevisionSide(newValue)}

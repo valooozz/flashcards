@@ -113,7 +113,10 @@ export function Revision({
       <Appbar.Header style={{ backgroundColor: Colors.revision.light.main }}>
         <Appbar.BackAction onPress={closeRevision} />
         <Appbar.Content title={deckName} />
-        <Appbar.Content title={`${sizeOfDeck - cardsToRevise.length} / ${sizeOfDeck}`} />
+        <Appbar.Content
+          title={`${sizeOfDeck - cardsToRevise.length} / ${sizeOfDeck}`}
+          titleStyle={{ marginLeft: 'auto', marginRight: 24 }}
+        />
       </Appbar.Header>
       <ProgressBar
         progress={sizeOfDeck > 0 ? (sizeOfDeck - cardsToRevise.length) / sizeOfDeck : 0}
