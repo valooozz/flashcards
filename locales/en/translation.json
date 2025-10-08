@@ -150,6 +150,7 @@
         "again": "To review",
         "done": "Revised",
         "over": "All cards have been revised!",
+        "score": "Score:",
         "chooseCards": "Which cards to review?",
         "chooseCardsExplanation": "All: all cards\n\nNumber: choose a specific number of cards to review\n\nStep: choose a learning step above or below which you want to review cards\n\nUnknown: only cards not yet learned\n\nLearned: only learned cards",
         "all": "All",

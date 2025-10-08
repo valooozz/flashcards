@@ -151,6 +151,7 @@
         "again": "À revoir",
         "done": "Révisée",
         "over": "Toutes les cartes ont été révisées !",
+        "score": "Score :",
         "chooseCards": "Quelles cartes réviser ?",
         "chooseCardsExplanation": "Toutes : toutes les cartes\n\nNombre : choisis un certain nombre de cartes à réviser\n\nÉtape : choisis une étape d'apprentissage au-dessus ou en-dessous de laquelle tu veux réviser les cartes\n\nInconnues : seulement les cartes pas encore apprises\n\nApprises : seulement les cartes apprises",
         "all": "Toutes",

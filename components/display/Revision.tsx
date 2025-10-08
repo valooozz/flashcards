@@ -35,6 +35,7 @@ export function Revision({
   const [versoImageToShow, setVersoImageToShow] = useState<string>(undefined);
   const [previousCard, setPreviousCard] = useState<FlashCardType>(undefined);
   const [sizeOfDeck, setSizeOfDeck] = useState(0);
+  const [score, setScore] = useState(0);
 
   const { t } = useTranslation();
 
@@ -45,6 +46,7 @@ export function Revision({
     updateRectoVerso(flashCardsToRevise[0]);
     setCardToShow(flashCardsToRevise[0]);
     setSizeOfDeck(flashCardsToRevise.length);
+    setScore(0);
   }, [flashCards]);
 
   const updateRectoVerso = (newCard: FlashCardType) => {
@@ -91,8 +93,10 @@ export function Revision({
     let newCardsToRevise: FlashCardType[];
     if (revisionAction === 'again') {
       newCardsToRevise = [...cardsToRevise.slice(1), cardToShow];
+      setScore(score - 1);
     } else if (revisionAction === 'done') {
       newCardsToRevise = cardsToRevise.slice(1);
+      setScore(score + 1);
     }
     setCardsToRevise(newCardsToRevise);
     updateCardToShow(newCardsToRevise[0]);
@@ -101,8 +105,10 @@ export function Revision({
   const handlePrevious = () => {
     if (isLastItem(previousCard, cardsToRevise)) {
       setCardsToRevise([previousCard, ...cardsToRevise.slice(0, -1)]);
+      setScore(score + 1);
     } else {
       setCardsToRevise([previousCard, ...cardsToRevise]);
+      setScore(score - 1);
     }
     updateCardToShow(previousCard);
     setPreviousCard(undefined);
@@ -152,7 +158,10 @@ export function Revision({
           </View>
         </>
       ) : (
-        <Text variant='titleMedium' style={[GlobalStyles.centerText, styles.text]}>{t('revision.over')}</Text>
+        <>
+          <Text variant='titleMedium' style={[GlobalStyles.centerText, styles.text]}>{t('revision.over')}</Text>
+          <Text variant='titleLarge' style={[GlobalStyles.centerText, styles.text]}>{t('revision.score')} {score} / {sizeOfDeck}</Text>
+        </>
       )}
     </View>
   );
