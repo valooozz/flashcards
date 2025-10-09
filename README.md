@@ -12,11 +12,12 @@ Une [documentation utilisateur](doc/doc.md) est également disponible sur le pro
 
 Voici quelques exemples de l'interface :
 
-<img src="./doc/images/Library.jpg" alt="Capture d'écran de la Bibliothèque de l'application" width="200"/>
-<img src="./doc/images/LearningCardRecto.jpg" alt="Capture d'écran du recto d'une carte de l'onglet Apprentissage" width="200"/>
-<img src="./doc/images/DailyCardVerso.jpg" alt="Capture d'écran du verso d'une carte de l'onglet Apprentissage" width="200"/>
-<img src="./doc/images/DailyOver.jpg" alt="Capture d'écran de l'onglet Révisions une fois toutes les cartes révisées" width="200"/>
-<img src="./doc/images/Deck.jpg" alt="Capture d'écran de la page d'un Deck" width="200"/>
+<img src="./doc/images/library.jpg" alt="Capture d'écran de la Bibliothèque de l'application" width="200"/>
+<img src="./doc/images/learning.jpg" alt="Capture d'écran d'une carte de l'onglet Apprentissage" width="200"/>
+<img src="./doc/images/daily.jpg" alt="Capture d'écran d'une carte de l'onglet Révisions du jour" width="200"/>
+<img src="./doc/images/dailyOver.jpg" alt="Capture d'écran de l'onglet Révisions du jour une fois toutes les cartes révisées" width="200"/>
+<img src="./doc/images/deck.jpg" alt="Capture d'écran de la page d'un Deck" width="200"/>
+<img src="./doc/images/card.jpg" alt="Capture d'écran de la page de modification d'une carte" width="200"/>
 
 ## 📆 Nouveautés prévues prochainement
 

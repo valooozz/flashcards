@@ -13,5 +13,5 @@ export const updateDeckInfo = async (
       [name.trim(), Number(changeSide), Number(showName), id]
     )
     .then(() => true)
-    .catch((err) => { console.error(err); return false; });
+    .catch(() => false);
 };
