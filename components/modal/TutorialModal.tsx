@@ -1,6 +1,6 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Dimensions, FlatList, Image, Modal, NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, Modal, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Radius } from '../../style/Radius';
@@ -81,7 +81,9 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
                                     <Text style={styles.title}>{t(`tuto.${item.key}.title`)}</Text>
                                 )}
                                 <Image source={item.image} style={styles.image} resizeMode="contain" />
-                                <Text style={styles.text}>{t(`tuto.${item.key}.text`)}</Text>
+                                <ScrollView style={styles.scrollText}>
+                                    <Text style={styles.text}>{t(`tuto.${item.key}.text`)}</Text>
+                                </ScrollView>
                             </View>
                         )}
                     />
@@ -147,9 +149,12 @@ const styles = StyleSheet.create({
     },
     title: {
         fontFamily: 'JosefinSemiBold',
-        fontSize: Sizes.font.large,
+        fontSize: Sizes.font.medium,
         color: 'black',
         textAlign: 'center',
+    },
+    scrollText: {
+        flexGrow: 1,
     },
     text: {
         fontFamily: 'JosefinRegular',
