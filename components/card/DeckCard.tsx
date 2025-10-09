@@ -2,7 +2,7 @@ import { router, useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, ProgressBar, Text, useTheme } from 'react-native-paper';
+import { Card, ProgressBar, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { DeckType } from '../../types/DeckType';
@@ -51,21 +51,29 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
 
   return (
     <Card
-      onPress={() => openDeck(deck.id, deck.name)}
-      onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}
       style={[styles.card, { backgroundColor: colors.onPrimary }]}
+      elevation={5}
     >
-      <Card.Title title={deck.name} />
-      <Card.Content style={styles.content}>
-        <Text variant="bodyMedium" style={{ color: colors.primary }}>{nbCards + word}</Text>
-        {nbCardsToRevise ? <Text variant="bodyMedium" style={[styles.center, { color: Colors.daily.dark.main }]}>{nbCardsToRevise + t('deck.toReview')}</Text> : null}
-        {nbCardsToLearn ? <Text variant="bodyMedium" style={[styles.right, { color: Colors.learning.dark.main }]}>{nbCardsToLearn + t('deck.toLearn')}</Text> : null}
-      </Card.Content>
-      <ProgressBar
-        progress={progressInDeck || 0}
-        color={Colors.library.intermediate.main}
-        style={[styles.progressBar, { backgroundColor: colors.onPrimary }]}
-      />
+      <TouchableRipple
+        onPress={() => openDeck(deck.id, deck.name)}
+        onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}
+        delayLongPress={300}
+        rippleColor={colors.backdrop}
+      >
+        <>
+          <Card.Title title={deck.name} />
+          <Card.Content style={styles.content}>
+            <Text variant="bodyMedium" style={{ color: colors.primary }}>{nbCards + word}</Text>
+            {nbCardsToRevise ? <Text variant="bodyMedium" style={[styles.center, { color: Colors.daily.dark.main }]}>{nbCardsToRevise + t('deck.toReview')}</Text> : null}
+            {nbCardsToLearn ? <Text variant="bodyMedium" style={[styles.right, { color: Colors.learning.dark.main }]}>{nbCardsToLearn + t('deck.toLearn')}</Text> : null}
+          </Card.Content>
+          <ProgressBar
+            progress={progressInDeck || 0}
+            color={Colors.library.intermediate.main}
+            style={[styles.progressBar, { backgroundColor: colors.onPrimary }]}
+          />
+        </>
+      </TouchableRipple>
     </Card>
   )
 }

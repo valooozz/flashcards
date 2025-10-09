@@ -13,7 +13,8 @@ export function ListCardElement({ text, image, light }: ListCardElementProps) {
         text?.trim().length ? (
             <Text
                 numberOfLines={1}
-                variant='bodyLarge'
+                // @ts-ignore
+                variant='listCardText'
                 style={{ ...styles.text, opacity: light ? 0.3 : 1 }}
             >
                 {text}

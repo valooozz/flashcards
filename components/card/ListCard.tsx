@@ -2,11 +2,10 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, ProgressBar, Text, useTheme } from 'react-native-paper';
+import { Card, ProgressBar, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { useNotify } from '../../hooks/useNotify';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
-import { Sizes } from '../../style/Sizes';
 import { CardType } from '../../types/CardType';
 import { putCardToReviseTommorow } from '../../utils/database/card/update/putCardToReviseTommorow.utils';
 import { resetCard } from '../../utils/database/card/update/resetCard.utils';
@@ -53,36 +52,47 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
   return (
     <>
       <Card
-        onPress={() =>
-          router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
-        }
-        onLongPress={handleLongPress}
         style={[styles.card, { backgroundColor: colors.onPrimary }]}
+        elevation={5}
       >
-        <Card.Content style={styles.content}>
-          <ListCardElement text={card.recto} image={card.rectoImage} light={!card.toLearn} />
-          <ListCardElement text={card.verso} image={card.versoImage} light={!card.toLearn || !card.changeSide} />
-          <Text
-            numberOfLines={1}
-            style={{
-              ...styles.textDate,
-              color:
-                getDelay(card.nextRevision) >= 0
-                  ? Colors.daily.dark.main
-                  : colors.primary,
-            }}
-          >
-            {card.nextRevision && card.toLearn
-              ? card.nextRevision.slice(8) + '/' + card.nextRevision.slice(5, 7)
-              : null}
-          </Text>
-        </Card.Content>
+        <TouchableRipple
+          onPress={() =>
+            router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
+          }
+          onLongPress={handleLongPress}
+          delayLongPress={300}
+          rippleColor={colors.backdrop}
+          style={{ flexGrow: 1 }}
+        >
+          <>
+            <Card.Content style={styles.content}>
+              <ListCardElement text={card.recto} image={card.rectoImage} light={!card.toLearn} />
+              <ListCardElement text={card.verso} image={card.versoImage} light={!card.toLearn || !card.changeSide} />
+              <Text
+                // @ts-ignore
+                variant='listCardDate'
+                numberOfLines={1}
+                style={{
+                  ...styles.textDate,
+                  color:
+                    getDelay(card.nextRevision) >= 0
+                      ? Colors.daily.dark.main
+                      : colors.primary,
+                }}
+              >
+                {card.nextRevision && card.toLearn
+                  ? card.nextRevision.slice(8) + '/' + card.nextRevision.slice(5, 7)
+                  : null}
+              </Text>
+            </Card.Content>
 
-        <ProgressBar
-          progress={getProgressBarLength(card.step)}
-          color={Colors.library.intermediate.main}
-          style={[styles.progressBar, { backgroundColor: colors.onPrimary }]}
-        />
+            <ProgressBar
+              progress={getProgressBarLength(card.step)}
+              color={Colors.library.intermediate.main}
+              style={[styles.progressBar, { backgroundColor: colors.onPrimary }]}
+            />
+          </>
+        </TouchableRipple>
       </Card>
       <ConfirmDialog
         visible={showConfirmDialog}
@@ -100,20 +110,18 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   content: {
-    flexGrow: 1,
+    flex: 1,
     paddingHorizontal: 16,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
     columnGap: 8,
-    paddingBottom: 12,
+    height: 56,
   },
   textDate: {
     marginLeft: 'auto',
-    fontSize: Sizes.font.small,
     textAlign: 'right',
-    fontFamily: 'JosefinRegular',
   },
   progressBar: {
     height: 6,
