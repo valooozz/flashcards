@@ -113,6 +113,7 @@ export function Deck({
           value={searchText}
           onChangeText={setSearchText}
           style={styles.searchBar}
+          elevation={5}
         />
       )}
       {showCards ? (
@@ -142,8 +143,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchBar: {
-    marginTop: 8,
-    marginHorizontal: 8,
+    margin: 8,
   },
   cardsDisplay: {
     padding: 8,
