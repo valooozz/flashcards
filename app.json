@@ -16,10 +16,10 @@
       "expo-localization"
     ],
     "name": "Flipo",
-    "slug": "flipo",
+    "slug": "flashcards",
     "version": "2.0.1",
     "android": {
-      "package": "com.valooozz.flipo",
+      "package": "com.valooozz.flashcards",
       "windowSoftInputMode": "adjustPan"
     },
     "icon": "./assets/images/logo.png",
