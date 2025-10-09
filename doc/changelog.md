@@ -1,4 +1,13 @@
 
+### Version 2.0.1
+
+- Effets d'opacité sur les decks, les cartes, et les étapes de répétition espacée
+- Fix : chargement de la barre de progression des decks quand on revient dans la bibliothèque
+- Ajout d'un scroll sur le texte du tutoriel
+- Bouton retour du téléphone revient sur la bonne page lorsqu'utilisé depuis une révision flash
+- Légères améliorations du style
+- Nouveau logo et écran de chargement
+
 ### Version 2.0.0
 
 - Nouveau style d'interface

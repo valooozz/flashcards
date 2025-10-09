@@ -17,7 +17,7 @@
     ],
     "name": "Flipo",
     "slug": "flipo",
-    "version": "1.6.0",
+    "version": "2.0.1",
     "android": {
       "package": "com.valooozz.flipo",
       "windowSoftInputMode": "adjustPan"
