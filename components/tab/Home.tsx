@@ -174,7 +174,7 @@ export function Home() {
             );
 
             return () => backHandler.remove(); // Nettoyage de l'écouteur d'événements
-        }, [inDeck]),
+        }, [inDeck, inRevision]),
     );
 
     return (
@@ -190,18 +190,16 @@ export function Home() {
                         reload={reload}
                     />
                 ) : inDeck ? (
-                    <>
-                        <Deck
-                            idDeck={idDeck}
-                            deckName={deckName}
-                            cards={cards}
-                            nbCards={nbCards}
-                            progress={progressInDeck}
-                            reload={() => loadCards(idDeck)}
-                            closeDeck={closeDeck}
-                            chooseFlashRevisionSettings={chooseFlashRevisionSettings}
-                        />
-                    </>
+                    <Deck
+                        idDeck={idDeck}
+                        deckName={deckName}
+                        cards={cards}
+                        nbCards={nbCards}
+                        progress={progressInDeck}
+                        reload={() => loadCards(idDeck)}
+                        closeDeck={closeDeck}
+                        chooseFlashRevisionSettings={chooseFlashRevisionSettings}
+                    />
                 ) : (
                     <Library
                         decks={decks}
