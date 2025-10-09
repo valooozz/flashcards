@@ -1,6 +1,6 @@
-import { router, useFocusEffect } from 'expo-router';
+import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useCallback, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, ProgressBar, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -27,27 +27,35 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
   const { colors } = useTheme();
   const { t } = useTranslation();
 
-  useFocusEffect(
-    useCallback(() => {
-      getNbCardsInDeck(database, deck.id).then((nb) => {
-        setNbCards(nb);
-        if (nb > 1) {
-          setWord(t('deck.cards'));
-        } else {
-          setWord(t('deck.card'));
-        }
-      });
-      getNbCardsToReviseInDeck(database, deck.id).then((nb) => {
-        setNbCardsToRevise(nb);
-      });
-      getNbCardsToLearnInDeck(database, deck.id, true).then((nb) => {
-        setNbCardsToLearn(nb);
-      });
-      getProgressInDeck(database, deck.id).then((progress) => {
-        setProgressInDeck(progress);
-      })
-    }, []),
-  );
+  useEffect(() => {
+    let isActive = true;
+
+    getNbCardsInDeck(database, deck.id).then((nb) => {
+      if (!isActive) return;
+      setNbCards(nb);
+      if (nb > 1) {
+        setWord(t('deck.cards'));
+      } else {
+        setWord(t('deck.card'));
+      }
+    });
+    getNbCardsToReviseInDeck(database, deck.id).then((nb) => {
+      if (!isActive) return;
+      setNbCardsToRevise(nb);
+    });
+    getNbCardsToLearnInDeck(database, deck.id, true).then((nb) => {
+      if (!isActive) return;
+      setNbCardsToLearn(nb);
+    });
+    getProgressInDeck(database, deck.id).then((progress) => {
+      if (!isActive) return;
+      setProgressInDeck(progress);
+    });
+
+    return () => {
+      isActive = false;
+    };
+  }, [database, deck.id, t]);
 
   return (
     <Card
