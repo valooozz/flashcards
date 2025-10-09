@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Card, Text } from 'react-native-paper';
+import { Card, Text, TouchableRipple } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Sizes } from '../../style/Sizes';
 import { NumberPickerModal } from '../modal/NumberPickerModal';
@@ -32,11 +32,13 @@ export function SettingStep({
 
   return (
     <>
-      <Card style={styles.container} onPress={handleCardPress}>
-        <Card.Content style={styles.content}>
-          <Text variant="bodyMedium">{stepNumber} :</Text>
-          <Text variant="bodyLarge">{selectedStep}</Text>
-        </Card.Content>
+      <Card style={styles.container}>
+        <TouchableRipple onPressIn={handleCardPress} style={styles.touchable}>
+          <Card.Content style={styles.content}>
+            <Text variant="bodyMedium">{stepNumber} :</Text>
+            <Text variant="bodyLarge">{selectedStep}</Text>
+          </Card.Content>
+        </TouchableRipple>
       </Card>
 
       <NumberPickerModal
@@ -56,7 +58,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
+  },
+  touchable: {
+    height: Sizes.component.small,
     width: Sizes.component.large,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   content: {
     display: 'flex',
