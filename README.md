@@ -1,6 +1,6 @@
-# ⚡ Flashcards
+# ⚡ Flipo
 
-Ce projet est une application mobile de Flashcards développée en React Native avec Expo. Elle met en place un système de répétition espacée utile à l'apprentissage à long terme de connaissances. Le but de cette application est de réduire la charge organisationnelle de l'utilisateur·trice dans l'acquisition de ces connaissances. L'utilisation pensée lui demande ainsi de simplement d'ouvrir l'application chaque jour pour réviser les cartes qui lui sont présentées.
+Flipo est une application mobile de Flashcards (cartes de mémorisation) développée en React Native avec Expo. Elle met en place un système de répétition espacée utile à l'apprentissage à long terme de connaissances. Le but de cette application est de réduire la charge organisationnelle de l'utilisateur·trice dans l'acquisition de ces connaissances. L'utilisation pensée lui demande ainsi de simplement d'ouvrir l'application chaque jour pour réviser les cartes qui lui sont présentées.
 
 ## 📱 Utilisation
 
@@ -27,4 +27,4 @@ Voici quelques exemples de l'interface :
 
 ## 📜 Licence
 
-Ce projet est sous licence Mozilla Public License (MPL). Voir le fichier [LICENSE](https://github.com/valooozz/flashcards/blob/main/LICENSE) pour plus de détails.
+Ce projet est sous licence Mozilla Public License (MPL). Voir le fichier [LICENSE](LICENSE) pour plus de détails.
