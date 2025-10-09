@@ -10,7 +10,7 @@ interface TitleWithInfoProps {
 export const TitleWithInfo = ({ textLabel, textExplanation }: TitleWithInfoProps) => {
     return (
         <View style={styles.container}>
-            <Text variant='titleMedium'>{textLabel}</Text>
+            <Text variant='titleMedium' style={styles.text}>{textLabel}</Text>
             <View style={styles.infoButton}>
                 <InfoButton textLabel={textLabel} textExplanation={textExplanation} />
             </View>
@@ -24,8 +24,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    text: {
+        marginRight: 0,
+    },
     infoButton: {
         position: 'absolute',
-        right: 0,
+        right: -8,
     }
 })

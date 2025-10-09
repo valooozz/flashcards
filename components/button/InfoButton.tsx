@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { IconButton } from 'react-native-paper';
+import { IconButton, useTheme } from 'react-native-paper';
 import { InfoDialog } from '../dialog/InfoDialog';
 
 interface InfoButtonProps {
@@ -10,6 +10,8 @@ interface InfoButtonProps {
 export function InfoButton({ textLabel, textExplanation }: InfoButtonProps) {
     const [showInfoDialog, setShowInfoDialog] = useState(false);
 
+    const { colors } = useTheme();
+
     return (
         <>
             <IconButton
@@ -17,6 +19,7 @@ export function InfoButton({ textLabel, textExplanation }: InfoButtonProps) {
                 size={20}
                 onPress={() => setShowInfoDialog(true)}
                 testID='checkbox-info-button'
+                iconColor={colors.primary}
             />
             <InfoDialog
                 visible={showInfoDialog}

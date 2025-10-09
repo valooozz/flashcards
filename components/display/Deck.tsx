@@ -83,7 +83,7 @@ export function Deck({
   return (
     <View style={[styles.container, { backgroundColor: colors.primary }]}>
       <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
-        <Appbar.BackAction onPress={closeDeck} />
+        <Appbar.BackAction onPressIn={closeDeck} />
         <Appbar.Content title={deckName} />
         <Appbar.Action icon="flash" onPress={chooseFlashRevisionSettings} />
         {filterCards ?
