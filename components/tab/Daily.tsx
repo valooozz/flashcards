@@ -261,9 +261,9 @@ export function Daily() {
                         <Text variant='titleMedium' style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>{t('daily.over')}</Text>
                         <View>
                             <Text variant='headlineLarge' style={{ color: colors.onPrimary }}>{t('days.today')}</Text>
-                            <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsReviewed')} : {nbRevised}</Text>
-                            <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsKnown')} : {nbKnown}</Text>
-                            <Text variant='titleMedium' style={{ color: colors.onPrimary }}>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
+                            <Text variant='bodyLarge' style={{ color: colors.onPrimary }}>{t('daily.cardsReviewed')} : {nbRevised}</Text>
+                            <Text variant='bodyLarge' style={{ color: colors.onPrimary }}>{t('daily.cardsKnown')} : {nbKnown}</Text>
+                            <Text variant='bodyLarge' style={{ color: colors.onPrimary }}>{t('daily.cardsForgotten')} : {nbForgotten}</Text>
                         </View>
                         <View>
                             <Text variant='headlineLarge' style={{ color: colors.onPrimary }}>{t('daily.weekRevisions')}</Text>
@@ -280,7 +280,7 @@ export function Daily() {
                                 }
 
                                 return (
-                                    <Text variant='titleMedium' style={{ color: colors.onPrimary }} key={nbCardsToRevise.daysFromToday}>
+                                    <Text variant='bodyLarge' style={{ color: colors.onPrimary }} key={nbCardsToRevise.daysFromToday}>
                                         {dayLabel} : {nbCardsToRevise.nbCards}
                                     </Text>
                                 );

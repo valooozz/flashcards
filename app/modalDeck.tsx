@@ -199,31 +199,33 @@ export default function Modal() {
           value={newDeckName}
           onChangeText={setNewDeckName}
         />
-        <View style={styles.checkboxAction}>
-          <CheckboxWithText
-            isChecked={changeSide}
-            setIsChecked={setChangeSide}
-            textLabel={t('card.alternateSides')}
-            textExplanation={editMode ?
-              t('deck.alternateSidesExplanation') + t('deck.alternateSidesExplanationForce') :
-              t('deck.alternateSidesExplanation')
-            }
-          />
-          {editMode && (
-            <FAB
-              icon="sync"
-              size="small"
-              onPress={() => setShowConfirmForceDialog(true)}
-              color={colors.onPrimary}
-              style={{ marginRight: 8, backgroundColor: colors.primary, position: 'absolute', left: '65%' }}
+        <View>
+          <View style={styles.checkboxAction}>
+            <CheckboxWithText
+              isChecked={changeSide}
+              setIsChecked={setChangeSide}
+              textLabel={t('card.alternateSides')}
+              textExplanation={editMode ?
+                t('deck.alternateSidesExplanation') + t('deck.alternateSidesExplanationForce') :
+                t('deck.alternateSidesExplanation')
+              }
             />
-          )}
+            {editMode && (
+              <FAB
+                icon="sync"
+                size="small"
+                onPress={() => setShowConfirmForceDialog(true)}
+                color={colors.onPrimary}
+                style={[styles.fab, { backgroundColor: colors.primary }]}
+              />
+            )}
+          </View>
+          <CheckboxWithText
+            isChecked={showName}
+            setIsChecked={setShowName}
+            textLabel={t('deck.showName')}
+          />
         </View>
-        <CheckboxWithText
-          isChecked={showName}
-          setIsChecked={setShowName}
-          textLabel={t('deck.showName')}
-        />
         <View style={GlobalStyles.buttonLineContainer}>
           <ModalButton variant='tertiary' text={editMode ? t('common.back') : t('common.cancel')} onPress={() => router.back()} />
           <ModalButton variant='primary' text={editMode ? t('common.edit') : t('common.add')} onPress={handleValidate} />
@@ -278,5 +280,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     columnGap: 16,
+  },
+  fab: {
+    marginRight: 8,
+    position: 'absolute',
+    left: '65%',
   }
 });

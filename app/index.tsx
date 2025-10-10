@@ -84,9 +84,11 @@ export default function Index() {
                         setIndex(newIndex);
                     }
                 }}
-                renderIcon={({ route }) => (
-                    <Icon source={route.icon} size={24} color={route.color} />
-                )}
+                renderIcon={({ route }) => {
+                    const isActive = route.key === routes[index].key;
+                    const iconName = isActive ? route.icon : `${route.icon}-outline`;
+                    return <Icon source={iconName} size={24} color={route.color} />
+                }}
                 style={{
                     backgroundColor: getBarColor(),
                 }}

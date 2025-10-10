@@ -2,6 +2,7 @@
   "expo": {
     "scheme": "acme",
     "newArchEnabled": true,
+    "userInterfaceStyle": "light",
     "plugins": [
       "expo-router",
       "expo-sqlite",
