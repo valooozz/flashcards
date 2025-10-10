@@ -1,5 +1,5 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Dimensions, FlatList, Image, Modal, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
@@ -56,6 +56,20 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
         setIndex(prevIndex);
     };
 
+    const renderItem = useCallback(({ item }: { item: TutorialSlide }) => (
+        <View style={[styles.slide, { width }]}>
+            {item.hasTitle && (
+                <Text style={styles.title}>{t(`tuto.${item.key}.title`)}</Text>
+            )}
+            <Image source={item.image} style={styles.image} resizeMode="contain" />
+            <ScrollView style={styles.scrollText}>
+                <Text style={styles.text}>{t(`tuto.${item.key}.text`)}</Text>
+            </ScrollView>
+        </View>
+    ), [t, width]);
+
+    const keyExtractor = useCallback((item: TutorialSlide) => item.key, []);
+
     return (
         <Modal visible={visible} animationType="fade" transparent>
             <View style={styles.backdrop}>
@@ -63,7 +77,7 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
                     <FlatList
                         ref={flatListRef}
                         data={slides}
-                        keyExtractor={(item) => item.key}
+                        keyExtractor={keyExtractor}
                         horizontal
                         pagingEnabled
                         showsHorizontalScrollIndicator={false}
@@ -75,17 +89,10 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
                                 flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
                             });
                         }}
-                        renderItem={({ item }) => (
-                            <View style={[styles.slide, { width }]}>
-                                {item.hasTitle && (
-                                    <Text style={styles.title}>{t(`tuto.${item.key}.title`)}</Text>
-                                )}
-                                <Image source={item.image} style={styles.image} resizeMode="contain" />
-                                <ScrollView style={styles.scrollText}>
-                                    <Text style={styles.text}>{t(`tuto.${item.key}.text`)}</Text>
-                                </ScrollView>
-                            </View>
-                        )}
+                        renderItem={renderItem}
+                        initialNumToRender={3}
+                        maxToRenderPerBatch={3}
+                        windowSize={5}
                     />
 
                     <View style={styles.dotsContainer}>

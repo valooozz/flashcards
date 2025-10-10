@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, ProgressBar, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { useNotify } from '../../hooks/useNotify';
@@ -19,7 +19,7 @@ interface ListCardProps {
   triggerReload: () => void;
 }
 
-export function ListCard({ card, triggerReload }: ListCardProps) {
+function ListCardComponent({ card, triggerReload }: ListCardProps) {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const notify = useNotify();
 
@@ -28,26 +28,30 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
 
   const database = useSQLiteContext();
 
-  const handleForget = async () => {
+  const handleForget = useCallback(async () => {
     const resetOk = await resetCard(database, card.id.toString());
     notify(resetOk, t('notifications.errorOccurred'), t('card.forgotten'));
     setShowConfirmDialog(false);
     triggerReload();
-  };
+  }, [database, card.id, notify, t, triggerReload]);
 
-  const handleLearn = async () => {
+  const handleLearn = useCallback(async () => {
     await putCardToReviseTommorow(database, card.id);
     notify(true, '', t('card.learnt'));
     triggerReload();
-  };
+  }, [database, card.id, notify, t, triggerReload]);
 
-  const handleLongPress = () => {
+  const handleLongPress = useCallback(() => {
     if (card.nextRevision !== null) {
       setShowConfirmDialog(true);
     } else {
       handleLearn();
     }
-  };
+  }, [card.nextRevision, handleLearn]);
+
+  const handlePress = useCallback(() => {
+    router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
+  }, [card.deck, card.id]);
 
   return (
     <>
@@ -56,9 +60,7 @@ export function ListCard({ card, triggerReload }: ListCardProps) {
         elevation={5}
       >
         <TouchableRipple
-          onPress={() =>
-            router.push(`/modalCard?idDeck=${card.deck}&idCard=${card.id}`)
-          }
+          onPress={handlePress}
           onLongPress={handleLongPress}
           delayLongPress={300}
           rippleColor={colors.backdrop}
@@ -127,3 +129,5 @@ const styles = StyleSheet.create({
     height: 6,
   },
 });
+
+export const ListCard = memo(ListCardComponent);

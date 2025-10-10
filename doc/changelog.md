@@ -1,4 +1,12 @@
 
+### Version 2.0.2
+
+- Mode clair permanent
+- Images dans le tutoriel
+- Possibilité d'importer un fichier JSON venant d'une ancienne version
+- Légères améliorations du style
+- Optimisation des performances
+
 ### Version 2.0.1
 
 - Effets d'opacité sur les decks, les cartes, et les étapes de répétition espacée

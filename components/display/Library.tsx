@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { Appbar, FAB, Menu, ProgressBar, Text, useTheme } from 'react-native-paper';
 import { DeckCard } from '../../components/card/DeckCard';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -26,6 +26,12 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
 
   const [showExportMenu, setShowExportMenu] = useState(false);
 
+  const renderItem = useCallback(({ item }: { item: DeckType }) => (
+    <DeckCard deck={item} openDeck={openDeck} />
+  ), [openDeck]);
+
+  const keyExtractor = useCallback((item: DeckType) => item.id.toString(), []);
+
   return (
     <View style={[styles.container, { backgroundColor: colors.primary }]}>
       <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
@@ -48,14 +54,17 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
       />
 
       {decks.length > 0 ? (
-        <ScrollView
+        <FlatList
+          data={decks}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
           contentContainerStyle={[GlobalStyles.container, styles.decksDisplay]}
           showsVerticalScrollIndicator={false}
-        >
-          {decks.map((deck) => (
-            <DeckCard deck={deck} openDeck={openDeck} key={deck.id} />
-          ))}
-        </ScrollView>
+          initialNumToRender={8}
+          maxToRenderPerBatch={8}
+          windowSize={5}
+          removeClippedSubviews
+        />
       ) : (
         <Text variant="titleMedium" style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>
           {t('library.noDeck')}

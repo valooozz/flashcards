@@ -1,3 +1,4 @@
+import React, { memo } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Text } from 'react-native-paper';
 
@@ -7,7 +8,7 @@ interface ListCardElementProps {
     light: boolean;
 }
 
-export function ListCardElement({ text, image, light }: ListCardElementProps) {
+function ListCardElementComponent({ text, image, light }: ListCardElementProps) {
 
     return (
         text?.trim().length ? (
@@ -51,3 +52,5 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
 });
+
+export const ListCardElement = memo(ListCardElementComponent);

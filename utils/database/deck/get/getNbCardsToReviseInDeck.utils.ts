@@ -15,7 +15,7 @@ export const getNbCardsToReviseInDeck = async (
             [idDeck, today],
         );
     } catch (error) {
-        console.error('getNbCardsToReviseInDeck:', error);
+        console.error('getNbCardsToReviseInDeck:', error, idDeck);
     }
 
     return nbCardsResult['COUNT(*)'];

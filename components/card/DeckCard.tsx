@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useEffect, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Card, ProgressBar, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -16,7 +16,7 @@ interface DeckCardProps {
   openDeck: (id: number, name: string) => void;
 }
 
-export function DeckCard({ deck, openDeck }: DeckCardProps) {
+function DeckCardComponent({ deck, openDeck }: DeckCardProps) {
   const database = useSQLiteContext();
   const [nbCards, setNbCards] = useState(0);
   const [nbCardsToRevise, setNbCardsToRevise] = useState(0);
@@ -57,14 +57,17 @@ export function DeckCard({ deck, openDeck }: DeckCardProps) {
     };
   }, [database, deck.id, t]);
 
+  const handlePress = useCallback(() => openDeck(deck.id, deck.name), [openDeck, deck.id, deck.name]);
+  const handleLongPress = useCallback(() => router.push(`/modalDeck?idDeck=${deck.id}`), [deck.id]);
+
   return (
     <Card
       style={[styles.card, { backgroundColor: colors.onPrimary }]}
       elevation={5}
     >
       <TouchableRipple
-        onPress={() => openDeck(deck.id, deck.name)}
-        onLongPress={() => router.push(`/modalDeck?idDeck=${deck.id}`)}
+        onPress={handlePress}
+        onLongPress={handleLongPress}
         delayLongPress={300}
         rippleColor={colors.backdrop}
       >
@@ -106,3 +109,5 @@ const styles = StyleSheet.create({
     height: 6,
   },
 })
+
+export const DeckCard = memo(DeckCardComponent);

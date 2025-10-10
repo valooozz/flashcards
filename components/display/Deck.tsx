@@ -1,5 +1,5 @@
 import { router } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Appbar, FAB, Menu, ProgressBar, Searchbar, Text, useTheme } from 'react-native-paper';
 import { ListCard } from '../../components/card/ListCard';
@@ -32,6 +32,7 @@ export function Deck({
   const [showCards, setShowCards] = useState(true);
   const [searchMode, setSearchMode] = useState(false);
   const [searchText, setSearchText] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [filteredCards, setFilteredCards] = useState<CardType[]>(cards);
 
   const [showFilterMenu, setShowFilterMenu] = useState(false);
@@ -52,6 +53,13 @@ export function Deck({
     setFilteredCards(cards);
   }, [cards]);
 
+  const normalizedSearch = useMemo(() => debouncedSearch.trim().toLowerCase(), [debouncedSearch]);
+
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedSearch(searchText), 200);
+    return () => clearTimeout(id);
+  }, [searchText]);
+
   useEffect(() => {
     let filtered = cards;
 
@@ -63,15 +71,21 @@ export function Deck({
       filtered = filtered.filter(card => card.step === 8);
     }
 
-    if (searchText.trim() !== '') {
+    if (normalizedSearch !== '') {
       filtered = filtered.filter(card =>
-        card.recto?.toLowerCase()?.includes(searchText.toLowerCase()) ||
-        card.verso?.toLowerCase()?.includes(searchText.toLowerCase())
+        card.recto?.toLowerCase()?.includes(normalizedSearch) ||
+        card.verso?.toLowerCase()?.includes(normalizedSearch)
       );
     }
 
     setFilteredCards(filtered);
-  }, [searchText, cards, filterCards]);
+  }, [cards, filterCards, normalizedSearch]);
+
+  const renderItem = useCallback(({ item }: { item: CardType }) => (
+    <ListCard card={item} triggerReload={reload} />
+  ), [reload]);
+
+  const keyExtractor = useCallback((item: CardType) => item.id.toString(), []);
 
   const toggleSearchMode = () => {
     setSearchMode(!searchMode);
@@ -119,12 +133,14 @@ export function Deck({
       {showCards ? (
         <FlatList
           data={filteredCards}
-          renderItem={({ item }) => (
-            <ListCard card={item} triggerReload={reload} />
-          )}
-          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
           contentContainerStyle={[GlobalStyles.container, styles.cardsDisplay]}
           showsVerticalScrollIndicator={false}
+          initialNumToRender={10}
+          maxToRenderPerBatch={10}
+          windowSize={7}
+          removeClippedSubviews
         />
       ) : (
         <Text variant="bodyLarge" style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>{t('deck.noCards')}</Text>
