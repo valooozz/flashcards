@@ -7,7 +7,7 @@ export const importCsvDocument = async (
   database: SQLiteDatabase,
   fileName: string,
   fileContent: string,
-) => {
+): Promise<boolean> => {
   const pairs = readString(fileContent);
   const deckDocument: DeckDocument = {
     deckName: fileName,
@@ -25,5 +25,5 @@ export const importCsvDocument = async (
     });
   });
 
-  await importInDatabase(database, [deckDocument]);
+  return await importInDatabase(database, [deckDocument]);
 };

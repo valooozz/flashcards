@@ -12,5 +12,5 @@ export const createDeck = async (
       [deckName.trim(), Number(changeSide), Number(showName)]
     )
     .then((result) => result['lastInsertRowId'])
-    .catch(() => -1);
+    .catch((error) => { console.error(error); return -1 });
 };

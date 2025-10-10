@@ -126,7 +126,8 @@ export default function Modal() {
   };
 
   const handleImport = async (importType: ImportExportType) => {
-    await importDocument(database, importType);
+    const importSuccess = await importDocument(database, importType);
+    notify(importSuccess, "Erreur lors de l'importation du deck", 'Deck importé avec succès');
     router.back();
   };
 

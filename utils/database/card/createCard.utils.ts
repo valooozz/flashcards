@@ -30,5 +30,5 @@ export const createCard = async (
       ],
     )
     .then(() => true)
-    .catch(() => false);
+    .catch((error) => { console.error(error); return false; });
 };

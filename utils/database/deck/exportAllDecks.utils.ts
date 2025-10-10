@@ -36,5 +36,5 @@ export const exportAllDecks = async (database: SQLiteDatabase) => {
     bddDocument.push(deckDocument);
   }
 
-  exportDocument(bddDocument, 'Flashcards', 'json');
+  exportDocument(bddDocument, 'FlipoBackup', 'json');
 };
