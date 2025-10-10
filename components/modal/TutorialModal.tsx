@@ -141,10 +141,11 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        rowGap: 8
     },
     image: {
         width: '100%',
-        height: '60%',
+        height: '70%',
         borderRadius: Radius.big,
     },
     title: {
@@ -152,6 +153,7 @@ const styles = StyleSheet.create({
         fontSize: Sizes.font.medium,
         color: 'black',
         textAlign: 'center',
+        paddingHorizontal: 8
     },
     scrollText: {
         flexGrow: 1,

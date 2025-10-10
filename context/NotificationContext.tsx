@@ -102,7 +102,7 @@ export const NotificationProvider: FC<NotificationProviderProps> = ({ children }
                 action={actionLabel ? { label: actionLabel, onPress: () => actionHandlerRef.current?.() } : undefined}
                 theme={{
                     colors: {
-                        inverseOnSurface: variant === 'successInModal' ? theme.colors.onPrimary : theme.colors.onPrimaryContainer,
+                        inverseOnSurface: variant === 'success' ? theme.colors.onPrimaryContainer : theme.colors.onPrimary,
                     }
                 }}
             >

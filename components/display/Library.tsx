@@ -1,8 +1,8 @@
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Appbar, FAB, Menu, ProgressBar, useTheme } from 'react-native-paper';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { Appbar, FAB, Menu, ProgressBar, Text, useTheme } from 'react-native-paper';
 import { DeckCard } from '../../components/card/DeckCard';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
@@ -57,7 +57,7 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
           ))}
         </ScrollView>
       ) : (
-        <Text style={[styles.text, { color: colors.onPrimary }]}>
+        <Text variant="titleMedium" style={[GlobalStyles.centerText, { color: colors.onPrimary }]}>
           {t('library.noDeck')}
         </Text>
       )}

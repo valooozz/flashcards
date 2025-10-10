@@ -53,6 +53,7 @@ export function Learning() {
     const changeFilter = (newFilter: number | undefined) => {
         setDeckFilter(newFilter !== undefined);
         loadCardsToLearn(newFilter);
+        setShowFilterMenu(false);
     }
 
     const loadCardsToLearn = (deckFilter: number) => {
@@ -108,7 +109,7 @@ export function Learning() {
                         title={cardsToLearn.length > 0 ? cardsToLearn.length.toString() : ''}
                         titleStyle={{ marginHorizontal: 'auto' }}
                     />
-                    {cardToShow &&
+                    {(cardToShow || deckFilter) &&
                         <>
                             {deckFilter ?
                                 <Appbar.Action icon={'filter-off'} onPress={() => changeFilter(undefined)} />
