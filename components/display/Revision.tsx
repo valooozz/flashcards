@@ -65,7 +65,11 @@ export function Revision({
     } else if (revisionSide === 'current') {
       showRectoFirst = Boolean(newCard.rectoFirst);
     } else if (revisionSide === 'random') {
-      showRectoFirst = Math.random() < 0.5;
+      if (!newCard.changeSide) {
+        showRectoFirst = true;
+      } else {
+        showRectoFirst = Math.random() < 0.5;
+      }
     }
 
     if (showRectoFirst) {
