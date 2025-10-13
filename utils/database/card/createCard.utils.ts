@@ -7,7 +7,7 @@ export const createCard = async (
   rectoImage: string | null,
   versoImage: string | null,
   idDeck: string,
-  changeSide: boolean,
+  changeSide: boolean | null,
   toLearn: boolean = true,
   rectoFirst: boolean = true,
   step: number = 0,

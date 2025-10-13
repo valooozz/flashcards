@@ -9,13 +9,17 @@ export const exportDeck = async (
   database: SQLiteDatabase,
   idDeck: string,
   deckName: string,
+  changeSide: boolean,
+  showName: boolean,
   exportType: ImportExportType,
   fullExport: boolean,
 ) => {
-  const cards = await getCardsFromDeck(database, Number(idDeck));
+  const cards = await getCardsFromDeck(database, Number(idDeck), true);
 
   const deckDocument: DeckDocument = {
     deckName,
+    changeSide,
+    showName,
     cards: [],
   };
 
@@ -30,7 +34,7 @@ export const exportDeck = async (
         step: card.step,
         nextRevision: card.nextRevision,
         toLearn: Boolean(card.toLearn),
-        changeSide: Boolean(card.changeSide),
+        changeSide: card.changeSide === null ? null : Boolean(card.changeSide),
       });
     } else {
       deckDocument.cards.push({
@@ -38,7 +42,7 @@ export const exportDeck = async (
         verso: card.verso,
         rectoImage: card.rectoImage ?? null,
         versoImage: card.versoImage ?? null,
-        changeSide: Boolean(card.changeSide),
+        changeSide: card.changeSide === null ? null : Boolean(card.changeSide),
       });
     }
   });

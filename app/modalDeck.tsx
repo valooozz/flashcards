@@ -174,9 +174,9 @@ export default function Modal() {
               onDismiss={() => setShowExportMenu(false)}
               anchor={<Appbar.Action icon="export-variant" onPress={() => setShowExportMenu(true)} />}
             >
-              <Menu.Item title={t('deck.exportCardsJson')} onPress={() => exportDeck(database, idDeck, deckName, 'json', false)} />
-              <Menu.Item title={t('deck.exportCardsCsv')} onPress={() => exportDeck(database, idDeck, deckName, 'csv', false)} />
-              <Menu.Item title={t('deck.exportLearning')} onPress={() => exportDeck(database, idDeck, deckName, 'json', true)} />
+              <Menu.Item title={t('deck.exportCardsJson')} onPress={() => exportDeck(database, idDeck, deckName, changeSide, showName, 'json', false)} />
+              <Menu.Item title={t('deck.exportCardsCsv')} onPress={() => exportDeck(database, idDeck, deckName, changeSide, showName, 'csv', false)} />
+              <Menu.Item title={t('deck.exportLearning')} onPress={() => exportDeck(database, idDeck, deckName, changeSide, showName, 'json', true)} />
             </Menu>
             <Appbar.Action icon="restore" onPress={() => setShowConfirmResetDialog(true)} />
             <Appbar.Action icon="delete" onPress={() => setShowConfirmDeleteDialog(true)} />

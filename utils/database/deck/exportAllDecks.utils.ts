@@ -18,7 +18,7 @@ export const exportAllDecks = async (database: SQLiteDatabase) => {
       cards: [],
     };
 
-    const cards = await getCardsFromDeck(database, deck.id);
+    const cards = await getCardsFromDeck(database, deck.id, true);
     cards.forEach((card) => {
       deckDocument.cards.push({
         recto: card.recto,
@@ -29,7 +29,7 @@ export const exportAllDecks = async (database: SQLiteDatabase) => {
         step: card.step,
         nextRevision: card.nextRevision,
         toLearn: Boolean(card.toLearn),
-        changeSide: Boolean(card.changeSide),
+        changeSide: card.changeSide === null ? null : Boolean(card.changeSide),
       });
     });
 

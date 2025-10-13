@@ -4,6 +4,7 @@ import { CardType } from '../../../../types/CardType';
 export const getCardsFromDeck = async (
   database: SQLiteDatabase,
   idDeck: number,
+  pure: boolean = false
 ): Promise<CardType[]> => {
   let cards: CardType[] = [];
   try {
@@ -19,7 +20,7 @@ export const getCardsFromDeck = async (
         C.step,
         C.nextRevision,
         C.toLearn,
-        CASE WHEN C.changeSide IS NOT NULL THEN C.changeSide ELSE D.changeSide END as changeSide
+        ${pure ? 'C.changeSide' : 'CASE WHEN C.changeSide IS NOT NULL THEN C.changeSide ELSE D.changeSide END as changeSide'}
       FROM Card C
       INNER JOIN Deck D ON C.deck=D.id
       WHERE C.deck=?`,
