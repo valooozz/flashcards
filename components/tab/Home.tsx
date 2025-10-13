@@ -39,6 +39,92 @@ export function Home() {
 
     const database = useSQLiteContext();
 
+    /****************************
+                LIBRARY
+    *****************************/
+
+    const loadDecks = () => {
+        getAllDecks(database).then((decksResult) => {
+            setDecks(decksResult);
+        });
+        getGeneralProgress(database).then((progress) => {
+            setGeneralProgress(progress);
+        });
+    }
+
+    /****************************
+                 DECK
+    *****************************/
+
+    const openDeck = (id: number, name: string) => {
+        setIdDeck(id);
+        setDeckName(name);
+        loadCards(id).then(() => {
+            setInDeck(true);
+        });
+    };
+
+    const closeDeck = () => {
+        setIdDeck(-1);
+        setDeckName('');
+        setInDeck(false);
+    };
+
+    const loadCards = async (id: number) => {
+        await getCardsFromDeck(database, id).then((cardsResult) => {
+            setCards(cardsResult);
+            setNbCards(cardsResult.length);
+        });
+        await getProgressInDeck(database, id).then((nb) => {
+            setProgressInDeck(Number(nb.toFixed(2)));
+        });
+    };
+
+    /****************************
+               REVISION
+    *****************************/
+
+    const chooseFlashRevisionSettings = () => {
+        setShowRevisionChoice(true);
+    }
+
+    const openRevision = (flashRevisionSettings: FlashRevisionSettingsType) => {
+        setShowRevisionChoice(false);
+        if (flashRevisionSettings.cardsToRevise === 'number') {
+            setNumberOfCards(flashRevisionSettings.numberOfCards);
+        }
+        const newStepDelimiter = flashRevisionSettings.cardsToRevise === 'step' ? flashRevisionSettings.stepDelimiter : undefined;
+        setStepDelimiter(newStepDelimiter);
+        setCardsToReviseLearnt(flashRevisionSettings.cardsToReviseLearnt);
+        setRevisionSide(flashRevisionSettings.revisionSide);
+        loadFlashCards(idDeck, flashRevisionSettings.cardsToReviseLearnt, newStepDelimiter).then(() => {
+            setInRevision(true);
+        });
+    }
+
+    const closeRevision = () => {
+        setInRevision(false);
+    }
+
+    const loadFlashCards = async (id: number, cardsToReviseLearnt: CardsToReviseLearnt, stepDelimiter: StepDelimiter) => {
+        await getFlashCardsForFlashRevision(
+            database,
+            id,
+            cardsToReviseLearnt,
+            stepDelimiter
+        ).then((flashCardsResult) => {
+            setFlashCards(flashCardsResult);
+        });
+    }
+
+    const reloadRevision = () => {
+        loadFlashCards(idDeck, cardsToReviseLearnt, stepDelimiter);
+    }
+
+    /****************************
+                 HOME
+    *****************************/
+
     const saveState = async (stateToSave: { inDeck: boolean; idDeck: number; deckName: string }) => {
         const { inDeck, idDeck, deckName } = stateToSave;
         await AsyncStorage.setItem(
@@ -68,86 +154,16 @@ export function Home() {
         }
     };
 
-    const loadCards = async (id: number) => {
-        // setAllRevisionsToToday(database);
-        await getCardsFromDeck(database, id).then((cardsResult) => {
-            setCards(cardsResult);
-            setNbCards(cardsResult.length);
-        });
-        await getProgressInDeck(database, id).then((nb) => {
-            setProgressInDeck(Number(nb.toFixed(2)));
-        });
-    };
-
-    const loadFlashCards = async (id: number, cardsToReviseLearnt: CardsToReviseLearnt, stepDelimiter: StepDelimiter) => {
-        await getFlashCardsForFlashRevision(
-            database,
-            id,
-            cardsToReviseLearnt,
-            stepDelimiter
-        ).then((flashCardsResult) => {
-            setFlashCards(flashCardsResult);
-        });
-    }
-
-    // Keep a ref in sync with the latest state so we can save on blur with fresh values
     const latestStateRef = useRef({ inDeck, idDeck, deckName });
     useEffect(() => {
         latestStateRef.current = { inDeck, idDeck, deckName };
     }, [inDeck, idDeck, deckName]);
 
-    const openDeck = (id: number, name: string) => {
-        setIdDeck(id);
-        setDeckName(name);
-        loadCards(id).then(() => {
-            setInDeck(true);
-        });
-    };
-
-    const closeDeck = () => {
-        setIdDeck(-1);
-        setDeckName('');
-        setInDeck(false);
-    };
-
-    const chooseFlashRevisionSettings = () => {
-        setShowRevisionChoice(true);
-    }
-
-    const openRevision = (flashRevisionSettings: FlashRevisionSettingsType) => {
-        setShowRevisionChoice(false);
-        if (flashRevisionSettings.cardsToRevise === 'number') {
-            setNumberOfCards(flashRevisionSettings.numberOfCards);
-        }
-        const newStepDelimiter = flashRevisionSettings.cardsToRevise === 'step' ? flashRevisionSettings.stepDelimiter : undefined;
-        setStepDelimiter(newStepDelimiter);
-        setCardsToReviseLearnt(flashRevisionSettings.cardsToReviseLearnt);
-        setRevisionSide(flashRevisionSettings.revisionSide);
-        loadFlashCards(idDeck, flashRevisionSettings.cardsToReviseLearnt, newStepDelimiter).then(() => {
-            setInRevision(true);
-        });
-    }
-
-    const reload = () => {
-        loadFlashCards(idDeck, cardsToReviseLearnt, stepDelimiter);
-    }
-
-    const closeRevision = () => {
-        setInRevision(false);
-    }
-
     useFocusEffect(
         useCallback(() => {
-            // On focus, restore UI state then refresh data
             loadState();
-            getAllDecks(database).then((decksResult) => {
-                setDecks(decksResult);
-            });
-            getGeneralProgress(database).then((progress) => {
-                setGeneralProgress(progress);
-            });
+            loadDecks();
 
-            // On blur, persist the latest state (using ref to avoid stale closures)
             return () => {
                 saveState(latestStateRef.current);
             };
@@ -187,7 +203,7 @@ export function Home() {
                         numberOfCards={numberOfCards}
                         revisionSide={revisionSide}
                         closeRevision={closeRevision}
-                        reload={reload}
+                        reload={reloadRevision}
                     />
                 ) : inDeck ? (
                     <Deck
@@ -206,6 +222,7 @@ export function Home() {
                         progress={generalProgress}
                         openDeck={openDeck}
                         chooseFlashRevisionSettings={chooseFlashRevisionSettings}
+                        reload={loadDecks}
                     />
                 )
             }

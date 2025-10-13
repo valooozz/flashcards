@@ -117,7 +117,8 @@
         "decks": "Decks",
         "noDeck": "Il n'y a aucun deck par ici. Clique sur le bouton + pour en ajouter !",
         "import": "Importer des decks",
-        "export": "Exporter tous les decks"
+        "export": "Exporter tous les decks",
+        "importing": "Importation en cours"
     },
     "learning": {
         "title": "Apprentissage",

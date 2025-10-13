@@ -125,7 +125,8 @@
         "decks": "Decks",
         "noDeck": "There are no decks here. Click the + button to add one!",
         "import": "Import decks",
-        "export": "Export all decks"
+        "export": "Export all decks",
+        "importing": "Importing in progress"
     },
     "learning": {
         "title": "Learning",

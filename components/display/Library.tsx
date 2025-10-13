@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { Appbar, FAB, Menu, ProgressBar, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Appbar, FAB, Menu, ProgressBar, Text, useTheme } from 'react-native-paper';
 import { DeckCard } from '../../components/card/DeckCard';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
@@ -17,14 +17,27 @@ interface LibraryProps {
   progress: number;
   openDeck: (id: number, name: string) => void;
   chooseFlashRevisionSettings: () => void;
+  reload: () => void;
 }
 
-export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings }: LibraryProps) {
+export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings, reload }: LibraryProps) {
   const { t } = useTranslation();
   const { colors } = useTheme();
   const database = useSQLiteContext();
 
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [isImporting, setIsImporting] = useState(false);
+
+  const handleImport = useCallback(async () => {
+    setShowExportMenu(false);
+    setIsImporting(true);
+    try {
+      await importDocument(database, 'json');
+    } finally {
+      setIsImporting(false);
+      reload();
+    }
+  }, [database]);
 
   const renderItem = useCallback(({ item }: { item: DeckType }) => (
     <DeckCard deck={item} openDeck={openDeck} />
@@ -42,7 +55,7 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
           onDismiss={() => setShowExportMenu(false)}
           anchor={<Appbar.Action icon="swap-vertical" onPressIn={() => setShowExportMenu(true)} />}
         >
-          <Menu.Item title={t('library.import')} onPress={() => importDocument(database, 'json')} />
+          <Menu.Item title={t('library.import')} onPress={handleImport} />
           <Menu.Item title={t('library.export')} onPress={() => exportAllDecks(database)} />
         </Menu>
         <Appbar.Action icon="cog" onPressIn={() => router.push("modalSettings")} />
@@ -76,6 +89,15 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
         style={[GlobalStyles.fab, { backgroundColor: colors.inversePrimary }]}
         onPress={() => router.push('/modalDeck')}
       />
+
+      {isImporting && (
+        <View style={styles.loadingOverlay} pointerEvents="auto">
+          <ActivityIndicator animating={true} size={48} color={colors.onPrimary} />
+          <Text variant="headlineMedium" style={{ color: colors.onPrimary, marginTop: 12 }}>
+            {t('library.importing')}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -97,5 +119,11 @@ const styles = StyleSheet.create({
   },
   progressBar: {
     height: 8,
+  },
+  loadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.6)',
   }
 });
