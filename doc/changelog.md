@@ -1,4 +1,10 @@
 
+### Version 2.0.3
+
+- Fix : fichiers d'export suivent bien les paramètres des decks et des cartes
+- Fix : importation remet bien les paramètres à la bonne valeur
+- Fix : dans une révision flash, une carte qui n'alterne pas entre recto et verso verra toujours son recto affiché en mode affichage aléatoire
+
 ### Version 2.0.2
 
 - Mode clair permanent
