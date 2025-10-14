@@ -1,4 +1,11 @@
 
+### Version 2.1.0
+
+- Possibilité d'exporter et d'importer les decks avec des images
+- Loader pendant l'importation et l'exporation
+- Possibilité de rechercher une carte dans toute la bibliothèque
+- Possibilité de rechercher un deck depuis la bibliothèque
+
 ### Version 2.0.3
 
 - Fix : fichiers d'export suivent bien les paramètres des decks et des cartes
