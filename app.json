@@ -14,7 +14,8 @@
           "imageWidth": 200
         }
       ],
-      "expo-localization"
+      "expo-localization",
+      "expo-font"
     ],
     "name": "Flipo",
     "slug": "flashcards",

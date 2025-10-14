@@ -6,7 +6,6 @@ import { SQLiteProvider } from 'expo-sqlite';
 import { useEffect, useMemo, useState } from 'react';
 import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import ToastManager from 'toastify-react-native';
 import { LanguagePickerModal } from '../components/modal/LanguagePickerModal';
 import { TutorialModal } from '../components/modal/TutorialModal';
 import { NotificationProvider } from '../context/NotificationContext';
@@ -190,7 +189,6 @@ export default function Layout() {
                       options={{ presentation: 'modal' }}
                     />
                   </Stack>
-                  <ToastManager useModal={false} />
                   <TutorialWrapper />
                 </SafeAreaView>
               </NotificationProvider>
