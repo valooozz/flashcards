@@ -6,9 +6,10 @@ import { CardType } from '../../types/CardType';
 
 interface ListCardProps {
     card: CardType;
+    openDeck: (id: number, name: string) => void;
 }
 
-function SearchCardComponent({ card }: ListCardProps) {
+function SearchCardComponent({ card, openDeck }: ListCardProps) {
 
     const { colors } = useTheme();
 
@@ -17,8 +18,8 @@ function SearchCardComponent({ card }: ListCardProps) {
     }, [card.deck, card.id]);
 
     const handleLongPress = useCallback(() => {
-        router.push(`/modalDeck?idDeck=${card.deck}`)
-    }, [card.deck]);
+        openDeck(card.deck, card.name);
+    }, [card.deck, card.name]);
 
     return (
         <Card

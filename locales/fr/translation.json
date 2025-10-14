@@ -184,7 +184,9 @@
         "noQuit": "Ne pas quitter",
         "searchTitle": "Recherche",
         "searchCard": "Rechercher une carte",
-        "noCard": "Aucune carte trouvée"
+        "noCard": "Aucune carte trouvée",
+        "searchDeck": "Rechercher un deck",
+        "noDeck": "Aucun deck trouvé"
     },
     "tuto": {
         "welcome": {

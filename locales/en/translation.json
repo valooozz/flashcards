@@ -185,7 +185,9 @@
         "noQuit": "Don't quit",
         "searchTitle": "Search",
         "searchCard": "Search a card",
-        "noCard": "No card found"
+        "noCard": "No card found",
+        "searchDeck": "Search a deck",
+        "noDeck": "No deck found"
     },
     "tuto": {
         "welcome": {

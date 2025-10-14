@@ -5,9 +5,9 @@ export const logAllDecks = async (database: SQLiteDatabase) => {
     try {
         const decksResult =
             await database.getAllAsync<CardType>('SELECT * FROM Deck');
-        console.log('=== all decks:');
+        console.info('=== all decks:');
         decksResult.forEach((deck) => {
-            console.log('-', deck);
+            console.info('-', deck);
         });
     } catch (error) {
         console.error('logAllDecks:', error);

@@ -15,7 +15,7 @@ export const listAllTriggers = async (database: SQLiteDatabase): Promise<string[
 export const dropTrigger = async (database: SQLiteDatabase, triggerName: string): Promise<void> => {
     try {
         await database.execAsync(`DROP TRIGGER IF EXISTS ${triggerName};`);
-        console.log(`Trigger ${triggerName} dropped successfully`);
+        console.info(`Trigger ${triggerName} dropped successfully`);
     } catch (error) {
         console.error(`Error dropping trigger ${triggerName}:`, error);
         throw error;
@@ -30,7 +30,7 @@ export const dropAllTriggers = async (database: SQLiteDatabase): Promise<void> =
             await dropTrigger(database, triggerName);
         }
 
-        console.log('All triggers dropped successfully');
+        console.info('All triggers dropped successfully');
     } catch (error) {
         console.error('Error dropping all triggers:', error);
         throw error;

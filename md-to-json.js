@@ -22,4 +22,4 @@ const jsonData = { content: markdownContent };
 // Écrire le JSON dans le fichier
 fs.writeFileSync(jsonFile, JSON.stringify(jsonData, null, 2));
 
-console.log(`Fichier JSON généré : ${jsonFile}`);
+console.info(`Fichier JSON généré : ${jsonFile}`);

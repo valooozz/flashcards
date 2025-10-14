@@ -14,9 +14,10 @@ import { getNbCardsToReviseInDeck } from '../../utils/database/deck/get/getNbCar
 interface DeckCardProps {
   deck: DeckType;
   openDeck: (id: number, name: string) => void;
+  searchCard?: boolean;
 }
 
-function DeckCardComponent({ deck, openDeck }: DeckCardProps) {
+function DeckCardComponent({ deck, openDeck, searchCard = false }: DeckCardProps) {
   const database = useSQLiteContext();
   const [nbCards, setNbCards] = useState(0);
   const [nbCardsToRevise, setNbCardsToRevise] = useState(0);
@@ -63,7 +64,7 @@ function DeckCardComponent({ deck, openDeck }: DeckCardProps) {
   return (
     <Card
       style={[styles.card, { backgroundColor: colors.onPrimary }]}
-      elevation={5}
+      elevation={searchCard ? 0 : 5}
     >
       <TouchableRipple
         onPress={handlePress}
@@ -75,14 +76,16 @@ function DeckCardComponent({ deck, openDeck }: DeckCardProps) {
           <Card.Title title={deck.name} />
           <Card.Content style={styles.content}>
             <Text variant="bodyMedium" style={{ color: colors.primary }}>{nbCards + word}</Text>
-            {nbCardsToRevise ? <Text variant="bodyMedium" style={[styles.center, { color: Colors.daily.dark.main }]}>{nbCardsToRevise + t('deck.toReview')}</Text> : null}
-            {nbCardsToLearn ? <Text variant="bodyMedium" style={[styles.right, { color: Colors.learning.dark.main }]}>{nbCardsToLearn + t('deck.toLearn')}</Text> : null}
+            {nbCardsToRevise && !searchCard ? <Text variant="bodyMedium" style={[styles.center, { color: Colors.daily.dark.main }]}>{nbCardsToRevise + t('deck.toReview')}</Text> : null}
+            {nbCardsToLearn && !searchCard ? <Text variant="bodyMedium" style={[styles.right, { color: Colors.learning.dark.main }]}>{nbCardsToLearn + t('deck.toLearn')}</Text> : null}
           </Card.Content>
-          <ProgressBar
-            progress={progressInDeck || 0}
-            color={Colors.library.intermediate.main}
-            style={[styles.progressBar, { backgroundColor: colors.onPrimary }]}
-          />
+          {!searchCard && (
+            <ProgressBar
+              progress={progressInDeck || 0}
+              color={Colors.library.intermediate.main}
+              style={[styles.progressBar, { backgroundColor: colors.onPrimary }]}
+            />
+          )}
         </>
       </TouchableRipple>
     </Card>

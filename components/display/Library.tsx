@@ -37,10 +37,9 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
   const [allCards, setAllCards] = useState<CardType[]>([]);
 
   const openSearchDialog = async () => {
-    getAllCards(database).then((cardsResult) => {
-      setAllCards(cardsResult);
-      setShowSearchDialog(true);
-    });
+    const cardsResult = await getAllCards(database);
+    setAllCards(cardsResult);
+    setShowSearchDialog(true);
   }
 
   const handleImport = useCallback(async () => {
@@ -118,7 +117,7 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
         onPress={() => router.push('/modalDeck')}
       />
 
-      <SearchDialog visible={showSearchDialog} hideDialog={() => setShowSearchDialog(false)} allCards={allCards} />
+      <SearchDialog visible={showSearchDialog} hideDialog={() => setShowSearchDialog(false)} allCards={allCards} allDecks={decks} openDeck={openDeck} />
 
       <LoaderModal visible={isImporting || isExporting} text={isImporting ? t('common.importing') : t('common.exporting')} />
     </View>
