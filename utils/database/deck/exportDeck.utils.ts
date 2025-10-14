@@ -1,8 +1,10 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 import { DeckDocument } from '../../../types/DeckDocument';
 import { ImportExportType } from '../../../types/ImportExportType';
+import { exportDeckBundle } from '../../export/exportDeckBundle.utils';
 import { exportDocument } from '../../export/exportDocument.utils';
 import { transformJsonToCsv } from '../../export/transformJsonToCsv.utils';
+import { fileToDataUri } from '../../images/fileToDataUri.utils';
 import { getCardsFromDeck } from '../card/get/getCardsFromDeck.utils';
 
 export const exportDeck = async (
@@ -23,13 +25,17 @@ export const exportDeck = async (
     cards: [],
   };
 
-  cards.forEach((card) => {
+  let hasImage = false;
+
+  for (const card of cards) {
+    const rectoImageData = card.rectoImage ? await fileToDataUri(card.rectoImage) : null;
+    const versoImageData = card.versoImage ? await fileToDataUri(card.versoImage) : null;
     if (exportType === 'json' && fullExport) {
       deckDocument.cards.push({
         recto: card.recto,
         verso: card.verso,
-        rectoImage: card.rectoImage ?? null,
-        versoImage: card.versoImage ?? null,
+        rectoImage: rectoImageData,
+        versoImage: versoImageData,
         rectoFirst: Boolean(card.rectoFirst),
         step: card.step,
         nextRevision: card.nextRevision,
@@ -40,12 +46,15 @@ export const exportDeck = async (
       deckDocument.cards.push({
         recto: card.recto,
         verso: card.verso,
-        rectoImage: card.rectoImage ?? null,
-        versoImage: card.versoImage ?? null,
+        rectoImage: rectoImageData,
+        versoImage: versoImageData,
         changeSide: card.changeSide === null ? null : Boolean(card.changeSide),
       });
     }
-  });
+    if (rectoImageData || versoImageData) {
+      hasImage = true;
+    }
+  }
 
   let dataToExport: DeckDocument[] | string;
 
@@ -55,5 +64,9 @@ export const exportDeck = async (
     dataToExport = [deckDocument];
   }
 
-  await exportDocument(dataToExport, deckName, exportType);
+  if (exportType === 'json' && hasImage) {
+    await exportDeckBundle(database, idDeck, deckName, changeSide, showName);
+  } else {
+    await exportDocument(dataToExport, deckName, exportType);
+  }
 };

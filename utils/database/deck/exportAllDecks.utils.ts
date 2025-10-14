@@ -1,7 +1,8 @@
 import { SQLiteDatabase } from 'expo-sqlite';
 import { DeckDocument } from '../../../types/DeckDocument';
 import { DeckType } from '../../../types/DeckType';
-import { exportDocument } from '../../export/exportDocument.utils';
+import { exportAllDecksBundle } from '../../export/exportAllDecksBundle.utils';
+import { fileToDataUri } from '../../images/fileToDataUri.utils';
 import { getCardsFromDeck } from '../card/get/getCardsFromDeck.utils';
 import { getAllDecks } from './get/getAllDecks.utils';
 
@@ -19,22 +20,24 @@ export const exportAllDecks = async (database: SQLiteDatabase) => {
     };
 
     const cards = await getCardsFromDeck(database, deck.id, true);
-    cards.forEach((card) => {
+    for (const card of cards) {
+      const rectoImageData = card.rectoImage ? await fileToDataUri(card.rectoImage) : null;
+      const versoImageData = card.versoImage ? await fileToDataUri(card.versoImage) : null;
       deckDocument.cards.push({
         recto: card.recto,
         verso: card.verso,
-        rectoImage: card.rectoImage ?? null,
-        versoImage: card.versoImage ?? null,
+        rectoImage: rectoImageData,
+        versoImage: versoImageData,
         rectoFirst: Boolean(card.rectoFirst),
         step: card.step,
         nextRevision: card.nextRevision,
         toLearn: Boolean(card.toLearn),
         changeSide: card.changeSide === null ? null : Boolean(card.changeSide),
       });
-    });
+    }
 
     bddDocument.push(deckDocument);
   }
 
-  exportDocument(bddDocument, 'FlipoBackup', 'json');
+  await exportAllDecksBundle(database);
 };
