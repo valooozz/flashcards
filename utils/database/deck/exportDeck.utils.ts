@@ -34,8 +34,8 @@ export const exportDeck = async (
       deckDocument.cards.push({
         recto: card.recto,
         verso: card.verso,
-        rectoImage: rectoImageData,
-        versoImage: versoImageData,
+        ...(rectoImageData ? { rectoImage: rectoImageData } : {}),
+        ...(versoImageData ? { versoImage: versoImageData } : {}),
         rectoFirst: Boolean(card.rectoFirst),
         step: card.step,
         nextRevision: card.nextRevision,
@@ -46,8 +46,8 @@ export const exportDeck = async (
       deckDocument.cards.push({
         recto: card.recto,
         verso: card.verso,
-        rectoImage: rectoImageData,
-        versoImage: versoImageData,
+        ...(rectoImageData ? { rectoImage: rectoImageData } : {}),
+        ...(versoImageData ? { versoImage: versoImageData } : {}),
         changeSide: card.changeSide === null ? null : Boolean(card.changeSide),
       });
     }

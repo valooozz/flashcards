@@ -52,8 +52,8 @@ export const exportAllDecksBundle = async (database: any): Promise<void> => {
             deckDocument.cards.push({
                 recto: card.recto,
                 verso: card.verso,
-                rectoImage: rectoRel,
-                versoImage: versoRel,
+                ...(rectoRel ? { rectoImage: rectoRel } : {}),
+                ...(versoRel ? { versoImage: versoRel } : {}),
                 rectoFirst: Boolean(card.rectoFirst),
                 step: card.step,
                 nextRevision: card.nextRevision,
