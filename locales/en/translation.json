@@ -21,7 +21,8 @@
         "no": "No",
         "validate": "Validate",
         "importing": "Importing in progress",
-        "exporting": "Preparing export"
+        "exporting": "Preparing export",
+        "close": "Fermer"
     },
     "days": {
         "today": "Today",
@@ -181,7 +182,10 @@
         "notSaved": "You haven't saved your changes.",
         "saveAndQuit": "Save and close",
         "quit": "Quit without saving",
-        "noQuit": "Don't quit"
+        "noQuit": "Don't quit",
+        "searchTitle": "Search",
+        "searchCard": "Search a card",
+        "noCard": "No card found"
     },
     "tuto": {
         "welcome": {

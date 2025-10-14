@@ -22,7 +22,8 @@
         "validate": "Valider",
         "help": "Aide",
         "importing": "Importation en cours",
-        "exporting": "Préparation de l'exportation"
+        "exporting": "Préparation de l'exportation",
+        "close": "Fermer"
     },
     "days": {
         "today": "Aujourd'hui",
@@ -180,7 +181,10 @@
         "notSaved": "Tu n'as pas enregistré les modifications.",
         "saveAndQuit": "Enregistrer et fermer",
         "quit": "Quitter sans enregistrer",
-        "noQuit": "Ne pas quitter"
+        "noQuit": "Ne pas quitter",
+        "searchTitle": "Recherche",
+        "searchCard": "Rechercher une carte",
+        "noCard": "Aucune carte trouvée"
     },
     "tuto": {
         "welcome": {

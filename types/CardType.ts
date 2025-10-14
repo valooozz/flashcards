@@ -10,4 +10,5 @@ export interface CardType {
   nextRevision: string;
   toLearn: number;
   changeSide?: number;
+  name?: string;
 }

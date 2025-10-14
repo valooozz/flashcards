@@ -7,6 +7,7 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { GlobalStyles } from '../../style/GlobalStyles';
 import { CardType } from '../../types/CardType';
+import { isCardCloseToSearch } from '../../utils/isCardCloseToSearch.utils';
 
 interface DeckProps {
   idDeck: number;
@@ -72,10 +73,7 @@ export function Deck({
     }
 
     if (normalizedSearch !== '') {
-      filtered = filtered.filter(card =>
-        card.recto?.toLowerCase()?.includes(normalizedSearch) ||
-        card.verso?.toLowerCase()?.includes(normalizedSearch)
-      );
+      filtered = filtered.filter(card => isCardCloseToSearch(card, normalizedSearch));
     }
 
     setFilteredCards(filtered);
@@ -123,7 +121,7 @@ export function Deck({
       />
       {searchMode && (
         <Searchbar
-          placeholder='Search'
+          placeholder={t('dialog.searchCard')}
           value={searchText}
           onChangeText={setSearchText}
           style={styles.searchBar}

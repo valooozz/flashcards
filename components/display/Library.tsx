@@ -8,9 +8,12 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { GlobalStyles } from '../../style/GlobalStyles';
 import { Sizes } from '../../style/Sizes';
+import { CardType } from '../../types/CardType';
 import { DeckType } from '../../types/DeckType';
+import { getAllCards } from '../../utils/database/card/get/getAllCards.utils';
 import { exportAllDecks } from '../../utils/database/deck/exportAllDecks.utils';
 import { importDocument } from '../../utils/import/importDocument.utils';
+import { SearchDialog } from '../dialog/SearchDialog';
 import { LoaderModal } from '../modal/LoaderModal';
 
 interface LibraryProps {
@@ -27,8 +30,18 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
   const database = useSQLiteContext();
 
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [showSearchDialog, setShowSearchDialog] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
   const [isExporting, setIsExporting] = useState(false);
+
+  const [allCards, setAllCards] = useState<CardType[]>([]);
+
+  const openSearchDialog = async () => {
+    getAllCards(database).then((cardsResult) => {
+      setAllCards(cardsResult);
+      setShowSearchDialog(true);
+    });
+  }
 
   const handleImport = useCallback(async () => {
     setShowExportMenu(false);
@@ -64,6 +77,7 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
       <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
         <Appbar.Content title={t('library.title')} />
         <Appbar.Action icon="flash" onPressIn={chooseFlashRevisionSettings} />
+        <Appbar.Action icon="magnify" onPressIn={openSearchDialog} />
         <Menu
           visible={showExportMenu}
           onDismiss={() => setShowExportMenu(false)}
@@ -103,6 +117,8 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
         style={[GlobalStyles.fab, { backgroundColor: colors.inversePrimary }]}
         onPress={() => router.push('/modalDeck')}
       />
+
+      <SearchDialog visible={showSearchDialog} hideDialog={() => setShowSearchDialog(false)} allCards={allCards} />
 
       <LoaderModal visible={isImporting || isExporting} text={isImporting ? t('common.importing') : t('common.exporting')} />
     </View>
