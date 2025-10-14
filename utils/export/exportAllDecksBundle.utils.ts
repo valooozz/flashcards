@@ -1,6 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
-import { zip } from 'react-native-zip-archive';
+import JSZip from 'jszip';
 import { DeckDocument } from '../../types/DeckDocument';
 import { getCardsFromDeck } from '../database/card/get/getCardsFromDeck.utils';
 import { getAllDecks } from '../database/deck/get/getAllDecks.utils';
@@ -18,6 +18,7 @@ export const exportAllDecksBundle = async (database: any): Promise<void> => {
     await FileSystem.makeDirectoryAsync(imagesDir, { intermediates: true });
 
     const allDecksDocument: DeckDocument[] = [];
+    const filesToZip: Array<{ rel: string; abs: string }> = [];
 
     for (const deck of decks) {
         const deckDocument: DeckDocument = {
@@ -38,12 +39,14 @@ export const exportAllDecksBundle = async (database: any): Promise<void> => {
                 const rel = `deck_${deck.id}_card_${index}_recto.${ext}`;
                 await FileSystem.copyAsync({ from: card.rectoImage, to: imagesDir + rel });
                 rectoRel = `images/${rel}`;
+                filesToZip.push({ rel: rectoRel, abs: imagesDir + rel });
             }
             if (card.versoImage) {
                 const ext = getExtension(card.versoImage);
                 const rel = `deck_${deck.id}_card_${index}_verso.${ext}`;
                 await FileSystem.copyAsync({ from: card.versoImage, to: imagesDir + rel });
                 versoRel = `images/${rel}`;
+                filesToZip.push({ rel: versoRel, abs: imagesDir + rel });
             }
 
             deckDocument.cards.push({
@@ -65,10 +68,16 @@ export const exportAllDecksBundle = async (database: any): Promise<void> => {
 
     const jsonPath = `${baseDir}deck.json`;
     await FileSystem.writeAsStringAsync(jsonPath, JSON.stringify(allDecksDocument));
+    filesToZip.push({ rel: 'deck.json', abs: jsonPath });
 
     const zipDest = `${FileSystem.cacheDirectory}FlipoBackup.flipo`;
-    const zippedPath = await zip(baseDir, zipDest);
-    await Sharing.shareAsync(zippedPath);
+    // Build zip in-memory
+    const zip = new JSZip();
+    for (const f of filesToZip) {
+        const base64Data = await FileSystem.readAsStringAsync(f.abs, { encoding: FileSystem.EncodingType.Base64 });
+        zip.file(f.rel, base64Data, { base64: true });
+    }
+    const zipBase64 = await zip.generateAsync({ type: 'base64' });
+    await FileSystem.writeAsStringAsync(zipDest, zipBase64, { encoding: FileSystem.EncodingType.Base64 });
+    await Sharing.shareAsync(zipDest);
 };
-
-

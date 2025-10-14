@@ -10,6 +10,7 @@ import { GlobalStyles } from '../../style/GlobalStyles';
 import { Sizes } from '../../style/Sizes';
 import { DeckType } from '../../types/DeckType';
 import { exportAllDecks } from '../../utils/database/deck/exportAllDecks.utils';
+import { resetDatabase } from '../../utils/database/resetDatabase.utils';
 import { importDocument } from '../../utils/import/importDocument.utils';
 import { LoaderModal } from '../modal/LoaderModal';
 
@@ -63,6 +64,7 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
     <View style={[styles.container, { backgroundColor: colors.primary }]}>
       <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
         <Appbar.Content title={t('library.title')} />
+        <Appbar.Action icon="spade" onPressIn={() => resetDatabase(database)} />
         <Appbar.Action icon="flash" onPressIn={chooseFlashRevisionSettings} />
         <Menu
           visible={showExportMenu}
