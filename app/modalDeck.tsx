@@ -14,6 +14,7 @@ import { ModalButton } from '../components/button/ModalButton';
 import { ConfirmDialog } from '../components/dialog/ConfirmDialog';
 import { QuitDialog } from '../components/dialog/QuitDialog';
 import { StatsDeckDialog } from '../components/dialog/StatsDeckDialog';
+import { LoaderModal } from '../components/modal/LoaderModal';
 import { CheckboxWithText } from '../components/text/CheckboxWithText';
 import { useNotify } from '../hooks/useNotify';
 import { useTranslation } from '../hooks/useTranslation';
@@ -53,6 +54,7 @@ export default function Modal() {
   const [showConfirmForceDialog, setShowConfirmForceDialog] = useState(false);
 
   const [showExportMenu, setShowExportMenu] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -125,11 +127,28 @@ export default function Modal() {
     notify(deleteOk, t('notifications.errorOccurred'), t('deck.deleted'));
   };
 
-  const handleImport = async (importType: ImportExportType) => {
-    const importSuccess = await importDocument(database, importType);
-    notify(importSuccess, "Erreur lors de l'importation du deck", 'Deck importé avec succès');
-    router.back();
-  };
+  const handleImport = useCallback(async (importType: ImportExportType) => {
+    setIsLoading(true);
+    setShowExportMenu(false);
+    let importSuccess: boolean;
+    try {
+      importSuccess = await importDocument(database, importType);
+    } finally {
+      setIsLoading(false);
+      notify(importSuccess, "Erreur lors de l'importation du deck", 'Deck importé avec succès');
+      router.back();
+    }
+  }, [database]);
+
+  const handleExport = async (exportType: ImportExportType, fullExport: boolean) => {
+    setIsLoading(true);
+    setShowExportMenu(false);
+    try {
+      await exportDeck(database, idDeck, deckName, changeSide, showName, exportType, fullExport);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   useFocusEffect(
     useCallback(() => {
@@ -174,9 +193,9 @@ export default function Modal() {
               onDismiss={() => setShowExportMenu(false)}
               anchor={<Appbar.Action icon="export-variant" onPress={() => setShowExportMenu(true)} />}
             >
-              <Menu.Item title={t('deck.exportCardsJson')} onPress={() => exportDeck(database, idDeck, deckName, changeSide, showName, 'json', false)} />
-              <Menu.Item title={t('deck.exportCardsCsv')} onPress={() => exportDeck(database, idDeck, deckName, changeSide, showName, 'csv', false)} />
-              <Menu.Item title={t('deck.exportLearning')} onPress={() => exportDeck(database, idDeck, deckName, changeSide, showName, 'json', true)} />
+              <Menu.Item title={t('deck.exportCardsJson')} onPress={() => handleExport('json', false)} />
+              <Menu.Item title={t('deck.exportCardsCsv')} onPress={() => handleExport('csv', false)} />
+              <Menu.Item title={t('deck.exportLearning')} onPress={() => handleExport('json', true)} />
             </Menu>
             <Appbar.Action icon="restore" onPress={() => setShowConfirmResetDialog(true)} />
             <Appbar.Action icon="delete" onPress={() => setShowConfirmDeleteDialog(true)} />
@@ -270,6 +289,8 @@ export default function Modal() {
         element={t('deck.followDeckOnAlternate')}
         onValidate={handleForceAlternate}
       />
+
+      <LoaderModal visible={isLoading} text={editMode ? t('common.exporting') : t('common.importing')} />
     </SafeAreaView>
   )
 }

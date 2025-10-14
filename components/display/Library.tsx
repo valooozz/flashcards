@@ -2,7 +2,7 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Appbar, FAB, Menu, ProgressBar, Text, useTheme } from 'react-native-paper';
+import { Appbar, FAB, Menu, ProgressBar, Text, useTheme } from 'react-native-paper';
 import { DeckCard } from '../../components/card/DeckCard';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
@@ -11,6 +11,7 @@ import { Sizes } from '../../style/Sizes';
 import { DeckType } from '../../types/DeckType';
 import { exportAllDecks } from '../../utils/database/deck/exportAllDecks.utils';
 import { importDocument } from '../../utils/import/importDocument.utils';
+import { LoaderModal } from '../modal/LoaderModal';
 
 interface LibraryProps {
   decks: DeckType[];
@@ -27,6 +28,7 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
 
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [isImporting, setIsImporting] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
 
   const handleImport = useCallback(async () => {
     setShowExportMenu(false);
@@ -36,6 +38,18 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
     } finally {
       setIsImporting(false);
       reload();
+    }
+  }, [database]);
+
+  const handleExport = useCallback(async () => {
+    setShowExportMenu(false);
+    setIsExporting(true);
+    try {
+      await exportAllDecks(database);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsExporting(false);
     }
   }, [database]);
 
@@ -56,7 +70,7 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
           anchor={<Appbar.Action icon="swap-vertical" onPressIn={() => setShowExportMenu(true)} />}
         >
           <Menu.Item title={t('library.import')} onPress={handleImport} />
-          <Menu.Item title={t('library.export')} onPress={() => exportAllDecks(database)} />
+          <Menu.Item title={t('library.export')} onPress={handleExport} />
         </Menu>
         <Appbar.Action icon="cog" onPressIn={() => router.push("modalSettings")} />
       </Appbar.Header>
@@ -90,14 +104,7 @@ export function Library({ decks, progress, openDeck, chooseFlashRevisionSettings
         onPress={() => router.push('/modalDeck')}
       />
 
-      {isImporting && (
-        <View style={styles.loadingOverlay} pointerEvents="auto">
-          <ActivityIndicator animating={true} size={48} color={colors.onPrimary} />
-          <Text variant="headlineMedium" style={{ color: colors.onPrimary, marginTop: 12 }}>
-            {t('library.importing')}
-          </Text>
-        </View>
-      )}
+      <LoaderModal visible={isImporting || isExporting} text={isImporting ? t('common.importing') : t('common.exporting')} />
     </View>
   );
 }
@@ -120,10 +127,4 @@ const styles = StyleSheet.create({
   progressBar: {
     height: 8,
   },
-  loadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.6)',
-  }
 });
