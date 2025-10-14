@@ -1,5 +1,5 @@
 import { SQLiteDatabase } from 'expo-sqlite';
-import { CardDocument, DeckDocument } from '../../../types/DeckDocument';
+import { DeckDocument } from '../../../types/DeckDocument';
 import { createCard } from '../card/createCard.utils';
 import { createDeck } from './createDeck.utils';
 
@@ -20,21 +20,31 @@ export const importDecks = async (
       continue;
     }
 
-    deckDocument.cards.forEach((card: CardDocument) => {
-      createCard(
-        database,
-        card.recto,
-        card.verso,
-        card.rectoImage ?? null,
-        card.versoImage ?? null,
-        String(idDeck),
-        card.changeSide,
-        card.toLearn,
-        card.rectoFirst,
-        card.step,
-        card.nextRevision,
-      );
-    });
+    try {
+      await database.execAsync('BEGIN TRANSACTION;');
+      for (const card of deckDocument.cards) {
+        const ok = await createCard(
+          database,
+          card.recto,
+          card.verso,
+          card.rectoImage ?? null,
+          card.versoImage ?? null,
+          String(idDeck),
+          card.changeSide,
+          card.toLearn,
+          card.rectoFirst,
+          card.step,
+          card.nextRevision,
+        );
+        if (!ok) {
+          allDecksAdded = false;
+        }
+      }
+      await database.execAsync('COMMIT;');
+    } catch (e) {
+      allDecksAdded = false;
+      try { await database.execAsync('ROLLBACK;'); } catch { }
+    }
   }
 
   return allDecksAdded;
