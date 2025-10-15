@@ -7,6 +7,8 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { GlobalStyles } from '../../style/GlobalStyles';
 import { CardType } from '../../types/CardType';
+import { FilterType } from '../../types/FilterType';
+import { getDate } from '../../utils/getDate.utils';
 import { isCardCloseToSearch } from '../../utils/isCardCloseToSearch.utils';
 
 interface DeckProps {
@@ -37,7 +39,7 @@ export function Deck({
   const [filteredCards, setFilteredCards] = useState<CardType[]>(cards);
 
   const [showFilterMenu, setShowFilterMenu] = useState(false);
-  const [filterCards, setFilterCards] = useState<string>(undefined);
+  const [filterCards, setFilterCards] = useState<FilterType>(undefined);
 
   const { colors } = useTheme();
   const { t } = useTranslation();
@@ -70,6 +72,9 @@ export function Deck({
       filtered = filtered.filter(card => card.nextRevision === null);
     } else if (filterCards === 'ended') {
       filtered = filtered.filter(card => card.step === 8);
+    } else if (filterCards === 'toRevise') {
+      const today = getDate(0);
+      filtered = filtered.filter(card => card.nextRevision <= today);
     }
 
     if (normalizedSearch !== '') {
@@ -109,6 +114,7 @@ export function Deck({
             <Menu.Item title={t('deck.notToLearn')} onPress={() => setFilterCards('notToLearn')} />
             <Menu.Item title={t('deck.notLearnt')} onPress={() => setFilterCards('notLearnt')} />
             <Menu.Item title={t('deck.ended')} onPress={() => setFilterCards('ended')} />
+            <Menu.Item title={t('deck.toRevise')} onPress={() => setFilterCards('toRevise')} />
           </Menu>
         }
         <Appbar.Action icon={searchMode ? 'magnify-close' : 'magnify'} onPressIn={toggleSearchMode} />

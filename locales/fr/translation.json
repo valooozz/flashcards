@@ -96,6 +96,7 @@
         "notToLearn": "Pas à apprendre",
         "notLearnt": "Pas encore apprises",
         "ended": "Apprentissage terminé",
+        "toRevise": "À réviser",
         "alternateSidesExplanation": "Si cette option est activée, une carte sera montrée alternativement avec le recto et le verso, lors des révisions. Lorsqu'une carte est oubliée, le côté ne change pas, la prochaine révision sera sur le côté qui a fait défaut.",
         "alternateSidesExplanationForce": "\n\nLe bouton permet de forcer toutes les cartes du deck à suivre le deck sur ce paramètre d'alternance."
     },

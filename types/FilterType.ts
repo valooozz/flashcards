@@ -1,0 +1,1 @@
+export type FilterType = 'toRevise' | 'notToLearn' | 'notLearnt' | 'ended';
