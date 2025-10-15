@@ -1,0 +1,29 @@
+Flipo est une application mobile de flashcards conçue pour simplifier et optimiser l’apprentissage et la mémorisation à long terme. Grâce à son système de répétition espacée, Flipo vous aide à réviser efficacement vos cartes et à retenir vos connaissances durablement.
+
+---------------------------------
+Bibliothèque et création de decks
+---------------------------------
+
+Créez vos propres decks de flashcards, importez des cartes depuis d’autres applications, et exportez vos decks en JSON ou CSV pour les partager. Ajoutez du texte et des images à vos cartes, et suivez vos progrès grâce à des jauges de progression par carte et par deck.
+
+---------------------------------
+Révisions intelligentes
+---------------------------------
+
+Apprenez vos cartes puis laissez Flipo organiser vos révisions automatiquement selon le principe de répétition espacée. Chaque carte est programmée pour revenir au moment optimal afin de maximiser la rétention. Le mode de révision avancé offre un contrôle plus précis sur le rythme d’apprentissage et la gestion des cartes oubliées.
+
+---------------------------------
+Révision Flash rapide
+---------------------------------
+
+Révisez plusieurs cartes d’un deck ou de tous vos decks en un seul clic, si vous avez besoin de réviser en plus de l'apprentissage à long terme. Avec Flipo, choisissez une révision adaptée à vos besoins.
+
+---------------------------------
+Paramètres et personnalisation
+---------------------------------
+
+Ajustez les paramètres de répétition espacée, activez ou désactivez le mode de révision avancé, configurez le comportement des cartes oubliées et changez la langue de l’application (Français ou Anglais). Un tutoriel intégré vous guide pas à pas.
+
+Flipo est idéal pour les étudiants, les apprenants de langues, ou toute personne souhaitant mémoriser efficacement des informations grâce aux flashcards et à la répétition espacée. Ouvrez l’application chaque jour et laissez Flipo organiser vos révisions automatiquement pour un apprentissage fluide et efficace.
+
+Commencez dès aujourd’hui à réviser et mémoriser plus facilement avec Flipo !
