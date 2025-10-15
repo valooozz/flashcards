@@ -59,6 +59,7 @@ export function NumberPickerModal({
             transparent
             animationType="fade"
             onRequestClose={onClose}
+            testID='number-picker-modal-title'
         >
             <View style={styles.overlay}>
                 <View style={styles.modalContainer}>

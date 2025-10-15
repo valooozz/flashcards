@@ -33,7 +33,7 @@ export function SettingStep({
   return (
     <>
       <Card style={styles.container}>
-        <TouchableRipple onPressIn={handleCardPress} style={styles.touchable}>
+        <TouchableRipple onPressIn={handleCardPress} style={styles.touchable} testID={`pressable-step-${stepNumber}`}>
           <Card.Content style={styles.content}>
             <Text variant="bodyMedium">{stepNumber} :</Text>
             <Text variant="bodyLarge">{selectedStep}</Text>

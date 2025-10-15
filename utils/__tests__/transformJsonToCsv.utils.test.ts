@@ -19,7 +19,7 @@ describe('transformJsonToCsv', () => {
             showName: true,
         };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe(['Hello,Bonjour,,', 'Yes,Oui,,'].join('\n'));
+        expect(csv).toBe(['Hello,Bonjour', 'Yes,Oui'].join('\n'));
     });
 
     it('escapes quotes by doubling them and wraps the field in quotes', () => {
@@ -32,7 +32,7 @@ describe('transformJsonToCsv', () => {
             showName: true
         };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe('"He said ""Hi""",Test,,');
+        expect(csv).toBe('"He said ""Hi""",Test');
     });
 
     it('wraps fields containing commas or newlines in quotes', () => {
@@ -48,9 +48,9 @@ describe('transformJsonToCsv', () => {
         };
         const csv = transformJsonToCsv(doc);
         expect(csv).toBe([
-            '"a,b",x,,',
-            '"line1\nline2",y,,',
-            '"carriage\rreturn",z,,',
+            '"a,b",x',
+            '"line1\nline2",y',
+            '"carriage\rreturn",z',
         ].join('\n'));
     });
 
@@ -64,7 +64,7 @@ describe('transformJsonToCsv', () => {
             showName: false,
         };
         const csv = transformJsonToCsv(doc);
-        expect(csv).toBe(',,,');
+        expect(csv).toBe(',');
     });
 });
 

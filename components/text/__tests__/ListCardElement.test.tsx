@@ -1,12 +1,13 @@
 import { render } from '@testing-library/react-native';
 import React from 'react';
 import { PaperProvider } from 'react-native-paper';
+import { homeLightTheme } from '../../../style/Themes';
 import { ListCardElement } from '../ListCardElement';
 
 describe('ListCardElement', () => {
     it('renders text when non-empty, with light opacity applied', () => {
         const { getByText } = render(
-            <PaperProvider>
+            <PaperProvider theme={homeLightTheme}>
                 <ListCardElement text="Hello" image={null} light={true} />
             </PaperProvider>
         );

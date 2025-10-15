@@ -10,7 +10,7 @@ export const LoaderModal = ({ visible, text }: LoaderModalProps) => {
     const { colors } = useTheme();
 
     return visible ? (
-        <View style={styles.loadingOverlay} pointerEvents="auto">
+        <View style={styles.loadingOverlay} pointerEvents="auto" testID="loader-overlay">
             <ActivityIndicator animating={true} size={48} color={colors.onPrimary} />
             <Text variant="headlineMedium" style={[styles.text, { color: colors.onPrimary }]}>
                 {text}

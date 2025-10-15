@@ -29,18 +29,32 @@ describe('StatsCardDialog', () => {
         (getDelay as jest.Mock).mockReturnValue(0);
 
         const hideDialog = jest.fn();
-        const { getByText } = render(
+        const { getByText, queryByText } = render(
             <PaperProvider>
-                <StatsCardDialog visible={true} hideDialog={hideDialog} learningStep={2} nextRevision="" />
+                <StatsCardDialog visible={true} hideDialog={hideDialog} learningStep={0} nextRevision="" />
             </PaperProvider>
         );
 
         expect(getByText('common.info')).toBeTruthy();
-        expect(getByText('card.learningStep : 2')).toBeTruthy();
+        expect(queryByText('card.learningStep')).toBeFalsy();
         expect(getByText('card.notLearnt')).toBeTruthy();
 
         fireEvent.press(getByText('common.ok'));
         expect(hideDialog).toHaveBeenCalled();
+    });
+
+    it('renders learningStep + 1 when nextRevision is not empty', () => {
+        (getDelay as jest.Mock).mockReturnValue(0);
+
+        const hideDialog = jest.fn();
+        const { getByText } = render(
+            <PaperProvider>
+                <StatsCardDialog visible={true} hideDialog={hideDialog} learningStep={3} nextRevision="2025-01-01" />
+            </PaperProvider>
+        );
+
+        expect(getByText('common.info')).toBeTruthy();
+        expect(getByText('card.learningStep : 4')).toBeTruthy();
     });
 
     it('renders overdue message when delay < 0', () => {
