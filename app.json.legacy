@@ -18,10 +18,10 @@
       "expo-font"
     ],
     "name": "Flipo",
-    "slug": "flipo",
+    "slug": "flashcards",
     "version": "2.1.1",
     "android": {
-      "package": "com.valooozz.flipo",
+      "package": "com.valooozz.flashcards",
       "windowSoftInputMode": "adjustPan"
     },
     "icon": "./assets/images/logo.png",
@@ -30,7 +30,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "bc1c392d-6652-474e-a815-1a586c823607"
+        "projectId": "975269d3-2cde-4eee-b24c-92caec2d98ed"
       }
     }
   }
