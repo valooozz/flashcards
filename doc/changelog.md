@@ -1,4 +1,10 @@
 
+### Version 2.1.1
+
+- Fix : affichage de la bonne étape d'apprentissage sur les statistiques des cartes
+- Nouveau filtre "À réviser" dans le Deck
+- Affichage du nom du deck dans une révision flash sur l'ensemble de la bibliothèque
+
 ### Version 2.1.0
 
 - Possibilité d'exporter et d'importer les decks avec des images

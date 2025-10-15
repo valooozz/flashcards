@@ -19,7 +19,7 @@
     ],
     "name": "Flipo",
     "slug": "flashcards",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "android": {
       "package": "com.valooozz.flashcards",
       "windowSoftInputMode": "adjustPan"
