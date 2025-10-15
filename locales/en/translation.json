@@ -104,6 +104,7 @@
         "notToLearn": "Not to learn",
         "notLearnt": "Not yet learned",
         "ended": "Learning completed",
+        "toRevise": "À réviser",
         "alternateSidesExplanation": "If this option is enabled, a card will alternate between showing the front and back during reviews. When a card is forgotten, the side does not change—the next review will show the side that was failed.",
         "alternateSidesExplanationForce": "\n\nThe button forces all cards in the deck to follow the deck's alternate setting."
     },

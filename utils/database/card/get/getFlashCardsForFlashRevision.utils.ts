@@ -10,6 +10,8 @@ export const getFlashCardsForFlashRevision = async (
 ): Promise<FlashCardType[]> => {
   let flashcards: FlashCardType[];
 
+  const globalRevision = idDeck === -1;
+
   try {
     flashcards = await database.getAllAsync<FlashCardType>(
       `SELECT
@@ -18,6 +20,7 @@ export const getFlashCardsForFlashRevision = async (
         C.verso,
         C.rectoImage,
         C.versoImage,
+        ${globalRevision ? "CASE WHEN D.showName = 1 THEN D.name ELSE '' END as name," : ''}
         C.rectoFirst,
         C.step,
         C.nextRevision,
@@ -25,7 +28,7 @@ export const getFlashCardsForFlashRevision = async (
       FROM Card C
       INNER JOIN Deck D ON C.deck=D.id
       WHERE C.toLearn=1
-      ${idDeck !== -1 ? `AND D.id=${idDeck}` : ''}
+      ${globalRevision ? '' : `AND D.id=${idDeck}`}
       ${cardsToReviseLearnt !== 'all' ? `AND C.nextRevision IS ${cardsToReviseLearnt === 'learnt' ? 'NOT' : ''} NULL` : ''}
       ${stepDelimiter ? `AND C.step ${stepDelimiter.above ? '>=' : '<='} ${stepDelimiter.step}` : ''}`,
     );
