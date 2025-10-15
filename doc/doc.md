@@ -8,6 +8,8 @@ Une barre de progression en haut indique l'avancement total de ton apprentissage
 
 Lorsque tu as des decks dans ta bibliothèque, des informations sur le deck apparaissent, comme le nombre de cartes qu'il contient, le nombre de cartes à réviser, et le nombre de cartes à apprendre.
 
+Tu peux également rechercher un deck ou une carte avec le bouton *loupe*.
+
 ### Créer un deck
 
 Pour ajouter un deck, clique sur le bouton +. Pour créer un nouveau deck vide, entre son nom et clique sur *Ajouter*.
@@ -28,9 +30,9 @@ Pour ajouter la carte et revenir dans le deck, clique sur *Ajouter*. Pour ajoute
 
 ### Comprendre les informations du deck
 
-Quand tu as ouvert un deck, toutes les cartes présentes dans ce dernier sont affichées en liste. Tu y vois leur recto, leur verso, ainsi que la date de la prochaine révision de celles qui ont été apprises.
+Quand tu as ouvert un deck, toutes les cartes présentes dans ce dernier sont affichées en liste. Tu y vois leur recto, leur verso, ainsi que la date de la prochaine révision de celles qui ont été apprises. Si la date est rouge, c'est que la carte est à réviser.
 
-Les cartes qui n'alternent pas recto et verso dans les révisions voient leur verso plus sombre. Celles qui ne sont pas à apprendre ont leur recto et leur verso plus sombre.
+Les cartes qui n'alternent pas recto et verso dans les révisions voient leur verso plus discret. Celles qui ne sont pas à apprendre ont leur recto et leur verso plus discret.
 
 Une jauge indique l'avancement dans l'apprentissage de la carte.
 
@@ -48,7 +50,7 @@ Tu peux également le réinitialiser, ou le supprimer avec les boutons en haut �
 
 Un bouton *statistiques* permet d'obtenir quelques informations sur le deck.
 
-Tu as également trois options d'export. Tu peux exporter les cartes du deck sans prendre en compte l'avancée de ton apprentissage, en JSON ou en CSV. Cela permet par exemple de donner un de tes decks à des ami.es. Tu peux aussi exporter les cartes avec l'avancée de ton apprentissage. Cela permet de transférer tes données sans perdre le travail effectué. Pour exporter tous tes decks d'un coup, ça se passe dans la d'accueil de la bibliothèque.
+Tu as également trois options d'export. Tu peux exporter les cartes du deck sans prendre en compte l'avancée de ton apprentissage, en JSON ou en CSV. Cela permet par exemple de donner un de tes decks à des ami.es. Tu peux aussi exporter les cartes avec l'avancée de ton apprentissage. Cela permet de transférer tes données sans perdre le travail effectué. Pour exporter tous tes decks d'un coup, ça se passe sur la page d'accueil de la bibliothèque.
 
 Le bouton de synchronisation à côté du paramètre *Alterner recto et verso* permet de forcer toutes les cartes du deck à passer à *Suivre le deck* sur cette option.
 
@@ -71,6 +73,8 @@ Dans l'onglet **Bibliothèque**, le bouton *import/export* te permet d'importer 
 Si tu utilises l'export, cela exportera l'ensemble de tes decks avec l'apprentissage et te proposera de l'enregistrer sur ton téléphone. Cela permet de placer de créer une sauvegarde en dehors de l'application, à importer si tu perds tes données.
 
 Si tu utilises l'import, tu pourras importer un fichier JSON qui contient un ou plusieurs decks (exportés par ce bouton ou depuis les paramètres d'un deck).
+
+Si un import ou un export contient des images, le temps de chargement peut prendre du temps.
 
 ## Paramètres de l'application
 
