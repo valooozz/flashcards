@@ -30,7 +30,7 @@ export const StatsCardDialog = ({ visible, hideDialog, learningStep, nextRevisio
             <Dialog visible={visible} onDismiss={hideDialog}>
                 <Dialog.Title>{t('common.info')}</Dialog.Title>
                 <Dialog.Content>
-                    <Text variant="bodyLarge">{t('card.learningStep')} : {learningStep}</Text>
+                    {nextRevision && <Text variant="bodyLarge">{t('card.learningStep')} : {learningStep + 1}</Text>}
                     <Text variant="bodyLarge">{getNextRevisionText()}</Text>
                 </Dialog.Content>
                 <Dialog.Actions>
