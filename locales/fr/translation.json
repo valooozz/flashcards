@@ -207,7 +207,7 @@
             "text": "Depuis la page d'un deck, tu peux voir les cartes. Leur date de prochaine révision est indiquée à droite. Tu peux filtrer et rechercher des cartes. Clique sur une carte pour la modifier. Appuie plus longtemps pour changer l'état d'apprentissage de la carte."
         },
         "card": {
-            "title": "Ajoute des cartes",
+            "title": "Ajoute tes cartes",
             "text": "Clique sur le bouton + pour ajouter des cartes. Tu peux ajouter une image sur le recto et le verso."
         },
         "learning": {

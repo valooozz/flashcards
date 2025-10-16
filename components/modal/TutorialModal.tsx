@@ -1,6 +1,7 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Dimensions, FlatList, Image, Modal, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, NativeScrollEvent, NativeSyntheticEvent, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Modal } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { Radius } from '../../style/Radius';
@@ -71,53 +72,51 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
     const keyExtractor = useCallback((item: TutorialSlide) => item.key, []);
 
     return (
-        <Modal visible={visible} animationType="fade" transparent>
-            <View style={styles.backdrop}>
-                <View style={styles.container}>
-                    <FlatList
-                        ref={flatListRef}
-                        data={slides}
-                        keyExtractor={keyExtractor}
-                        horizontal
-                        pagingEnabled
-                        showsHorizontalScrollIndicator={false}
-                        onScroll={handleScroll}
-                        scrollEventThrottle={16}
-                        getItemLayout={(_, i) => ({ length: width, offset: width * i, index: i })}
-                        onScrollToIndexFailed={(info) => {
-                            requestAnimationFrame(() => {
-                                flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
-                            });
-                        }}
-                        renderItem={renderItem}
-                        initialNumToRender={3}
-                        maxToRenderPerBatch={3}
-                        windowSize={5}
-                    />
+        <Modal visible={visible}>
+            <View style={styles.container}>
+                <FlatList
+                    ref={flatListRef}
+                    data={slides}
+                    keyExtractor={keyExtractor}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    onScroll={handleScroll}
+                    scrollEventThrottle={16}
+                    getItemLayout={(_, i) => ({ length: width, offset: width * i, index: i })}
+                    onScrollToIndexFailed={(info) => {
+                        requestAnimationFrame(() => {
+                            flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
+                        });
+                    }}
+                    renderItem={renderItem}
+                    initialNumToRender={3}
+                    maxToRenderPerBatch={3}
+                    windowSize={5}
+                />
 
-                    <View style={styles.dotsContainer}>
-                        {slides.map((_, i) => (
-                            <View key={i} style={[styles.dot, i === index ? styles.dotActive : undefined]} />
-                        ))}
-                    </View>
+                <View style={styles.dotsContainer}>
+                    {slides.map((_, i) => (
+                        <View key={i} style={[styles.dot, i === index ? styles.dotActive : undefined]} />
+                    ))}
+                </View>
 
-                    <View style={styles.buttonsContainer}>
-                        {index > 0 ? (
-                            <TouchableOpacity onPress={goPrev} style={[styles.button, styles.leftButton]} testID='tuto-previous-button'>
-                                <MaterialIcons name="navigate-before" size={40} color={Colors.library.dark.contrast} />
-                            </TouchableOpacity>
-                        ) : (
-                            <View style={{ width: '30%' }} />
-                        )}
-
-                        <TouchableOpacity onPress={onSkip} style={[styles.button, styles.middleButton]} testID='tuto-close-button'>
-                            <MaterialIcons name={'close'} size={40} color={Colors.daily.dark.contrast} />
+                <View style={styles.buttonsContainer}>
+                    {index > 0 ? (
+                        <TouchableOpacity onPress={goPrev} style={[styles.button, styles.leftButton]} testID='tuto-previous-button'>
+                            <MaterialIcons name="navigate-before" size={40} color={Colors.library.dark.contrast} />
                         </TouchableOpacity>
+                    ) : (
+                        <View style={{ width: '30%' }} />
+                    )}
 
-                        <TouchableOpacity onPress={goNext} style={[styles.button, styles.rightButton]} testID='tuto-next-button'>
-                            <MaterialIcons name={isLast ? 'done' : 'navigate-next'} size={40} color={Colors.learning.dark.contrast} />
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity onPress={onSkip} style={[styles.button, styles.middleButton]} testID='tuto-close-button'>
+                        <MaterialIcons name={'close'} size={40} color={Colors.daily.dark.contrast} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={goNext} style={[styles.button, styles.rightButton]} testID='tuto-next-button'>
+                        <MaterialIcons name={isLast ? 'done' : 'navigate-next'} size={40} color={Colors.learning.dark.contrast} />
+                    </TouchableOpacity>
                 </View>
             </View>
         </Modal>
@@ -125,15 +124,8 @@ export const TutorialModal = ({ visible, slides, onSkip, onDone }: TutorialModal
 };
 
 const styles = StyleSheet.create({
-    backdrop: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     container: {
         backgroundColor: 'white',
-        width: '100%',
         height: '100%',
         paddingVertical: 24,
         display: 'flex',

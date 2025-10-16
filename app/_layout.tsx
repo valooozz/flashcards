@@ -8,6 +8,7 @@ import { PaperProvider } from 'react-native-paper';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LanguagePickerModal } from '../components/modal/LanguagePickerModal';
 import { TutorialModal } from '../components/modal/TutorialModal';
+import { DB_NAME } from '../const/database.const';
 import { NotificationProvider } from '../context/NotificationContext';
 import { SettingsProvider } from '../context/SettingsContext';
 import { TutorialProvider, useTutorialContext } from '../context/TutorialContext';
@@ -58,13 +59,13 @@ function TutorialWrapper() {
         hasTitle: true,
       },
       {
-        key: 'deck',
-        image: require('../assets/images/deck.png'),
+        key: 'card',
+        image: require('../assets/images/card.png'),
         hasTitle: true,
       },
       {
-        key: 'card',
-        image: require('../assets/images/card.png'),
+        key: 'deck',
+        image: require('../assets/images/deck.png'),
         hasTitle: true,
       },
       {
@@ -167,7 +168,7 @@ export default function Layout() {
   }
 
   return (
-    <SQLiteProvider databaseName="flashcards.db" onInit={initDatabase}>
+    <SQLiteProvider databaseName={DB_NAME} onInit={initDatabase}>
       <PaperProvider theme={homeLightTheme}>
         <SafeAreaProvider style={{ flex: 1 }}>
           <TutorialProvider>
