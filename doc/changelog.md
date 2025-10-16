@@ -1,4 +1,8 @@
 
+### Version 2.2.0
+
+- Passage au SDK 54 d'Expo pour pouvoir viser les dernières version d'API d'Android et ainsi pouvoir publier Flipo sur le Play Store
+
 ### Version 2.1.1
 
 - Fix : affichage de la bonne étape d'apprentissage sur les statistiques des cartes
