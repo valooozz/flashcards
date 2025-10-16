@@ -5,7 +5,7 @@ import { Stack } from 'expo-router/stack';
 import { SQLiteProvider } from 'expo-sqlite';
 import { useEffect, useMemo, useState } from 'react';
 import { PaperProvider } from 'react-native-paper';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LanguagePickerModal } from '../components/modal/LanguagePickerModal';
 import { TutorialModal } from '../components/modal/TutorialModal';
 import { NotificationProvider } from '../context/NotificationContext';
@@ -173,24 +173,22 @@ export default function Layout() {
           <TutorialProvider>
             <SettingsProvider>
               <NotificationProvider>
-                <SafeAreaView style={{ flex: 1 }}>
-                  <Stack>
-                    <Stack.Screen name="index" options={{ headerShown: false }} />
-                    <Stack.Screen
-                      name="modalDeck"
-                      options={{ presentation: 'modal' }}
-                    />
-                    <Stack.Screen
-                      name="modalCard"
-                      options={{ presentation: 'modal' }}
-                    />
-                    <Stack.Screen
-                      name="modalSettings"
-                      options={{ presentation: 'modal' }}
-                    />
-                  </Stack>
-                  <TutorialWrapper />
-                </SafeAreaView>
+                <Stack>
+                  <Stack.Screen name="index" options={{ headerShown: false }} />
+                  <Stack.Screen
+                    name="modalDeck"
+                    options={{ presentation: 'modal' }}
+                  />
+                  <Stack.Screen
+                    name="modalCard"
+                    options={{ presentation: 'modal' }}
+                  />
+                  <Stack.Screen
+                    name="modalSettings"
+                    options={{ presentation: 'modal' }}
+                  />
+                </Stack>
+                <TutorialWrapper />
               </NotificationProvider>
             </SettingsProvider>
           </TutorialProvider>

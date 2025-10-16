@@ -9,7 +9,6 @@ import { useSQLiteContext } from 'expo-sqlite';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Appbar, FAB, Menu, TextInput, useTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { ModalButton } from '../components/button/ModalButton';
 import { ConfirmDialog } from '../components/dialog/ConfirmDialog';
 import { QuitDialog } from '../components/dialog/QuitDialog';
@@ -180,7 +179,7 @@ export default function Modal() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.inversePrimary }}>
+    <View style={{ flex: 1, backgroundColor: colors.inversePrimary }}>
       <Stack.Screen options={{ title: t('deck.title'), headerShown: false }} />
       <Appbar.Header style={{ backgroundColor: colors.elevation.level1 }}>
         <Appbar.BackAction onPress={hasChanged() ? () => setShowQuitDialog(true) : () => router.back()} />
@@ -291,7 +290,7 @@ export default function Modal() {
       />
 
       <LoaderModal visible={isLoading} text={editMode ? t('common.exporting') : t('common.importing')} />
-    </SafeAreaView>
+    </View>
   )
 }
 

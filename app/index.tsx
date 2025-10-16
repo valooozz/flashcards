@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { View } from "react-native";
 import { BottomNavigation, Icon, PaperProvider, Text } from "react-native-paper";
 import { Daily } from "../components/tab/Daily";
 import { Home } from "../components/tab/Home";
@@ -74,7 +75,7 @@ export default function Index() {
     };
 
     return (
-        <>
+        <View style={{ flex: 1 }}>
             {renderScene({ route: routes[index] })}
             <BottomNavigation.Bar
                 navigationState={{ index, routes }}
@@ -99,6 +100,6 @@ export default function Index() {
                     backgroundColor: getActiveColor(),
                 }}
             />
-        </>
+        </View>
     );
 }
