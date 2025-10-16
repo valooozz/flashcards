@@ -95,7 +95,7 @@ export function Daily() {
 
     const updateCardsToRevise = (newCardsToRevise: FlashCardType[]) => {
         setCardsToRevise(newCardsToRevise);
-        if (newCardsToRevise.length > 0) {
+        if (newCardsToRevise?.length > 0) {
             udpateCardToShow(newCardsToRevise[0]);
         } else {
             getForgottenCards(database).then((cardsResult) => {

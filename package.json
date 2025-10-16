@@ -11,7 +11,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --runInBand",
-    "depcheck": "depcheck --ignores='expo-splash-screen,expo-system-ui,react-dom,react-native-web,@babel/core,@types/jest'"
+    "checkdep": "depcheck --ignores='expo-splash-screen,expo-system-ui,react-dom,react-native-web,@babel/core,@types/jest'"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.2",
