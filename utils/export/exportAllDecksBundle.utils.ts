@@ -1,4 +1,4 @@
-import * as FileSystem from 'expo-file-system';
+import { Directory, File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import JSZip from 'jszip';
 import { DeckDocument } from '../../types/DeckDocument';
@@ -12,10 +12,13 @@ const getExtension = (path: string): string => {
 
 export const exportAllDecksBundle = async (database: any): Promise<void> => {
     const decks = await getAllDecks(database);
-    const baseDir = `${FileSystem.cacheDirectory}flipo_bundle_${Date.now()}/`;
-    await FileSystem.makeDirectoryAsync(baseDir, { intermediates: true });
-    const imagesDir = `${baseDir}images/`;
-    await FileSystem.makeDirectoryAsync(imagesDir, { intermediates: true });
+
+    // Crée le répertoire de base dans le cache
+    const baseDir = new Directory(Paths.cache, `flipo_bundle_${Date.now()}`);
+    baseDir.create({ intermediates: true });
+
+    // Dossier images
+    const imagesDir = baseDir.createDirectory('images');
 
     const allDecksDocument: DeckDocument[] = [];
     const filesToZip: Array<{ rel: string; abs: string }> = [];
@@ -30,23 +33,33 @@ export const exportAllDecksBundle = async (database: any): Promise<void> => {
 
         const cards = await getCardsFromDeck(database, deck.id, true);
         let index = 0;
+
         for (const card of cards) {
             let rectoRel: string = null;
             let versoRel: string = null;
 
+            // Copie des images recto
             if (card.rectoImage) {
                 const ext = getExtension(card.rectoImage);
                 const rel = `deck_${deck.id}_card_${index}_recto.${ext}`;
-                await FileSystem.copyAsync({ from: card.rectoImage, to: imagesDir + rel });
+                const destFile = imagesDir.createFile(rel, null);
+                const sourceFile = new File(card.rectoImage);
+                const data = await sourceFile.base64();
+                await destFile.write(data);
                 rectoRel = `images/${rel}`;
-                filesToZip.push({ rel: rectoRel, abs: imagesDir + rel });
+                filesToZip.push({ rel: rectoRel, abs: destFile.uri });
             }
+
+            // Copie des images verso
             if (card.versoImage) {
                 const ext = getExtension(card.versoImage);
                 const rel = `deck_${deck.id}_card_${index}_verso.${ext}`;
-                await FileSystem.copyAsync({ from: card.versoImage, to: imagesDir + rel });
+                const destFile = imagesDir.createFile(rel, null);
+                const sourceFile = new File(card.versoImage);
+                const data = await sourceFile.base64();
+                await destFile.write(data);
                 versoRel = `images/${rel}`;
-                filesToZip.push({ rel: versoRel, abs: imagesDir + rel });
+                filesToZip.push({ rel: versoRel, abs: destFile.uri });
             }
 
             deckDocument.cards.push({
@@ -60,24 +73,31 @@ export const exportAllDecksBundle = async (database: any): Promise<void> => {
                 toLearn: Boolean(card.toLearn),
                 changeSide: card.changeSide === null ? null : Boolean(card.changeSide),
             });
+
             index += 1;
         }
 
         allDecksDocument.push(deckDocument);
     }
 
-    const jsonPath = `${baseDir}deck.json`;
-    await FileSystem.writeAsStringAsync(jsonPath, JSON.stringify(allDecksDocument));
-    filesToZip.push({ rel: 'deck.json', abs: jsonPath });
+    // Création du fichier deck.json
+    const jsonFile = baseDir.createFile('deck.json', 'application/json');
+    await jsonFile.write(JSON.stringify(allDecksDocument));
+    filesToZip.push({ rel: 'deck.json', abs: jsonFile.uri });
 
-    const zipDest = `${FileSystem.cacheDirectory}FlipoBackup.flipo`;
-    // Build zip in-memory
+    // Construction de l’archive ZIP
     const zip = new JSZip();
     for (const f of filesToZip) {
-        const base64Data = await FileSystem.readAsStringAsync(f.abs, { encoding: FileSystem.EncodingType.Base64 });
+        const file = new File(f.abs);
+        const base64Data = await file.base64();
         zip.file(f.rel, base64Data, { base64: true });
     }
+
     const zipBase64 = await zip.generateAsync({ type: 'base64' });
-    await FileSystem.writeAsStringAsync(zipDest, zipBase64, { encoding: FileSystem.EncodingType.Base64 });
-    await Sharing.shareAsync(zipDest);
+
+    const zipFile = new File(Paths.cache, 'FlipoBackup.flipo');
+    await zipFile.write(zipBase64);
+
+    // Partage du fichier ZIP
+    await Sharing.shareAsync(zipFile.uri);
 };

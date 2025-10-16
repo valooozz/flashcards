@@ -1,12 +1,21 @@
-import * as FileSystem from 'expo-file-system';
+import { File, Paths } from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { ImportExportType } from '../../types/ImportExportType';
 
-export const exportDocument = async (document: object | string, fileName: string, extension: ImportExportType) => {
-  const stringDocument = typeof(document) === 'object' ? JSON.stringify(document) : document;
-  const exportPath = FileSystem.cacheDirectory + fileName + '.' + extension;
+export const exportDocument = async (
+  document: object | string,
+  fileName: string,
+  extension: ImportExportType
+) => {
+  const stringDocument =
+    typeof document === 'object' ? JSON.stringify(document) : document;
 
-  await FileSystem.writeAsStringAsync(exportPath, stringDocument);
+  // Crée le fichier dans le répertoire cache
+  const exportFile = new File(Paths.cache, `${fileName}.${extension}`);
 
-  await Sharing.shareAsync(exportPath);
+  // Écrit le contenu (UTF-8 par défaut)
+  await exportFile.write(stringDocument);
+
+  // Partage le fichier via le module système
+  await Sharing.shareAsync(exportFile.uri);
 };

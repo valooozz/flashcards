@@ -1,4 +1,4 @@
-import * as FileSystem from 'expo-file-system';
+import { Directory, File, Paths } from 'expo-file-system';
 import { SQLiteDatabase } from 'expo-sqlite';
 import JSZip from 'jszip';
 import { ImportExportType } from '../../types/ImportExportType';
@@ -11,78 +11,75 @@ export const importDocument = async (
   database: SQLiteDatabase,
   importType: ImportExportType,
 ): Promise<boolean> => {
-  const file = await pickDocument(importType);
-  if (file === null) {
-    return;
-  }
+  const picked = await pickDocument(importType);
+  if (!picked) return false;
 
-  const uri = file.assets[0].uri;
-  const name = file.assets[0].name || '';
+  const uri = picked.assets[0].uri;
+  const name = picked.assets[0].name || '';
   const lower = name.toLowerCase();
 
-  // If it's a flipo bundle, read zip in-memory and extract deck.json + images
+  // Gestion des bundles .flipo ou .zip
   if (lower.endsWith('.flipo') || lower.endsWith('.zip')) {
-    const destDir = `${FileSystem.cacheDirectory}flipo_import_${Date.now()}/`;
-    await FileSystem.makeDirectoryAsync(destDir, { intermediates: true });
+    const destDir = new Directory(Paths.cache, `flipo_import_${Date.now()}`);
+    await destDir.create({ intermediates: true });
 
-    // Read archive and extract with JSZip
-    const archiveBase64 = await FileSystem.readAsStringAsync(uri, { encoding: FileSystem.EncodingType.Base64 });
+    const pickedFile = new File(uri);
+    const archiveBase64 = await pickedFile.base64(); // Lecture en base64
     const zip = await JSZip.loadAsync(archiveBase64, { base64: true });
 
-    // Extract all files, preserving folder structure
     const writePromises: Promise<void>[] = [];
-    zip.forEach((relativePath, file) => {
-      const outPath = `${destDir}${relativePath}`;
-      if (file.dir) {
-        writePromises.push(FileSystem.makeDirectoryAsync(outPath, { intermediates: true }));
-      } else {
-        const folder = outPath.substring(0, outPath.lastIndexOf('/') + 1);
+
+    zip.forEach((relativePath, zipEntry) => {
+      const outPath = `${destDir.uri}${relativePath}`;
+      if (zipEntry.dir) {
         writePromises.push((async () => {
+          new Directory(outPath).create({ intermediates: true });
+        })());
+      } else {
+        writePromises.push((async () => {
+          const folder = outPath.substring(0, outPath.lastIndexOf('/') + 1);
           if (folder) {
-            await FileSystem.makeDirectoryAsync(folder, { intermediates: true });
+            await new Directory(folder).create({ intermediates: true });
           }
-          const contentBase64 = await file.async('base64');
-          await FileSystem.writeAsStringAsync(outPath, contentBase64, { encoding: FileSystem.EncodingType.Base64 });
+          const contentBase64 = await zipEntry.async('base64');
+          const outFile = new File(outPath);
+          await outFile.write(contentBase64, { encoding: 'base64' });
         })());
       }
     });
+
     await Promise.all(writePromises);
 
-    const jsonPath = `${destDir}deck.json`;
-    const exists = await FileSystem.getInfoAsync(jsonPath);
-    if (!exists.exists) {
-      return false;
-    }
-    const jsonContent = await FileSystem.readAsStringAsync(jsonPath);
-    // For bundled imports, images are relative paths within destDir; rewrite to absolute paths
+    const jsonFile = new File(`${destDir.uri}deck.json`);
+    if (!(await jsonFile.exists)) return false;
+
+    const jsonContent = await jsonFile.text();
     const decks = JSON.parse(jsonContent);
+
     for (const deck of decks) {
-      let idx = 0;
       for (const card of deck.cards) {
         if (card.rectoImage && !card.rectoImage.startsWith('data:')) {
-          card.rectoImage = `${destDir}${card.rectoImage}`;
+          card.rectoImage = `${destDir.uri}${card.rectoImage}`;
         }
         if (card.versoImage && !card.versoImage.startsWith('data:')) {
-          card.versoImage = `${destDir}${card.versoImage}`;
+          card.versoImage = `${destDir.uri}${card.versoImage}`;
         }
-        idx += 1;
       }
     }
+
     return await importInDatabase(database, decks);
   }
 
-  const fileContent = await FileSystem.readAsStringAsync(uri);
-  if (fileContent === '') {
-    return;
-  }
+  // Import JSON ou CSV
+  const fileObj = new File(uri);
+  const fileContent = await fileObj.text();
+  if (!fileContent) return false;
 
   if (importType === 'json') {
     return await importJsonDocument(database, fileContent);
   } else if (importType === 'csv') {
-    return await importCsvDocument(
-      database,
-      file.assets[0].name.slice(0, -4),
-      fileContent,
-    );
+    return await importCsvDocument(database, name.slice(0, -4), fileContent);
   }
+
+  return false;
 };

@@ -1,4 +1,4 @@
-import * as FileSystem from 'expo-file-system';
+import { File } from 'expo-file-system';
 
 const extensionToMime: Record<string, string> = {
     jpg: 'image/jpeg',
@@ -19,13 +19,18 @@ export const fileToDataUri = async (path: string): Promise<string> => {
         if (!path || path.startsWith('data:')) {
             return path;
         }
+
         const mime = guessMimeFromPath(path);
-        const base64 = await FileSystem.readAsStringAsync(path, { encoding: FileSystem.EncodingType.Base64 });
+
+        // Nouvelle API : on instancie un File à partir du chemin
+        const file = new File(path);
+
+        // Lecture du fichier sous forme de base64
+        const base64 = file.base64();
+
         return `data:${mime};base64,${base64}`;
-    } catch {
-        // If the file cannot be read, return original path so export still works
+    } catch (e) {
+        // Si la lecture échoue, on renvoie simplement le chemin original
         return path;
     }
 };
-
-
