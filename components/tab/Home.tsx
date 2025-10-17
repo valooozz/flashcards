@@ -161,6 +161,7 @@ export function Home() {
 
     useFocusEffect(
         useCallback(() => {
+            // setAllRevisionsToToday(database);
             loadState();
             loadDecks();
 

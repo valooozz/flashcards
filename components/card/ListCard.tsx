@@ -126,6 +126,10 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   progressBar: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    left: 0,
     height: 6,
   },
 });

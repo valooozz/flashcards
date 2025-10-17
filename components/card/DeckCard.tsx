@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   content: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingBottom: 12,
+    paddingBottom: 6,
   },
   center: {
     position: 'absolute',
