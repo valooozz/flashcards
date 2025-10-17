@@ -3,6 +3,9 @@
     "scheme": "acme",
     "newArchEnabled": true,
     "userInterfaceStyle": "light",
+    "experiments": {
+      "reactCanary": true
+    },
     "plugins": [
       "expo-router",
       "expo-sqlite",
@@ -19,7 +22,7 @@
     ],
     "name": "Flipo",
     "slug": "flipo",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "android": {
       "package": "com.valooozz.flipo"
     },

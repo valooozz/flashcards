@@ -1,4 +1,10 @@
 
+### Version 2.2.1
+
+- Fix : migration bdd à la première ouverture de l'app faisait buguer la bdd
+- Fix : TutorialModal prend tout l'écran
+- Mise à jour des dépendances
+
 ### Version 2.2.0
 
 - Passage au SDK 54 d'Expo pour pouvoir viser les dernières version d'API d'Android et ainsi pouvoir publier Flipo sur le Play Store
