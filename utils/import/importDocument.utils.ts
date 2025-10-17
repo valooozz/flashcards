@@ -14,17 +14,23 @@ export const importDocument = async (
   const picked = await pickDocument(importType);
   if (!picked) return false;
 
-  const uri = picked.assets[0].uri;
+  let uri = picked.assets[0].uri;
   const name = picked.assets[0].name || '';
   const lower = name.toLowerCase();
+
+  const file = new File(uri);
+  const copiedFile = new File(Paths.cache, name);
+  copiedFile.delete();
+  file.copy(copiedFile);
+
+  console.log(uri, name, lower, file.uri, copiedFile.uri);
 
   // Gestion des bundles .flipo ou .zip
   if (lower.endsWith('.flipo') || lower.endsWith('.zip')) {
     const destDir = new Directory(Paths.cache, `flipo_import_${Date.now()}`);
-    await destDir.create({ intermediates: true });
+    destDir.create({ intermediates: true });
 
-    const pickedFile = new File(uri);
-    const archiveBase64 = await pickedFile.base64(); // Lecture en base64
+    const archiveBase64 = copiedFile.base64(); // Lecture en base64
     const zip = await JSZip.loadAsync(archiveBase64, { base64: true });
 
     const writePromises: Promise<void>[] = [];
@@ -39,11 +45,11 @@ export const importDocument = async (
         writePromises.push((async () => {
           const folder = outPath.substring(0, outPath.lastIndexOf('/') + 1);
           if (folder) {
-            await new Directory(folder).create({ intermediates: true });
+            new Directory(folder).create({ intermediates: true });
           }
           const contentBase64 = await zipEntry.async('base64');
           const outFile = new File(outPath);
-          await outFile.write(contentBase64, { encoding: 'base64' });
+          outFile.write(contentBase64, { encoding: 'base64' });
         })());
       }
     });
@@ -51,7 +57,7 @@ export const importDocument = async (
     await Promise.all(writePromises);
 
     const jsonFile = new File(`${destDir.uri}deck.json`);
-    if (!(await jsonFile.exists)) return false;
+    if (!(jsonFile.exists)) return false;
 
     const jsonContent = await jsonFile.text();
     const decks = JSON.parse(jsonContent);
@@ -71,8 +77,7 @@ export const importDocument = async (
   }
 
   // Import JSON ou CSV
-  const fileObj = new File(uri);
-  const fileContent = await fileObj.text();
+  const fileContent = await copiedFile.text();
   if (!fileContent) return false;
 
   if (importType === 'json') {
