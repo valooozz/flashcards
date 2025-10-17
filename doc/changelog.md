@@ -1,4 +1,9 @@
 
+### Version 2.2.2
+
+- Ajustements du style suite à la montée de version Expo SDK
+- Fix : importation
+
 ### Version 2.2.1
 
 - Fix : migration bdd à la première ouverture de l'app faisait buguer la bdd
