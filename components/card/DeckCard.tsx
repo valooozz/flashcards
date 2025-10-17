@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { PressableAndroidRippleConfig, StyleSheet } from 'react-native';
 import { Card, ProgressBar, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
@@ -70,7 +70,13 @@ function DeckCardComponent({ deck, openDeck, searchCard = false }: DeckCardProps
         onPress={handlePress}
         onLongPress={handleLongPress}
         delayLongPress={300}
-        rippleColor={colors.backdrop}
+        underlayColor={colors.backdrop}
+        background={
+          {
+            color: colors.backdrop,
+            foreground: true,
+          } as PressableAndroidRippleConfig
+        }
       >
         <>
           <Card.Title title={deck.name} />
@@ -89,7 +95,7 @@ function DeckCardComponent({ deck, openDeck, searchCard = false }: DeckCardProps
         </>
       </TouchableRipple>
     </Card>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

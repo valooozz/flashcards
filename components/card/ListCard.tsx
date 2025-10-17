@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import React, { memo, useCallback, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { PressableAndroidRippleConfig, StyleSheet } from 'react-native';
 import { Card, ProgressBar, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { useNotify } from '../../hooks/useNotify';
 import { useTranslation } from '../../hooks/useTranslation';
@@ -63,8 +63,14 @@ function ListCardComponent({ card, triggerReload }: ListCardProps) {
           onPress={handlePress}
           onLongPress={handleLongPress}
           delayLongPress={300}
-          rippleColor={colors.backdrop}
           style={{ flexGrow: 1 }}
+          underlayColor={colors.backdrop}
+          background={
+            {
+              color: colors.backdrop,
+              foreground: true,
+            } as PressableAndroidRippleConfig
+          }
         >
           <>
             <Card.Content style={styles.content}>
