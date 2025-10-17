@@ -7,6 +7,12 @@
 ### Conflits
 
 1. Supprimer **node_modules** et **package-lock.json**
+2. Supprimer toutes les dépendances du **package.json**
+3. Réinstaller expo : `npm install expo@^<new_sdk_version>.0.0`
+4. Réinstaller toutes les dépendances une par une en utilisant Expo CLI : `npx expo install <dep>`
+5. Faire de même pour les dépendances de développement : `npx expo install <dep> -- --save-dev`
+
+**Remarque :  Si une erreur est levée au moment de l'installation d'une dépendance, ignorer la dépendance et ne pas l'installer.**
 
 ### Notes
 
