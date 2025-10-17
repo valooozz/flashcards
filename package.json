@@ -14,8 +14,12 @@
     "checkdep": "depcheck --ignores='expo-splash-screen,expo-system-ui,react-dom,react-native-web,@babel/core,@types/jest'"
   },
   "dependencies": {
+    "@babel/core": "^7.26.0",
     "@expo/vector-icons": "^15.0.2",
     "@react-native-async-storage/async-storage": "2.2.0",
+    "@types/jest": "29.5.14",
+    "@types/react": "~19.1.10",
+    "eslint-config-expo": "~10.0.0",
     "expo": "^54.0.13",
     "expo-constants": "~18.0.9",
     "expo-document-picker": "~14.0.7",
@@ -28,11 +32,12 @@
     "expo-splash-screen": "~31.0.10",
     "expo-sqlite": "~16.0.8",
     "expo-system-ui": "~6.0.7",
-    "i18next": "^25.5.2",
+    "i18next": "^25.6.0",
+    "jest-expo": "~54.0.12",
     "jszip": "^3.10.1",
-    "react": "^19.2.0",
+    "react": "19.1.0",
     "react-dom": "19.1.0",
-    "react-i18next": "^15.7.3",
+    "react-i18next": "^16.0.1",
     "react-native": "0.81.4",
     "react-native-csv": "^0.2.0",
     "react-native-flip-card": "^3.5.7",
@@ -41,24 +46,16 @@
     "react-native-safe-area-context": "~5.6.0",
     "react-native-screens": "~4.16.0",
     "react-native-web": "^0.21.0",
-    "react-native-worklets": "0.5.1"
+    "react-native-worklets": "0.5.1",
+    "typescript": "~5.9.2"
   },
+  "private": true,
   "devDependencies": {
-    "@babel/core": "^7.20.0",
-    "@testing-library/jest-native": "^5.4.3",
-    "@testing-library/react-native": "^13.3.3",
-    "@types/jest": "^29.5.14",
     "@types/jszip": "^3.4.0",
-    "@types/react": "~19.1.10",
     "depcheck": "^1.4.7",
-    "eslint": "^8.57.0",
-    "eslint-config-expo": "~10.0.0",
-    "eslint-config-prettier": "^10.1.1",
-    "eslint-plugin-prettier": "^5.2.3",
-    "jest-expo": "~54.0.12",
-    "prettier": "^3.5.3",
-    "react-test-renderer": "^19.2.0",
-    "typescript": "^5.3.3"
-  },
-  "private": true
+    "eslint": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "prettier": "^3.6.2"
+  }
 }
