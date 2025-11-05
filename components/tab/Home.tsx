@@ -10,8 +10,8 @@ import { CardsToReviseLearnt, FlashRevisionSettingsType, RevisionSide, StepDelim
 import { getCardsFromDeck } from '../../utils/database/card/get/getCardsFromDeck.utils';
 import { getFlashCardsForFlashRevision } from '../../utils/database/card/get/getFlashCardsForFlashRevision.utils';
 import { getGeneralProgress } from '../../utils/database/card/get/getGeneralProgress.utils';
-import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getAllDecks } from '../../utils/database/deck/get/getAllDecks.utils';
+import { getProgressInDeck } from '../../utils/database/deck/get/getProgressInDeck.utils';
 import { FlashRevisionDialog } from '../dialog/FlashRevisionDialog';
 import { Deck } from '../display/Deck';
 import { Library } from '../display/Library';

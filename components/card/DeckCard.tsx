@@ -6,10 +6,10 @@ import { Card, ProgressBar, Text, TouchableRipple, useTheme } from 'react-native
 import { useTranslation } from '../../hooks/useTranslation';
 import { Colors } from '../../style/Colors';
 import { DeckType } from '../../types/DeckType';
-import { getProgressInDeck } from '../../utils/database/card/get/getProgressInDeck.utils';
 import { getNbCardsInDeck } from '../../utils/database/deck/get/getNbCardsInDeck.utils';
 import { getNbCardsToLearnInDeck } from '../../utils/database/deck/get/getNbCardsToLearnInDeck.utils';
 import { getNbCardsToReviseInDeck } from '../../utils/database/deck/get/getNbCardsToReviseInDeck.utils';
+import { getProgressInDeck } from '../../utils/database/deck/get/getProgressInDeck.utils';
 
 interface DeckCardProps {
   deck: DeckType;
