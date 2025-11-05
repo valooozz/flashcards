@@ -23,8 +23,6 @@ export const importDocument = async (
   copiedFile.delete();
   file.copy(copiedFile);
 
-  console.log(uri, name, lower, file.uri, copiedFile.uri);
-
   // Gestion des bundles .flipo ou .zip
   if (lower.endsWith('.flipo') || lower.endsWith('.zip')) {
     const destDir = new Directory(Paths.cache, `flipo_import_${Date.now()}`);
