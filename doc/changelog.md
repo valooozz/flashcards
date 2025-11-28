@@ -1,4 +1,13 @@
 
+### Version 2.2.4
+
+- MAJ Expo packages
+
+### Version 2.2.3
+
+- MAJ packages
+- Retrait React Canary
+
 ### Version 2.2.2
 
 - Ajustements du style suite à la montée de version Expo SDK

@@ -19,7 +19,7 @@
     ],
     "name": "Flipo",
     "slug": "flipo",
-    "version": "2.2.3",
+    "version": "2.2.4",
     "android": {
       "package": "com.valooozz.flipo"
     },
