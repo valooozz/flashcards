@@ -1,4 +1,8 @@
 
+### Version 2.2.5
+
+- MAJ Expo packages
+
 ### Version 2.2.4
 
 - MAJ Expo packages
