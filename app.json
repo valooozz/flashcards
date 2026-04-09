@@ -1,7 +1,6 @@
 {
   "expo": {
     "scheme": "acme",
-    "newArchEnabled": true,
     "userInterfaceStyle": "light",
     "plugins": [
       "expo-router",
@@ -15,11 +14,12 @@
         }
       ],
       "expo-localization",
-      "expo-font"
+      "expo-font",
+      "expo-sharing"
     ],
     "name": "Flipo",
     "slug": "flipo",
-    "version": "2.2.5",
+    "version": "2.2.6",
     "android": {
       "package": "com.valooozz.flipo"
     },

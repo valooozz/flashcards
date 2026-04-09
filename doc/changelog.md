@@ -1,4 +1,8 @@
 
+### Version 2.2.6
+
+- MAJ Expo SDK (v55)
+
 ### Version 2.2.5
 
 - MAJ Expo packages
